@@ -1,0 +1,6 @@
+framework module Pods_Segment_Amplitude_Tests {
+  umbrella header "Pods-Segment-Amplitude_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

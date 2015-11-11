@@ -1,0 +1,6 @@
+framework module Segment_Amplitude {
+  umbrella header "Segment-Amplitude-umbrella.h"
+
+  export *
+  module * { export * }
+}
