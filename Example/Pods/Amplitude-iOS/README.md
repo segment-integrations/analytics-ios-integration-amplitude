@@ -9,7 +9,7 @@ A [demo application](https://github.com/amplitude/iOS-Demo) is available to show
 
 # Setup #
 1. If you haven't already, go to https://amplitude.com and register for an account. You will receive an API Key.
-2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.2.0'`
+2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.2.1'`
 3. Copy the Amplitude-iOS folder into the source of your project in XCode. Check "Copy items into destination group's folder (if needed)".
 
 4. In every file that uses analytics, import Amplitude.h at the top:
@@ -45,7 +45,7 @@ You can adjust the time window for which sessions are extended by changing the v
 
 By default start and end session events are no longer sent. To renable add this line before initializing the SDK:
 ``` objective-c
-[Amplitude instance].trackingSessionEvents = true;
+[[Amplitude instance] trackingSessionEvents:YES];
 [[Amplitude instance] initializeApiKey:@"YOUR_API_KEY_HERE"];
 ```
 
@@ -198,7 +198,7 @@ This SDK automatically grabs useful data from the phone, including app version, 
 
 User IDs are automatically generated and will default to device specific identifiers if not specified.
 
-Device IDs use identifierForVendor if available, or a randomly generated ID otherwise. You can retrieve the Device ID that Amplitude uses with `[[Amplitude instance] getDeviceId]`.
+Device IDs are randomly generated. You can, however, choose to instead use the identifierForVendor (if available) by calling `[[Amplitude instance] useAdvertisingIdForDeviceId]` before initializing with your API key. You can also retrieve the Device ID that Amplitude uses with `[[Amplitude instance] getDeviceId]`.
 
 If you have your own system for tracking device IDs and would like to set a custom device ID, you can do so with `[[Amplitude instance] setDeviceId:@"CUSTOM_DEVICE_ID"];` **Note: this is not recommended unless you really know what you are doing.** Make sure the device ID you set is sufficiently unique (we recommend something like a UUID - see `[AMPUtils generateUUID]` for an example on how to generate) to prevent conflicts with other devices in our system.
 

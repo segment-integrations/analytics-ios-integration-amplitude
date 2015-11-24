@@ -288,7 +288,19 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     // migrate events
     NSArray *events = [eventsData objectForKey:EVENTS];
     for (id event in events) {
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:event options:0 error:NULL];
+        NSError *error = nil;
+        NSData *jsonData = nil;
+        @try {
+            jsonData = [NSJSONSerialization dataWithJSONObject:[self makeJSONSerializable:event] options:0 error:&error];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"ERROR: NSJSONSerialization error: %@", exception.reason);
+            continue;
+        }
+        if (error != nil) {
+            NSLog(@"ERROR: NSJSONSerialization error: %@", error);
+            continue;
+        }
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         success &= [dbHelper addEvent:jsonString];
         SAFE_ARC_RELEASE(jsonString);
@@ -489,12 +501,13 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
             return;
         }
 
-        NSMutableDictionary *event = [NSMutableDictionary dictionary];
-
-        if (!outOfSession) {
+        // skip session check if logging start_session or end_session events
+        BOOL loggingSessionEvent = _trackingSessionEvents && ([eventType isEqualToString:kAMPSessionStartEvent] || [eventType isEqualToString:kAMPSessionEndEvent]);
+        if (!loggingSessionEvent && !outOfSession) {
             [self startOrContinueSession:timestamp];
         }
 
+        NSMutableDictionary *event = [NSMutableDictionary dictionary];
         [event setValue:eventType forKey:@"event_type"];
         [event setValue:[self replaceWithEmptyJSON:[self truncate:eventProperties]] forKey:@"event_properties"];
         [event setValue:[self replaceWithEmptyJSON:apiProperties] forKey:@"api_properties"];
