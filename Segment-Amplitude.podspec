@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Segment-Amplitude"
-  s.version          = "1.0.0-alpha"
+  s.version          = "1.0.0"
   s.summary          = "Amplitude Integration for Segment's analytics-ios library."
 
   s.description      = <<-DESC
@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*'
 
-  s.dependency 'Analytics', '~> 3.0.2-alpha'
+  s.dependency 'Analytics', '~> 3.0.0'
   s.dependency 'Amplitude-iOS', '~> 3.2.0'
 end
