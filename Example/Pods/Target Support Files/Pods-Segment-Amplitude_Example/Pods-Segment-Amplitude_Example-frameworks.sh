@@ -86,12 +86,10 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Segment-Amplitude_Example/Amplitude_iOS.framework"
   install_framework "Pods-Segment-Amplitude_Example/Analytics.framework"
-  install_framework "Pods-Segment-Amplitude_Example/FMDB.framework"
   install_framework "Pods-Segment-Amplitude_Example/Segment_Amplitude.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Segment-Amplitude_Example/Amplitude_iOS.framework"
   install_framework "Pods-Segment-Amplitude_Example/Analytics.framework"
-  install_framework "Pods-Segment-Amplitude_Example/FMDB.framework"
   install_framework "Pods-Segment-Amplitude_Example/Segment_Amplitude.framework"
 fi

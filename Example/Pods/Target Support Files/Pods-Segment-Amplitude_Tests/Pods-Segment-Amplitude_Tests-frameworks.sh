@@ -86,7 +86,6 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Segment-Amplitude_Tests/Amplitude_iOS.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Analytics.framework"
-  install_framework "Pods-Segment-Amplitude_Tests/FMDB.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Segment_Amplitude.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Expecta.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Specta.framework"
@@ -94,7 +93,6 @@ fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Segment-Amplitude_Tests/Amplitude_iOS.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Analytics.framework"
-  install_framework "Pods-Segment-Amplitude_Tests/FMDB.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Segment_Amplitude.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Expecta.framework"
   install_framework "Pods-Segment-Amplitude_Tests/Specta.framework"
