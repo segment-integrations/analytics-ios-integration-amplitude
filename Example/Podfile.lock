@@ -1,13 +1,9 @@
 PODS:
-  - Amplitude-iOS (3.2.1):
-    - FMDB/standard (~> 2.5)
-  - Analytics (3.0.0)
+  - Amplitude-iOS (3.5.0)
+  - Analytics (3.0.6)
   - Expecta (1.0.5)
-  - FMDB/common (2.5)
-  - FMDB/standard (2.5):
-    - FMDB/common
   - Segment-Amplitude (1.0.0):
-    - Amplitude-iOS (~> 3.2.0)
+    - Amplitude-iOS (~> 3.5.0)
     - Analytics (~> 3.0.0)
   - Specta (1.0.5)
 
@@ -18,14 +14,13 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Segment-Amplitude:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  Amplitude-iOS: d4217c0912e3ef7bddb8f5abeb4acffa57d8dfc5
-  Analytics: 3ebd9eee7aa18bbf7d6418f2290b0bbf694144d5
+  Amplitude-iOS: 06d4f103728b15e95487b77a16749ae373f970a3
+  Analytics: 2f17182f18a7feda7210e25a49c1a4134c582c31
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
-  Segment-Amplitude: 171341ea0a8c93f132e4f37c501f70289339ca24
+  Segment-Amplitude: a510107ac28860640ec3d84ebe0031dc46ea860e
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
 COCOAPODS: 0.39.0

@@ -201,6 +201,15 @@
  @method
 
  @abstract
+ Clears all properties that are tracked on the user level.
+ */
+
+- (void)clearUserProperties;
+
+/*!
+ @method
+
+ @abstract
  Sets the userId.
 
  @param userId                  If your app has its own login system that you want to track users with, you can set the userId.
@@ -272,6 +281,17 @@
  If you want location tracking disabled on startup of the app, call disableLocationListening before you call initializeApiKey.
  */
 - (void)disableLocationListening;
+
+/*!
+ @method
+
+ @abstract
+ Forces the SDK to update with the user's last known location if possible.
+
+ @discussion
+ If you want to manually force the SDK to update with the user's last known location, call updateLocation.
+ */
+- (void)updateLocation;
 
 /*!
  @method

@@ -22,27 +22,17 @@ NSString *const SEGSegmentRequestDidFailNotification = @"SegmentRequestDidFail";
 NSString *const SEGAdvertisingClassIdentifier = @"ASIdentifierManager";
 NSString *const SEGADClientClass = @"ADClient";
 
+NSString *const SEGUserIdKey = @"SEGUserId";
+NSString *const SEGAnonymousIdKey = @"SEGAnonymousId";
+NSString *const SEGQueueKey = @"SEGQueue";
+NSString *const SEGTraitsKey = @"SEGTraits";
+
 static NSString *GenerateUUIDString()
 {
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     NSString *UUIDString = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, theUUID);
     CFRelease(theUUID);
     return UUIDString;
-}
-
-static NSString *GetAnonymousId(BOOL reset)
-{
-    // We've chosen to generate a UUID rather than use the UDID (deprecated in iOS 5),
-    // identifierForVendor (iOS6 and later, can't be changed on logout),
-    // or MAC address (blocked in iOS 7). For more info see https://segment.io/libraries/ios#ids
-    NSURL *url = SEGAnalyticsURLForFilename(@"segmentio.anonymousId");
-    NSString *anonymousId = [[NSString alloc] initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:NULL];
-    if (!anonymousId || reset) {
-        anonymousId = GenerateUUIDString();
-        SEGLog(@"New anonymousId: %@", anonymousId);
-        [anonymousId writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:NULL];
-    }
-    return anonymousId;
 }
 
 static NSString *GetDeviceModel()
@@ -80,8 +70,7 @@ static BOOL GetAdTrackingEnabled()
 @property (nonatomic, strong) NSTimer *flushTimer;
 @property (nonatomic, strong) dispatch_queue_t serialQueue;
 @property (nonatomic, strong) NSMutableDictionary *traits;
-@property (nonatomic, assign) BOOL enableAdvertisingTracking;
-@property (nonatomic, assign) NSDictionary *bundledIntegrations;
+@property (nonatomic, assign) SEGAnalytics *analytics;
 @property (nonatomic, assign) SEGAnalyticsConfiguration *configuration;
 
 @end
@@ -94,16 +83,16 @@ static BOOL GetAdTrackingEnabled()
     if (self = [super init]) {
         self.configuration = [analytics configuration];
         self.apiURL = [NSURL URLWithString:@"https://api.segment.io/v1/import"];
-        self.anonymousId = GetAnonymousId(NO);
-        self.userId = [[NSString alloc] initWithContentsOfURL:self.userIDURL encoding:NSUTF8StringEncoding error:NULL];
+        self.anonymousId = [self getAnonymousId:NO];
+        self.userId = [self getUserId];
         self.bluetooth = [[SEGBluetooth alloc] init];
-        self.reachability = [SEGReachability reachabilityWithHostname:@"http://google.com"];
+        self.reachability = [SEGReachability reachabilityWithHostname:@"google.com"];
         [self.reachability startNotifier];
         self.context = [self staticContext];
         self.flushTimer = [NSTimer scheduledTimerWithTimeInterval:30.0 target:self selector:@selector(flush) userInfo:nil repeats:YES];
         self.serialQueue = seg_dispatch_queue_create_specific("io.segment.analytics.segmentio", DISPATCH_QUEUE_SERIAL);
         self.flushTaskID = UIBackgroundTaskInvalid;
-        self.bundledIntegrations = [analytics bundledIntegrations];
+        self.analytics = analytics;
     }
     return self;
 }
@@ -112,8 +101,10 @@ static BOOL GetAdTrackingEnabled()
 {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
-    dict[@"library"] = @{ @"name" : @"analytics-ios",
-                          @"version" : SEGStringize(ANALYTICS_VERSION) };
+    dict[@"library"] = @{
+        @"name" : @"analytics-ios",
+        @"version" : [SEGAnalytics version]
+    };
 
     NSMutableDictionary *infoDictionary = [[[NSBundle mainBundle] infoDictionary] mutableCopy];
     [infoDictionary addEntriesFromDictionary:[[NSBundle mainBundle] localizedInfoDictionary]];
@@ -136,7 +127,7 @@ static BOOL GetAdTrackingEnabled()
         if (NSClassFromString(SEGAdvertisingClassIdentifier)) {
             dict[@"adTrackingEnabled"] = @(GetAdTrackingEnabled());
         }
-        if (self.enableAdvertisingTracking) {
+        if (self.configuration.enableAdvertisingTracking) {
             NSString *idfa = SEGIDFA();
             if (idfa.length) dict[@"advertisingId"] = idfa;
         }
@@ -208,6 +199,8 @@ static BOOL GetAdTrackingEnabled()
         network;
     });
 
+    self.location = !self.location ? [self.configuration shouldUseLocationServices] ? [SEGLocation new] : nil : self.location;
+    [self.location startUpdatingLocation];
     if (self.location.hasKnownLocation)
         context[@"location"] = self.location.locationDictionary;
 
@@ -261,7 +254,17 @@ static BOOL GetAdTrackingEnabled()
 {
     [self dispatchBackground:^{
         self.userId = userId;
+        [[NSUserDefaults standardUserDefaults] setValue:userId forKey:SEGUserIdKey];
         [self.userId writeToURL:self.userIDURL atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+    }];
+}
+
+- (void)saveAnonymousId:(NSString *)anonymousId
+{
+    [self dispatchBackground:^{
+        self.anonymousId = anonymousId;
+        [[NSUserDefaults standardUserDefaults] setValue:anonymousId forKey:SEGAnonymousIdKey];
+        [self.anonymousId writeToURL:self.anonymousIDURL atomically:YES encoding:NSUTF8StringEncoding error:NULL];
     }];
 }
 
@@ -269,6 +272,7 @@ static BOOL GetAdTrackingEnabled()
 {
     [self dispatchBackground:^{
         [self.traits addEntriesFromDictionary:traits];
+        [[NSUserDefaults standardUserDefaults] setObject:[self.traits copy] forKey:SEGTraitsKey];
         [[self.traits copy] writeToURL:self.traitsURL atomically:YES];
     }];
 }
@@ -280,6 +284,9 @@ static BOOL GetAdTrackingEnabled()
     [self dispatchBackground:^{
         [self saveUserId:payload.userId];
         [self addTraits:payload.traits];
+        if (payload.anonymousId) {
+            [self saveAnonymousId:payload.anonymousId];
+        }
     }];
 
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
@@ -345,7 +352,7 @@ static BOOL GetAdTrackingEnabled()
 - (NSDictionary *)integrationsDictionary:(NSDictionary *)integrations
 {
     NSMutableDictionary *dict = [integrations ?: @{} mutableCopy];
-    for (NSString *integration in self.bundledIntegrations) {
+    for (NSString *integration in self.analytics.bundledIntegrations) {
         dict[integration] = @NO;
     }
     return [dict copy];
@@ -362,7 +369,11 @@ static BOOL GetAdTrackingEnabled()
     [self dispatchBackground:^{
         // attach userId and anonymousId inside the dispatch_async in case
         // they've changed (see identify function)
-        [payload setValue:self.userId forKey:@"userId"];
+
+        // Do not override the userId for an 'alias' action. This value is set in [alias:] already.
+        if (![action isEqualToString:@"alias"]) {
+            [payload setValue:self.userId forKey:@"userId"];
+        }
         [payload setValue:self.anonymousId forKey:@"anonymousId"];
 
         [payload setValue:[self integrationsDictionary:integrations] forKey:@"integrations"];
@@ -383,7 +394,7 @@ static BOOL GetAdTrackingEnabled()
 {
     @try {
         [self.queue addObject:payload];
-        [[self.queue copy] writeToURL:[self queueURL] atomically:YES];
+        [self persistQueue];
         [self flushQueueByLength];
 
     }
@@ -453,13 +464,17 @@ static BOOL GetAdTrackingEnabled()
 - (void)reset
 {
     [self dispatchBackgroundAndWait:^{
+        [[NSUserDefaults standardUserDefaults] setValue:nil forKey:SEGUserIdKey];
+        [[NSUserDefaults standardUserDefaults] setValue:nil forKey:SEGAnonymousIdKey];
+        [[NSUserDefaults standardUserDefaults] setValue:@[] forKey:SEGQueueKey];
+        [[NSUserDefaults standardUserDefaults] setValue:nil forKey:SEGTraitsKey];
         [[NSFileManager defaultManager] removeItemAtURL:self.userIDURL error:NULL];
         [[NSFileManager defaultManager] removeItemAtURL:self.traitsURL error:NULL];
         [[NSFileManager defaultManager] removeItemAtURL:self.queueURL error:NULL];
         self.userId = nil;
         self.traits = [NSMutableDictionary dictionary];
         self.queue = [NSMutableArray array];
-        self.anonymousId = GetAnonymousId(YES);
+        self.anonymousId = [self getAnonymousId:YES];
         self.request.completion = nil;
         self.request = nil;
     }];
@@ -491,7 +506,7 @@ static BOOL GetAdTrackingEnabled()
                                                          } else {
                                                              SEGLog(@"%@ API request success 200", self);
                                                              [self.queue removeObjectsInArray:self.batch];
-                                                             [[self.queue copy] writeToURL:[self queueURL] atomically:YES];
+                                                             [self persistQueue];
                                                              [self notifyForName:SEGSegmentRequestDidSucceedNotification userInfo:self.batch];
                                                          }
 
@@ -515,7 +530,8 @@ static BOOL GetAdTrackingEnabled()
 {
     [self dispatchBackgroundAndWait:^{
         if (self.queue.count)
-            [[self.queue copy] writeToURL:self.queueURL atomically:YES];
+            
+            [self persistQueue];
     }];
 }
 
@@ -524,7 +540,7 @@ static BOOL GetAdTrackingEnabled()
 - (NSMutableArray *)queue
 {
     if (!_queue) {
-        _queue = [NSMutableArray arrayWithContentsOfURL:self.queueURL] ?: [[NSMutableArray alloc] init];
+        _queue = ([[[NSUserDefaults standardUserDefaults] objectForKey:SEGQueueKey] mutableCopy] ?: [NSMutableArray arrayWithContentsOfURL:self.queueURL]) ?: [[NSMutableArray alloc] init];
     }
     return _queue;
 }
@@ -532,7 +548,7 @@ static BOOL GetAdTrackingEnabled()
 - (NSMutableDictionary *)traits
 {
     if (!_traits) {
-        _traits = [NSMutableDictionary dictionaryWithContentsOfURL:self.traitsURL] ?: [[NSMutableDictionary alloc] init];
+        _traits = ([[[NSUserDefaults standardUserDefaults] objectForKey:SEGTraitsKey] mutableCopy] ?: [NSMutableDictionary dictionaryWithContentsOfURL:self.traitsURL]) ?: [[NSMutableDictionary alloc] init];
     }
     return _traits;
 }
@@ -547,6 +563,11 @@ static BOOL GetAdTrackingEnabled()
     return SEGAnalyticsURLForFilename(@"segmentio.userId");
 }
 
+- (NSURL *)anonymousIDURL
+{
+    return SEGAnalyticsURLForFilename(@"segment.anonymousId");
+}
+
 - (NSURL *)queueURL
 {
     return SEGAnalyticsURLForFilename(@"segmentio.queue.plist");
@@ -555,6 +576,34 @@ static BOOL GetAdTrackingEnabled()
 - (NSURL *)traitsURL
 {
     return SEGAnalyticsURLForFilename(@"segmentio.traits.plist");
+}
+
+- (void)persistQueue
+{
+    [[NSUserDefaults standardUserDefaults] setValue:[self.queue copy] forKey:SEGQueueKey];
+    [[self.queue copy] writeToURL:self.queueURL atomically:YES];
+}
+
+
+- (NSString *)getAnonymousId:(BOOL)reset
+{
+    // We've chosen to generate a UUID rather than use the UDID (deprecated in iOS 5),
+    // identifierForVendor (iOS6 and later, can't be changed on logout),
+    // or MAC address (blocked in iOS 7). For more info see https://segment.io/libraries/ios#ids
+    NSURL *url = self.anonymousIDURL;
+    NSString *anonymousId = [[NSUserDefaults standardUserDefaults] valueForKey:SEGAnonymousIdKey] ?: [[NSString alloc] initWithContentsOfURL:url encoding:NSUTF8StringEncoding error:NULL];
+    if (!anonymousId || reset) {
+        anonymousId = GenerateUUIDString();
+        SEGLog(@"New anonymousId: %@", anonymousId);
+        [[NSUserDefaults standardUserDefaults] setObject:anonymousId forKey:SEGAnonymousIdKey];
+        [anonymousId writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:NULL];
+    }
+    return anonymousId;
+}
+
+- (NSString *)getUserId
+{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:SEGUserIdKey] ?: [[NSString alloc] initWithContentsOfURL:self.userIDURL encoding:NSUTF8StringEncoding error:NULL];
 }
 
 @end
