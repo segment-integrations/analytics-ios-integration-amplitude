@@ -9,11 +9,11 @@
     if (self = [super init]) {
         self.settings = settings;
         self.amplitude = [Amplitude instance];
-        
+
         if ([(NSNumber *)[self.settings objectForKey:@"trackSessionEvents"] boolValue]) {
             [Amplitude instance].trackingSessionEvents = true;
         }
-        
+
         NSString *apiKey = [self.settings objectForKey:@"apiKey"];
         [[Amplitude instance] initializeApiKey:apiKey];
     }
@@ -23,14 +23,14 @@
 + (NSNumber *)extractRevenue:(NSDictionary *)dictionary withKey:(NSString *)revenueKey
 {
     id revenueProperty = nil;
-    
+
     for (NSString *key in dictionary.allKeys) {
         if ([key caseInsensitiveCompare:revenueKey] == NSOrderedSame) {
             revenueProperty = dictionary[key];
             break;
         }
     }
-    
+
     if (revenueProperty) {
         if ([revenueProperty isKindOfClass:[NSString class]]) {
             // Format the revenue.
@@ -44,16 +44,16 @@
     return nil;
 }
 
-- (void)identify:(NSString *)userId traits:(NSDictionary *)traits options:(NSDictionary *)options
+- (void)identify:(SEGIdentifyPayload *)payload
 {
-    [self.amplitude setUserId:userId];
-    [self.amplitude setUserProperties:traits];
+    [self.amplitude setUserId:payload.userId];
+    [self.amplitude setUserProperties:payload.traits];
 }
 
 -(void)realTrack:(NSString *)event properties:(NSDictionary *)properties
 {
     [self.amplitude logEvent:event withEventProperties:properties];
-    
+
     // Track any revenue.
     NSNumber *revenue = [SEGAmplitudeIntegration extractRevenue:properties withKey:@"revenue"];
     if (revenue) {
