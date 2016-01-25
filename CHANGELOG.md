@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.1.0 *(25th January, 2016)*
+----------------------------
+*(Supports analytics-ios 3.0.6+ and Amplitude 3.5.+)*
+
+* Fix signature of identify method.
+* Update Analytics dependency.
+
 Version 1.1.0 *(22nd January, 2016)*
 ----------------------------
 *(Supports analytics-ios 3.0.+ and Amplitude 3.5.+)*
