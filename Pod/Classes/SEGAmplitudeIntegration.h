@@ -1,6 +1,6 @@
-#import <Foundation/Foundation.h>
-#import <Analytics/SEGIntegration.h>
-#import <Amplitude-iOS/Amplitude.h>
+@import Foundation;
+@import Analytics;
+@import Amplitude_iOS;
 
 @interface SEGAmplitudeIntegration : NSObject<SEGIntegration>
 
