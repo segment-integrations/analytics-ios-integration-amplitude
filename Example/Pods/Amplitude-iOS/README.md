@@ -10,11 +10,11 @@ A [demo application](https://github.com/amplitude/iOS-Demo) is available to show
 # Setup #
 1. If you haven't already, go to https://amplitude.com and register for an account. You will receive an API Key.
 
-2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.5.0'`. If you are using CocoaPods, you may skip steps 3 and 4.
+2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.6.0'`. If you are using CocoaPods, you may skip steps 3 and 4.
 
-3. Copy the `Amplitude` sub-folder into the source of your project in XCode. Check "Copy items into destination group's folder (if needed)".
+3. Copy the `Amplitude` sub-folder into the source of your project in Xcode. Check "Copy items into destination group's folder (if needed)".
 
-4. Amplitude's iOS SDK requires the SQLite library, which is included in iOS but requires an additional build flag to enable. In your project's `Build Settings` and your Target's `Build Settings`, under `Linking` -> `Other Linker Flags`, add the flag `-lsqlite3`.
+4. Amplitude's iOS SDK requires the SQLite library, which is included in iOS but requires an additional build flag to enable. In your project's `Build Settings` and your Target's `Build Settings`, under `Linking` -> `Other Linker Flags`, add the flag `-lsqlite3.0`.
 
 5. In every file that uses analytics, import Amplitude.h at the top:
     ``` objective-c
@@ -35,7 +35,18 @@ A [demo application](https://github.com/amplitude/iOS-Demo) is available to show
 
 # Tracking Events #
 
-It's important to think about what types of events you care about as a developer. You should aim to track between 20 and 200 types of events within your app. Common event types are different screens within the app, actions the user initiates (such as pressing a button), and events you want the user to complete (such as filling out a form, completing a level, or making a payment). Contact us if you want assistance determining what would be best for you to track.
+It's important to think about what types of events you care about as a developer. You should aim to track between 20 and 200 types of events on your site. Common event types are actions the user initiates (such as pressing a button) and events you want the user to complete (such as filling out a form, completing a level, or making a payment).
+
+Here are some resources to help you with your instrumentation planning:
+  * [Event Tracking Quick Start Guide](https://amplitude.zendesk.com/hc/en-us/articles/207108137).
+  * [Event Taxonomy and Best Practices](https://amplitude.zendesk.com/hc/en-us/articles/211988918).
+
+Having large amounts of distinct event types, event properties and user properties, however, can make visualizing and searching of the data very confusing. By default we only show the first:
+  * 1000 distinct event types
+  * 2000 distinct event properties
+  * 1000 distinct user properties
+
+Anything past the above thresholds will not be visualized. **Note that the raw data is not impacted by this in any way, meaning you can still see the values in the raw data, but they will not be visualized on the platform.** We have put in very conservative estimates for the event and property caps which we don’t expect to be exceeded in any practical use case. If you feel that your use case will go above those limits please reach out to support@amplitude.com.
 
 # Tracking Sessions #
 
@@ -142,6 +153,16 @@ To use the `AMPIdentify` interface, you will first need to include the header:
     [[Amplitude instance] identify:identify];
     ```
 
+6. `prepend`: this will prepend a value or values to a user property. Prepend means inserting the value(s) at the front of a given list. If the user property does not have a value set yet, it will be initialized to an empty list before the new values are prepended. If the user property has an existing value and it is not a list, it will be converted into a list with the new value prepended.
+
+    ``` objective-c
+    NSMutableArray *array = [NSMutableArray array];
+    [array addObject:@"some_string"];
+    [array addObject:[NSNumber numberWithInt:56]];
+    AMPIdentify *identify = [[[AMPIdentify identify] append:@"ab-tests" value:@"new-user-test"] prepend:@"some_list" value:array];
+    [[Amplitude instance] identify:identify];
+    ```
+
 Note: if a user property is used in multiple operations on the same `Identify` object, only the first operation will be saved, and the rest will be ignored. In this example, only the set operation will be saved, and the add and unset will be ignored:
 
 ``` objective-c
@@ -214,6 +235,42 @@ Then call
 ```
 
 after a successful purchase transaction. `receipt:` takes the receipt NSData from the app store. For details on how to obtain the receipt data, see [Apple's guide on Receipt Validation](https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ValidateRemotely.html#//apple_ref/doc/uid/TP40010573-CH104-SW1).
+
+# Tracking Events to Multiple Amplitude Apps #
+
+The Amplitude iOS SDK supports logging events to multiple Amplitude apps (multiple API keys). If you want to log events to multiple Amplitude apps, you need to use separate instances for each Amplitude app. Each new instance created will have its own apiKey, userId, deviceId, and settings.
+
+You will need to assign a name to each Amplitude app / instance, and use that name consistently when fetching that instance to call functions. **IMPORTANT: Once you have chosen a name for that instance you cannot change it.** Every instance's data and settings are tied to its name, and you will need to continue using that instance name for all future versions of your app to maintain data continuity, so chose your instance names carefully. Note these names do not need to correspond to the names of your apps in the Amplitude dashboards, but they need to remain consistent throughout your code. You also need to be sure that each instance is initialized with the correct apiKey.
+
+Instance names must be nonnil and nonempty strings. The names are case-insensitive. You can fetch each instance by name by calling `[Amplitude instanceWithName:@"INSTANCE_NAME"]`.
+
+As mentioned before, each new instance created will have its own apiKey, userId, deviceId, and settings. **You will have to reconfigure all the settings for each instance.** For example if you want to track session events you would have to call `setTrackingSessionEvents:YES` on each instance. This does give you the freedom to have different settings for each instance.
+
+### Backwards Compatibility - Upgrading from a Single Amplitude App to Multiple Apps ###
+
+If you were tracking users with a single app before v3.6.0, you might be wondering what will happen to existing data, existing settings, and returning users (users who already have a deviceId and/or userId). All of the historical data and settings are maintained on the `default` instance, which is fetched without an instance name: `[Amplitude instance]`. This is the way you are used to interacting with the Amplitude SDK, which means all of your existing tracking code should work as before.
+
+### Example of how to Set Up and Log Events to Two Separate Apps ###
+
+``` objective-c
+[[Amplitude instance] initializeApiKey:@"12345"]; // existing app, existing settings, and existing API key
+[[Amplitude instanceWithName:@"new_app"] initializeApiKey:@"67890"]; // new app, new API key
+
+[[Amplitude instanceWithName:@"new_app"] setUserId:@"joe@gmail.com"]; // need to reconfigure new app
+[[Amplitude instanceWithName:@"new_app"] logEvent:@"Clicked"];
+
+AMPIdentify *identify = [[AMPIdentify identify] add:@"karma" value:[NSNumber numberWithInt:1]];
+[[Amplitude instance] identify:identify];
+[[Amplitude instance] logEvent:@"Viewed Home Page"];
+```
+
+### Synchronizing Device Ids Between Apps ###
+
+As mentioned before, each new instance will have its own deviceId. If you want your apps to share the same deviceId, you can do so *after initialization* via the `getDeviceId` and `setDeviceId` methods. Here's an example of how to copy the existing deviceId to the `new_app` instance:
+``` objective-c
+NSString *deviceId = [[Amplitude instance] getDeviceId]; // existing deviceId
+[[Amplitude instanceWithName:@"new_app"] setDeviceId:deviceId]; // transferring existing deviceId to new app
+```
 
 # Swift #
 
