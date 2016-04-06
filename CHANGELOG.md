@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 1.2.0 *(6th April, 2016)*
+----------------------------
+*(Supports analytics-ios 3.0.7+ and Amplitude 3.6.+)*
+
+* Update Analytics dependency.
+* Update Amplitude dependency.
+
 Version 1.1.0 *(25th January, 2016)*
 ----------------------------
 *(Supports analytics-ios 3.0.6+ and Amplitude 3.5.+)*
