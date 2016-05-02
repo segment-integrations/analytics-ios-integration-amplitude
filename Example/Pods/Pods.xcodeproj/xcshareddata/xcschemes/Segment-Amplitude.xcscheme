@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = 'D1D531F2A6351BEC1DB25CAF'
+               BlueprintIdentifier = 'DD1F875CD5CF1A64A9FFA41E'
                BlueprintName = 'Segment-Amplitude'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'Segment_Amplitude.framework'>

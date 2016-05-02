@@ -8,6 +8,7 @@
 #import "Amplitude+SSLPinning.h"
 #import "Amplitude.h"
 #import "AMPLocationManagerDelegate.h"
+#import "AMPRevenue.h"
 #import "AMPURLConnection.h"
 #import "AMPUtils.h"
 
