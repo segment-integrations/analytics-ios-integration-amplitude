@@ -10,7 +10,7 @@ A [demo application](https://github.com/amplitude/iOS-Demo) is available to show
 # Setup #
 1. If you haven't already, go to https://amplitude.com and register for an account. You will receive an API Key.
 
-2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.6.0'`. If you are using CocoaPods, you may skip steps 3 and 4.
+2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.7.0'`. If you are using CocoaPods, you may skip steps 3 and 4.
 
 3. Copy the `Amplitude` sub-folder into the source of your project in Xcode. Check "Copy items into destination group's folder (if needed)".
 
@@ -70,18 +70,19 @@ You can also log events as out of session. Out of session events have a session_
 [[Amplitude instance] logEvent:@"EVENT_IDENTIFIER_HERE" withEventProperties:nil outOfSession:true];
 ```
 
+### Getting the Session Id ###
+
+You can use the helper method `getSessionId` to get the value of the current sessionId:
+``` objective-c
+long long sessionId = [[Amplitude instance] getSessionId];
+```
+
 # Setting Custom User IDs #
 
 If your app has its own login system that you want to track users with, you can call `setUserId:` at any time:
 
 ``` objective-c
 [[Amplitude instance] setUserId:@"USER_ID_HERE"];
-```
-
-A user's data will be merged on the backend so that any events up to that point on the same device will be tracked under the same user. Note: if a user logs out, or you want to log events under an anonymous user, you can also clear the user ID by calling `setUserId` with input `nil`:
-
-``` objective-c
-[[Amplitude instance] setUserId:nil]; // not string @"nil"
 ```
 
 You can also add the user ID as an argument to the `initializeApiKey:` call:
@@ -218,23 +219,50 @@ out is disabled.
 
 # Tracking Revenue #
 
-To track revenue from a user, call
+The preferred method of tracking revenue for a user now is to use `logRevenueV2` in conjunction with the provided `AMPRevenue` interface. `AMPRevenue` instances will store each revenue transaction and allow you to define several special revenue properties (such as revenueType, productIdentifier, etc) that are used in Amplitude dashboard's Revenue tab. You can now also add event properties to the revenue event, via the eventProperties field. These `AMPRevenue` instance objects are then passed into `logRevenueV2` to send as revenue events to Amplitude servers. This allows us to automatically display data relevant to revenue on the Amplitude website, including average revenue per daily active user (ARPDAU), 1, 7, 14, 30, 60, and 90 day revenue, lifetime value (LTV) estimates, and revenue by advertising campaign cohort and daily/weekly/monthly cohorts.
 
+To use the `Revenue` interface, you will first need to import the class:
 ``` objective-c
-[[Amplitude instance] logRevenue:@"productIdentifier" quantity:1 price:[NSNumber numberWithDouble:3.99]]
+#import "AMPRevenue.h"
 ```
 
-after a successful purchase transaction. `logRevenue:` takes a string to identify the product (can be pulled from `SKPaymentTransaction.payment.productIdentifier`). `quantity:` takes an integer with the quantity of product purchased. `price:` takes a NSNumber with the dollar amount of the sale as the only argument. This allows us to automatically display data relevant to revenue on the Amplitude website, including average revenue per daily active user (ARPDAU), 7, 30, and 90 day revenue, lifetime value (LTV) estimates, and revenue by advertising campaign cohort and daily/weekly/monthly cohorts.
-
-**To enable revenue verification, copy your iTunes Connect In App Purchase Shared Secret into the manage section of your app on Amplitude. You must put a key for every single app in Amplitude where you want revenue verification.**
-
-Then call
-
+Each time a user generates revenue, you create a `AMPRevenue` object and fill out the revenue properties:
 ``` objective-c
-[[Amplitude instance] logRevenue:@"productIdentifier" quantity:1 price:[NSNumber numberWithDouble:3.99 receipt:receiptData]
+AMPRevenue *revenue = [[[AMPRevenue revenue] setProductIdentifier:@"productIdentifier"] setQuantity:3];
+[revenue setPrice:[NSNumber numberWithDouble:3.99]];
+[[Amplitude instance] logRevenueV2:revenue];
 ```
 
-after a successful purchase transaction. `receipt:` takes the receipt NSData from the app store. For details on how to obtain the receipt data, see [Apple's guide on Receipt Validation](https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ValidateRemotely.html#//apple_ref/doc/uid/TP40010573-CH104-SW1).
+`productId` and `price` are required fields. `quantity` defaults to 1 if not specified. `receipt` is required if you want to verify the revenue event. Each field has a corresponding `set` method (for example `setProductId`, `setQuantity`, etc). This table describes the different fields available:
+
+| Name               | Type         | Description                                                                                                  | default |
+|--------------------|--------------|--------------------------------------------------------------------------------------------------------------|---------|
+| productId          | NSString     | Required: an identifier for the product (can be pulled from `SKPaymentTransaction.payment.productIdentifier`)| nil     |
+| quantity           | NSInteger    | Required: the quantity of products purchased. Defaults to 1 if not specified. Revenue = quantity * price     | 1       |
+| price              | NSNumber     | Required: the price of the products purchased (can be negative). Revenue = quantity * price                  | nil     |
+| revenueType        | NSString     | Optional: the type of revenue (ex: tax, refund, income)                                                      | nil     |
+| receipt            | NSData       | Optional: required if you want to verify the revenue event                                                   | nil     |
+| eventProperties    | NSDictionary | Optional: a NSDictionary of event properties to include in the revenue event                                 | nil     |
+
+Note: the price can be negative, which might be useful for tracking revenue lost, for example refunds or costs. Also note, you can set event properties on the revenue event just like you would with logEvent by passing in an NSDictionary of string key value pairs. These event properties, however, will only appear in the Event Segmentation tab, not in the Revenue tab.
+
+### Revenue Verification ###
+
+By default Revenue events recorded on the iOS SDK appear in Amplitude dashboards as unverified revenue events. **To enable revenue verification, copy your iTunes Connect In App Purchase Shared Secret into the manage section of your app on Amplitude. You must put a key for every single app in Amplitude where you want revenue verification.**
+
+Then after a successful purchase transaction, add the receipt data to the `Revenue` object:
+
+``` objective-c
+AMPRevenue *revenue = [[[AMPRevenue revenue] setProductIdentifier:@"productIdentifier"] setQuantity:1];
+[[revenue setPrice:[NSNumber numberWithDouble:3.99]] setReceipt:receiptData];
+[[Amplitude instance] logRevenueV2:revenue];
+```
+
+`receipt:` the receipt NSData from the app store. For details on how to obtain the receipt data, see [Apple's guide on Receipt Validation](https://developer.apple.com/library/ios/releasenotes/General/ValidateAppStoreReceipt/Chapters/ValidateRemotely.html#//apple_ref/doc/uid/TP40010573-CH104-SW1).
+
+### Backwards compatibility ###
+
+The existing `logRevenue` methods still work but are deprecated. Fields such as `revenueType` will be missing from events logged with the old methods, so Revenue segmentation on those events will be limited in Amplitude dashboards.
 
 # Tracking Events to Multiple Amplitude Apps #
 
@@ -290,6 +318,30 @@ In either case, you can call Amplitude methods with `Amplitude.instance().method
 
 # Advanced #
 This SDK automatically grabs useful data from the phone, including app version, phone model, operating system version, and carrier information.
+
+### Setting Groups ###
+
+Amplitude supports assigning users to groups, and performing queries such as Count by Distinct on those groups. An example would be if you want to group your users based on what organization they are in by using an orgId. You can designate Joe to be in orgId 10, while Sue is in orgId 15. When performing an event segmentation query, you can then select Count by Distinct orgIds to query the number of different orgIds that have performed a specific event. As long as at least one member of that group has performed the specific event, that group will be included in the count. See our help article on [Count By Distinct]() for more information.
+
+When setting groups you need to define a `groupType` and `groupName`(s). In the above example, 'orgId' is a `groupType`, and the value 10 or 15 is the `groupName`. Another example of a `groupType` could be 'sport' with `groupNames` like 'tennis', 'baseball', etc.
+
+You can use `setGroup` to designate which groups a user belongs to. Note: this will also set the `groupType`: `groupName` as a user property. **This will overwrite any existing groupName value set for that user's groupType, as well as the corresponding user property value.** `groupType` is a string, and `groupName` can be either a string or an array of strings to indicate a user being in multiple groups (for example Joe is in orgId 10 and 16, so the `groupName` would be [10, 16]).
+
+You can also call `setGroup` multiple times with different groupTypes to track multiple types of groups. **You are allowed to track up to 5 different groupTypes per app.** For example Sue is in orgId: 15, and she also plays sport: soccer. Now when querying, you can Count by Distinct on both orgId and sport (although as separate queries). Any additional groupTypes after the limit will be ignored from the Count By Distinct query UI, although they will still be saved as user properties.
+
+```objective-c
+[[Amplitude instance] setGroup:@"orgId" groupName:[NSNumber numberWithInt:15]];
+[[Amplitude instance] setGroup:@"sport" groupName:[NSArray arrayWithObjects: @"tennis", @"soccer", nil];
+```
+
+You can also use `logEvent` withGroups: to set event-level groups, meaning the group designation only applies for the specific event being logged and does not persist on the user (unless you explicitly set it with `setGroupType`). The group input is a dictionary of groupType: groupName pairs, where groupTypes are strings and groupName can either be strings or array of strings.
+
+```objective-c
+NSDictionary *eventProperties = [NSDictionary dictionaryWithObjectsAndKeys: @"value", @"key", nil];
+NSDictionary *groups = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:10], @"orgId", @"soccer", @"sport", nil];
+
+[[Amplitude instance] logEvent:@"initialize_game" withEventProperties:eventProperties withGroups:groups];
+```
 
 ### Location Tracking ###
 If the user has granted your app location permissions, the SDK will also grab the location of the user. Amplitude will never prompt the user for location permissions itself, this must be done by your app.

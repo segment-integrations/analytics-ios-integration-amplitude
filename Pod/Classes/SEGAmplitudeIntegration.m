@@ -91,6 +91,14 @@
     }
 }
 
+- (void)group:(SEGGroupPayload *)payload
+{
+    NSString *groupId = payload.groupId;
+    if (groupId) {
+        [self.amplitude setGroup:@"[Segment] Group" groupName:groupId];
+    }
+}
+
 - (void)flush
 {
     [self.amplitude uploadEvents];
