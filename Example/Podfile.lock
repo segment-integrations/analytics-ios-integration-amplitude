@@ -1,28 +1,30 @@
 PODS:
   - Amplitude-iOS (3.7.0)
-  - Analytics (3.0.7)
+  - Analytics (3.1.2)
   - Expecta (1.0.5)
   - Segment-Amplitude (1.2.0):
     - Amplitude-iOS (~> 3.7.0)
-    - Analytics (~> 3.0.7)
   - Specta (1.0.5)
 
 DEPENDENCIES:
+  - Analytics (from `../../analytics-ios`)
   - Expecta
   - Segment-Amplitude (from `../`)
   - Specta
 
 EXTERNAL SOURCES:
+  Analytics:
+    :path: "../../analytics-ios"
   Segment-Amplitude:
     :path: "../"
 
 SPEC CHECKSUMS:
   Amplitude-iOS: 8bc8b9dc9c1898dbe5da541e21e8941ec085644f
-  Analytics: b342fb4f43fa4f97ca6f4358b44d3295217ba294
+  Analytics: 1393ae70310d801956c40d1b470de85499f15ddf
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Segment-Amplitude: 5d80ae94cea5525d121b4ac5a1ae49fec41c56c4
+  Segment-Amplitude: ae4cfda5af44f4c2827fd73f1fb5011d1e9fb5fa
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
-PODFILE CHECKSUM: 584db9d47b8e924186eea5055329e26fe5310dab
+PODFILE CHECKSUM: 04f992586600cf3849a498fdfa01b507e45436b2
 
 COCOAPODS: 1.0.0
