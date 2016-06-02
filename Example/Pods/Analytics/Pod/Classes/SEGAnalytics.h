@@ -1,6 +1,11 @@
 #import <Foundation/Foundation.h>
 #import "SEGIntegrationFactory.h"
 
+/**
+ * NSNotification name, that is posted after integrations are loaded.
+ */
+extern NSString *SEGAnalyticsIntegrationDidStart;
+
 @protocol SEGIntegrationFactory;
 
 /**
@@ -36,6 +41,17 @@
  * The number of queued events that the analytics client should flush at. Setting this to `1` will not queue any events and will use more battery. `20` by default.
  */
 @property (nonatomic, assign) NSUInteger flushAt;
+
+
+/**
+ * Whether the analytics client should automatically make a track call for application lifecycle events, such as "Application Installed", "Application Updated" and "Application Opened".
+ */
+@property (nonatomic, assign) BOOL trackApplicationLifecycleEvents;
+
+/**
+ * Whether the analytics client should automatically make a screen call when a view controller is added to a view hierarchy. Because the underlying implementation uses method swizzling, we recommend initializing the analytics client as early as possible (before any screens are displayed), ideally during the Application delegate's applicationDidFinishLaunching method.
+ */
+@property (nonatomic, assign) BOOL recordScreenViews;
 
 
 /**

@@ -5,11 +5,11 @@
 #import "SEGAnalyticsUtils.h"
 #import "SEGAnalyticsRequest.h"
 #import "SEGAnalytics.h"
-
 #import "SEGIntegrationFactory.h"
 #import "SEGIntegration.h"
-#import <objc/runtime.h>
 #import "SEGSegmentIntegrationFactory.h"
+#import "UIViewController+SEGScreen.h"
+#import <objc/runtime.h>
 
 static SEGAnalytics *__sharedInstance = nil;
 NSString *SEGAnalyticsIntegrationDidStart = @"io.segment.analytics.integration.did.start";
@@ -105,6 +105,10 @@ NSString *SEGAnalyticsIntegrationDidStart = @"io.segment.analytics.integration.d
         self.registeredIntegrations = [NSMutableDictionary dictionaryWithCapacity:self.factories.count];
         self.configuration = configuration;
 
+        if (configuration.recordScreenViews) {
+            [UIViewController seg_swizzleViewDidAppear];
+        }
+
         // Update settings on each integration immediately
         [self refreshSettings];
 
@@ -123,12 +127,58 @@ NSString *SEGAnalyticsIntegrationDidStart = @"io.segment.analytics.integration.d
                                   UIApplicationDidBecomeActiveNotification ]) {
             [nc addObserver:self selector:@selector(handleAppStateNotification:) name:name object:nil];
         }
+
+        [self trackApplicationLifecycleEvents:configuration.trackApplicationLifecycleEvents];
     }
     return self;
 }
 
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
 #pragma mark - NSNotificationCenter Callback
+NSString *const SEGVersionKey = @"SEGVersionKey";
+NSString *const SEGBuildKey = @"SEGBuildKey";
+
+- (void)trackApplicationLifecycleEvents:(BOOL)trackApplicationLifecycleEvents
+{
+    if (!trackApplicationLifecycleEvents) {
+        return;
+    }
+
+    NSString *previousVersion = [[NSUserDefaults standardUserDefaults] stringForKey:SEGVersionKey];
+    NSInteger previousBuild = [[NSUserDefaults standardUserDefaults] integerForKey:SEGBuildKey];
+
+    NSString *currentVersion = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
+    NSInteger currentBuild = [[[NSBundle mainBundle] infoDictionary][@"CFBundleShortVersionString"] integerValue];
+
+    if (!previousBuild) {
+        [self track:@"Application Installed" properties:@{
+            @"version" : currentVersion,
+            @"build" : @(currentBuild)
+        }];
+    } else if (currentBuild != previousBuild) {
+        [self track:@"Application Updated" properties:@{
+            @"previous_version" : previousVersion,
+            @"previous_build" : @(previousBuild),
+            @"version" : currentVersion,
+            @"build" : @(currentBuild)
+        }];
+    }
+
+
+    [self track:@"Application Started" properties:@{
+        @"version" : currentVersion,
+        @"build" : @(currentBuild)
+    }];
+
+    [[NSUserDefaults standardUserDefaults] setObject:currentVersion forKey:SEGVersionKey];
+    [[NSUserDefaults standardUserDefaults] setInteger:currentBuild forKey:SEGBuildKey];
+}
 
 
 - (void)onAppForeground:(NSNotification *)note
@@ -143,19 +193,19 @@ NSString *SEGAnalyticsIntegrationDidStart = @"io.segment.analytics.integration.d
     static dispatch_once_t selectorMappingOnce;
     dispatch_once(&selectorMappingOnce, ^{
         selectorMapping = @{
-                            UIApplicationDidFinishLaunchingNotification :
-                                NSStringFromSelector(@selector(applicationDidFinishLaunching:)),
-                            UIApplicationDidEnterBackgroundNotification :
-                                NSStringFromSelector(@selector(applicationDidEnterBackground)),
-                            UIApplicationWillEnterForegroundNotification :
-                                NSStringFromSelector(@selector(applicationWillEnterForeground)),
-                            UIApplicationWillTerminateNotification :
-                                NSStringFromSelector(@selector(applicationWillTerminate)),
-                            UIApplicationWillResignActiveNotification :
-                                NSStringFromSelector(@selector(applicationWillResignActive)),
-                            UIApplicationDidBecomeActiveNotification :
-                                NSStringFromSelector(@selector(applicationDidBecomeActive))
-                            };
+            UIApplicationDidFinishLaunchingNotification :
+                NSStringFromSelector(@selector(applicationDidFinishLaunching:)),
+            UIApplicationDidEnterBackgroundNotification :
+                NSStringFromSelector(@selector(applicationDidEnterBackground)),
+            UIApplicationWillEnterForegroundNotification :
+                NSStringFromSelector(@selector(applicationWillEnterForeground)),
+            UIApplicationWillTerminateNotification :
+                NSStringFromSelector(@selector(applicationWillTerminate)),
+            UIApplicationWillResignActiveNotification :
+                NSStringFromSelector(@selector(applicationWillResignActive)),
+            UIApplicationDidBecomeActiveNotification :
+                NSStringFromSelector(@selector(applicationDidBecomeActive))
+        };
     });
     SEL selector = NSSelectorFromString(selectorMapping[note.name]);
     if (selector) {
@@ -428,7 +478,7 @@ NSString *SEGAnalyticsIntegrationDidStart = @"io.segment.analytics.integration.d
 
 + (NSString *)version
 {
-    return @"3.0.7";
+    return @"3.2.0";
 }
 
 #pragma mark - Private

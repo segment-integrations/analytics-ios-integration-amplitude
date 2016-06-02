@@ -1,13 +1,16 @@
 source 'https://github.com/CocoaPods/Specs.git'
-use_frameworks!
 
-target 'Segment-Amplitude_Example', :exclusive => true do
+# Do not use_frameworks due to iOS 7 support
+# use_frameworks!
+
+target 'Segment-Amplitude_Example' do
   pod "Segment-Amplitude", :path => "../"
+  # Used for testing against latest version of Core SDK
+  # pod "Analytics", :path => "../../analytics-ios"
 end
 
-target 'Segment-Amplitude_Tests', :exclusive => true do
-  pod "Segment-Amplitude", :path => "../"
-
+target 'Segment-Amplitude_Tests' do
+  # Do not include Segment-Amplitude here due to using static lib
   pod 'Specta'
   pod 'Expecta'
 end
