@@ -4,7 +4,7 @@ Change Log
 Version 1.3.0 *(06-01-2016)*
 -----------------------------
 
- * Segment-Amplitude now includes support for iOS 7.0+ (Previously 8.0+)
+ * Segment-Amplitude now includes support for iOS 7.0+ (Previously 8.0+ only)
 
 Version 1.2.0 *(6th April, 2016)*
 ----------------------------
