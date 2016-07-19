@@ -7,10 +7,14 @@ An iOS SDK for tracking events and revenue to [Amplitude](http://www.amplitude.c
 
 A [demo application](https://github.com/amplitude/iOS-Demo) is available to show a simple integration.
 
+A [demo application](https://github.com/amplitude/iOS-Extension-Demo) is available to show a simple integration in iOS extensions.
+
+See our [SDK documentation](https://rawgit.com/amplitude/Amplitude-iOS/master/documentation/html/index.html) for a description of all available SDK methods and classes.
+
 # Setup #
 1. If you haven't already, go to https://amplitude.com and register for an account. You will receive an API Key.
 
-2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.7.0'`. If you are using CocoaPods, you may skip steps 3 and 4.
+2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.8.3'`. If you are using CocoaPods, you may skip steps 3 and 4.
 
 3. Copy the `Amplitude` sub-folder into the source of your project in Xcode. Check "Copy items into destination group's folder (if needed)".
 
@@ -233,11 +237,11 @@ AMPRevenue *revenue = [[[AMPRevenue revenue] setProductIdentifier:@"productIdent
 [[Amplitude instance] logRevenueV2:revenue];
 ```
 
-`productId` and `price` are required fields. `quantity` defaults to 1 if not specified. `receipt` is required if you want to verify the revenue event. Each field has a corresponding `set` method (for example `setProductId`, `setQuantity`, etc). This table describes the different fields available:
+`price` is a required field. `quantity` defaults to 1 if not specified. `receipt` is required if you want to verify the revenue event. Each field has a corresponding `set` method (for example `setProductId`, `setQuantity`, etc). This table describes the different fields available:
 
 | Name               | Type         | Description                                                                                                  | default |
 |--------------------|--------------|--------------------------------------------------------------------------------------------------------------|---------|
-| productId          | NSString     | Required: an identifier for the product (can be pulled from `SKPaymentTransaction.payment.productIdentifier`)| nil     |
+| productId          | NSString     | Optional: an identifier for the product (can be pulled from `SKPaymentTransaction.payment.productIdentifier`)| nil     |
 | quantity           | NSInteger    | Required: the quantity of products purchased. Defaults to 1 if not specified. Revenue = quantity * price     | 1       |
 | price              | NSNumber     | Required: the price of the products purchased (can be negative). Revenue = quantity * price                  | nil     |
 | revenueType        | NSString     | Optional: the type of revenue (ex: tax, refund, income)                                                      | nil     |
@@ -321,7 +325,7 @@ This SDK automatically grabs useful data from the phone, including app version, 
 
 ### Setting Groups ###
 
-Amplitude supports assigning users to groups, and performing queries such as Count by Distinct on those groups. An example would be if you want to group your users based on what organization they are in by using an orgId. You can designate Joe to be in orgId 10, while Sue is in orgId 15. When performing an event segmentation query, you can then select Count by Distinct orgIds to query the number of different orgIds that have performed a specific event. As long as at least one member of that group has performed the specific event, that group will be included in the count. See our help article on [Count By Distinct]() for more information.
+Amplitude supports assigning users to groups, and performing queries such as Count by Distinct on those groups. An example would be if you want to group your users based on what organization they are in by using an orgId. You can designate Joe to be in orgId 10, while Sue is in orgId 15. When performing an event segmentation query, you can then select Count by Distinct orgIds to query the number of different orgIds that have performed a specific event. As long as at least one member of that group has performed the specific event, that group will be included in the count. See our help article on [Count By Distinct](https://amplitude.zendesk.com/hc/en-us/articles/218824237) for more information.
 
 When setting groups you need to define a `groupType` and `groupName`(s). In the above example, 'orgId' is a `groupType`, and the value 10 or 15 is the `groupName`. Another example of a `groupType` could be 'sport' with `groupNames` like 'tennis', 'baseball', etc.
 
@@ -360,3 +364,21 @@ This code will work with both ARC and non-ARC projects. Preprocessor macros are 
 
 ### SSL pinning ###
 The SDK includes support for SSL pinning, but it is undocumented and recommended against unless you have a specific need. Please contact Amplitude support before you ship any products with SSL pinning enabled so that we are aware and can provide documentation and implementation help.
+
+### iOS Extensions ###
+The SDK allows for tracking in iOS Extensions. Follow the [Setup instructions](https://github.com/amplitude/amplitude-ios#setup). In Step 6, instead of initializing the SDK in `application:didFinishLaunchingWithOptions:`, you initialize the SDK in your extension's `viewDidLoad` method.
+
+Couple of things to note:
+
+1. The `viewDidLoad` method will get called every time your extension is opened. This means that our SDK's `initializeApiKey` method will get called every single time; however, that's okay since it will safely ignore subsequent calls after the first one. If you want you can protect the initialization with something like a dispatch_once block.
+
+2. Our definition of sessions was intended for an application use case. Depending on your expected extension use case, you might want to not enable `trackingSessionEvents`, or extend the `minTimeBetweenSessionsMillis` to be longer than 5 minutes. You should experiment with these 2 settings to get your desired session definition.
+
+3. Also, you may want to decrease `eventUploadPeriodSeconds` to something shorter than 30 seconds to upload events at shorter intervals if you don't expect users to keep your extension open that long. You can also manually call `[[Amplitude instance] uploadEvents];` to manually force an upload.
+
+Here is a simple [demo application](https://github.com/amplitude/iOS-Extension-Demo) showing how to instrument the iOS SDK in an extension.
+
+### Debug Logging ###
+By default only critical errors are logged to console. To enable debug logging, change `AMPLITUDE_DEBUG` from `0` to `1` at the top of the Objective-C file you wish to examine.
+
+Error messages are printed by default. To disable error logging, change `AMPLITUDE_LOG_ERRORS` from `1` to `0` in `Amplitude.m`.

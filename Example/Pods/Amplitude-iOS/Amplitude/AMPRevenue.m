@@ -6,6 +6,18 @@
 //  Copyright © 2016 Amplitude. All rights reserved.
 //
 
+#ifndef AMPLITUDE_DEBUG
+#define AMPLITUDE_DEBUG 0
+#endif
+
+#ifndef AMPLITUDE_LOG
+#if AMPLITUDE_DEBUG
+#   define AMPLITUDE_LOG(fmt, ...) NSLog(fmt, ##__VA_ARGS__)
+#else
+#   define AMPLITUDE_LOG(...)
+#endif
+#endif
+
 #import <Foundation/Foundation.h>
 #import "AMPRevenue.h"
 #import "AMPARCMacros.h"
@@ -35,6 +47,9 @@
     return self;
 }
 
+/*
+ * Create an AMPRevenue object
+ */
 + (instancetype)revenue
 {
     return SAFE_ARC_AUTORELEASE([[self alloc] init]);
@@ -42,10 +57,6 @@
 
 - (BOOL)isValidRevenue
 {
-    if ([AMPUtils isEmptyString:_productId]) {
-        NSLog(@"Invalid revenue, need to set productId field");
-        return NO;
-    }
     if (_price == nil) {
         NSLog(@"Invalid revenue, need to set price field");
         return NO;
@@ -56,7 +67,7 @@
 - (AMPRevenue*)setProductIdentifier:(NSString *) productIdentifier
 {
     if ([AMPUtils isEmptyString:productIdentifier]) {
-        NSLog(@"Invalid empty productIdentifier");
+        AMPLITUDE_LOG(@"Invalid empty productIdentifier");
         return self;
     }
 

@@ -206,6 +206,7 @@
 				6003F588195388D20070C39A /* Resources */,
 				50D2E1ADBEC77E555B510C22 /* 📦 Embed Pods Frameworks */,
 				199BD62AAD7259E44CF87899 /* 📦 Copy Pods Resources */,
+				8BC68569AC0B0647C7DA46A3 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -226,6 +227,7 @@
 				6003F5AC195388D20070C39A /* Resources */,
 				296000C67E43A09F73619049 /* 📦 Embed Pods Frameworks */,
 				81460B9AC5C8D88E3B4D25D8 /* 📦 Copy Pods Resources */,
+				54F24F6B5F6B1857230BD001 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -338,6 +340,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		54F24F6B5F6B1857230BD001 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Amplitude_Tests/Pods-Segment-Amplitude_Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		5D16968F6093CAE40A4D479C /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -366,6 +383,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Amplitude_Tests/Pods-Segment-Amplitude_Tests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8BC68569AC0B0647C7DA46A3 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BC75F95DA5901AB356ADD23B /* 📦 Check Pods Manifest.lock */ = {
