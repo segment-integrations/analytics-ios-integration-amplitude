@@ -21,6 +21,6 @@ Pod::Spec.new do |s|
 
   s.source_files = 'Pod/Classes/**/*'
 
-  s.dependency 'Analytics', '~> 3.2.0' # support for iOS 7 + 
-  s.dependency 'Amplitude-iOS', '~> 3.8.3'
+  s.dependency 'Analytics', '~> 3.2' # support for iOS 7 +
+  s.dependency 'Amplitude-iOS', '~> 3.8'
 end

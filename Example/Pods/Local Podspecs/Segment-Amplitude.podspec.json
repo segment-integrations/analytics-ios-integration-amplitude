@@ -22,10 +22,10 @@
   "source_files": "Pod/Classes/**/*",
   "dependencies": {
     "Analytics": [
-      "~> 3.2.0"
+      "~> 3.2"
     ],
     "Amplitude-iOS": [
-      "~> 3.8.3"
+      "~> 3.8"
     ]
   }
 }
