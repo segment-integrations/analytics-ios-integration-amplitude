@@ -56,7 +56,43 @@
 
     // Track any revenue.
     NSNumber *revenue = [SEGAmplitudeIntegration extractRevenue:properties withKey:@"revenue"];
-    if (revenue) {
+    if ([(NSNumber *)[self.settings objectForKey:@"useLogRevenueV2"] boolValue]) {
+        id price = [properties objectForKey:@"price"];
+        BOOL validPrice = price != nil && [price isKindOfClass:[NSNumber class]];
+        if (!validPrice && !revenue) {
+            return;
+        }
+
+        id quantity = [properties objectForKey:@"quantity"];
+        // if no price fallback to using revenue
+        if (!validPrice) {
+            price = revenue;
+            quantity = [NSNumber numberWithInt:1];
+        } else if (!quantity || ![quantity isKindOfClass:[NSNumber class]]) {
+            quantity = [NSNumber numberWithInt:1];
+        }
+
+        AMPRevenue *ampRevenue = [[[AMPRevenue revenue] setPrice:price] setQuantity:[quantity integerValue]];
+        id productId = [properties objectForKey:@"productId"];
+        if (productId && [productId isKindOfClass:[NSString class]] && ![productId isEqualToString:@""]) {
+            [ampRevenue setProductIdentifier:productId];
+        }
+        id receipt = [properties objectForKey:@"receipt"];
+        if (receipt && [receipt isKindOfClass:[NSString class]] && ![receipt isEqualToString:@""]) {
+            [ampRevenue setReceipt:receipt];
+        }
+        id revenueType = [properties objectForKey:@"revenueType"];
+        if (revenueType && [revenueType isKindOfClass:[NSString class]] && ![revenueType isEqualToString:@""]) {
+            [ampRevenue setRevenueType:revenueType];
+        }
+        NSLog(@"Price : %@, Quantity : %@", price, quantity);
+        [self.amplitude logRevenueV2:ampRevenue];
+
+    } else {
+        if (!revenue) {
+            return;
+        }
+        // legacy method of handling revenue - confusing schema where total rev = rev * quantity
         id productId = [properties objectForKey:@"productId"];
         if (!productId || ![productId isKindOfClass:[NSString class]]) {
             productId = nil;
@@ -75,7 +111,6 @@
                              price:revenue
                            receipt:receipt];
     }
-
 }
 
 - (void)track:(SEGTrackPayload *)payload
