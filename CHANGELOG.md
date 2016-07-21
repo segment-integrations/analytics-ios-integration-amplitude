@@ -1,10 +1,18 @@
 Change Log
 ==========
 
-Version 1.3.0 *(06-01-2016)*
+Version 1.4.0 *(21st July, 2016)*
 -----------------------------
+*(Supports analytics-ios 3.2+ and Amplitude 3.8+)*
 
- * Segment-Amplitude now includes support for iOS 7.0+ (Previously 8.0+ only)
+ * Update Amplitude dependency to 3.8.
+ * Add support for `useLogRevenueV2` option.
+
+Version 1.3.0 *(1st June, 2016)*
+-----------------------------
+*(Supports analytics-ios 3.0.7+ and Amplitude 3.6.+)*
+
+ * Segment-Amplitude now includes support for iOS 7.0+ (previously 8.0+ only).
 
 Version 1.2.0 *(6th April, 2016)*
 ----------------------------
