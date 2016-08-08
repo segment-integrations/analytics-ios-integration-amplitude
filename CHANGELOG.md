@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 1.4.1 *(8th August, 2016)*
+-----------------------------
+*(Supports analytics-ios 3.2+ and Amplitude 3.8+)*
+
+ * Fix a bug where revenue would be tracked with the `useLogRevenueV2` option.
+
 Version 1.4.0 *(21st July, 2016)*
 -----------------------------
 *(Supports analytics-ios 3.2+ and Amplitude 3.8+)*
