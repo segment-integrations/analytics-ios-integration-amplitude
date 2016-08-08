@@ -206,6 +206,7 @@
 				6003F588195388D20070C39A /* Resources */,
 				44F0F8958CAFCB485F500ECF /* [CP] Embed Pods Frameworks */,
 				2400543B82061AF237CF72DA /* [CP] Copy Pods Resources */,
+				87667A7AE677F9F091113A42 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -226,6 +227,7 @@
 				6003F5AC195388D20070C39A /* Resources */,
 				DE78D070576999349BDBA460 /* [CP] Embed Pods Frameworks */,
 				96CC595E0672096BFEBE21DB /* [CP] Copy Pods Resources */,
+				DD72C09B5A8CEC578A012B9D /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -338,6 +340,21 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		87667A7AE677F9F091113A42 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		96CC595E0672096BFEBE21DB /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -366,6 +383,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		DD72C09B5A8CEC578A012B9D /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Segment-Amplitude_Tests/Pods-Segment-Amplitude_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DE78D070576999349BDBA460 /* [CP] Embed Pods Frameworks */ = {
