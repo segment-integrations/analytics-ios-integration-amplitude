@@ -4,7 +4,7 @@ PODS:
   - Expecta (1.0.5)
   - Segment-Amplitude (1.4.1):
     - Amplitude-iOS (~> 3.8)
-    - Analytics (~> 3.2)
+    - Analytics (~> 3.0)
   - Specta (1.0.5)
 
 DEPENDENCIES:
@@ -14,13 +14,13 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Segment-Amplitude:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   Amplitude-iOS: e624e4506b911ab0975b8de49dd63b6d65386892
   Analytics: be3d952b8b0f21679e25af3b9dfbbab89597e897
   Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
-  Segment-Amplitude: 17e7c612caa7ac4426cd7c5f674bd47c3a153476
+  Segment-Amplitude: e0b45e6ea7e5bf2ba962699288e83633363f238c
   Specta: ac94d110b865115fe60ff2c6d7281053c6f8e8a2
 
 PODFILE CHECKSUM: 15887ab73967a9c540797944e987a5ee9cc0d7e8
