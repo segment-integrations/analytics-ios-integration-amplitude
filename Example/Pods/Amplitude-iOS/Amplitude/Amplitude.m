@@ -54,6 +54,8 @@
 @property (nonatomic, assign) BOOL initialized;
 @property (nonatomic, assign) BOOL sslPinningEnabled;
 @property (nonatomic, assign) long long sessionId;
+@property (nonatomic, assign) BOOL backoffUpload;
+@property (nonatomic, assign) int backoffUploadBatchSize;
 
 @end
 
@@ -92,8 +94,6 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     AMPLocationManagerDelegate *_locationManagerDelegate;
 
     BOOL _inForeground;
-    BOOL _backoffUpload;
-    int _backoffUploadBatchSize;
     BOOL _offline;
 }
 
@@ -250,7 +250,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
             _uploadTaskID = UIBackgroundTaskInvalid;
             
-            NSString *eventsDataDirectory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+            NSString *eventsDataDirectory = [AMPUtils platformDataDirectory];
             NSString *propertyListPath = [eventsDataDirectory stringByAppendingPathComponent:@"com.amplitude.plist"];
             if (![_instanceName isEqualToString:kAMPDefaultInstance]) {
                 propertyListPath = [NSString stringWithFormat:@"%@_%@", propertyListPath, _instanceName]; // namespace pList with instance name
@@ -339,18 +339,19 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     for (id event in events) {
         NSError *error = nil;
         NSData *jsonData = nil;
-        @try {
-            jsonData = [NSJSONSerialization dataWithJSONObject:[AMPUtils makeJSONSerializable:event] options:0 error:&error];
-        }
-        @catch (NSException *exception) {
-            AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization error: %@", exception.reason);
-            continue;
-        }
+        jsonData = [NSJSONSerialization dataWithJSONObject:[AMPUtils makeJSONSerializable:event] options:0 error:&error];
         if (error != nil) {
             AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization error: %@", error);
             continue;
         }
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        if ([AMPUtils isEmptyString:jsonString]) {
+            AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization resulted in a null string, skipping this event");
+            if (jsonString != nil) {
+                SAFE_ARC_RELEASE(jsonString);
+            }
+            continue;
+        }
         success &= [defaultDbHelper addEvent:jsonString];
         SAFE_ARC_RELEASE(jsonString);
     }
@@ -461,7 +462,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     }
 
     if (!_initialized) {
-        SAFE_ARC_RETAIN(apiKey);
+        (void) SAFE_ARC_RETAIN(apiKey);
         SAFE_ARC_RELEASE(_apiKey);
         _apiKey = apiKey;
 
@@ -543,6 +544,16 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     [self logEvent:eventType withEventProperties:eventProperties withApiProperties:nil withUserProperties:nil withGroups:groups withTimestamp:nil outOfSession:outOfSession];
 }
 
+- (void)logEvent:(NSString*) eventType withEventProperties:(NSDictionary*) eventProperties withGroups:(NSDictionary*) groups withLongLongTimestamp:(long long) timestamp outOfSession:(BOOL)outOfSession
+{
+    [self logEvent:eventType withEventProperties:eventProperties withApiProperties:nil withUserProperties:nil withGroups:groups withTimestamp:[NSNumber numberWithLongLong:timestamp] outOfSession:outOfSession];
+}
+
+- (void)logEvent:(NSString*) eventType withEventProperties:(NSDictionary*) eventProperties withGroups:(NSDictionary*) groups withTimestamp:(NSNumber*) timestamp outOfSession:(BOOL)outOfSession
+{
+    [self logEvent:eventType withEventProperties:eventProperties withApiProperties:nil withUserProperties:nil withGroups:groups withTimestamp:timestamp outOfSession:outOfSession];
+}
+
 - (void)logEvent:(NSString*) eventType withEventProperties:(NSDictionary*) eventProperties withApiProperties:(NSDictionary*) apiProperties withUserProperties:(NSDictionary*) userProperties withGroups:(NSDictionary*) groups withTimestamp:(NSNumber*) timestamp outOfSession:(BOOL) outOfSession
 {
     if (_apiKey == nil) {
@@ -601,8 +612,20 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
         [self annotateEvent:event];
 
         // convert event dictionary to JSON String
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[AMPUtils makeJSONSerializable:event] options:0 error:NULL];
+        NSError *error = nil;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:[AMPUtils makeJSONSerializable:event] options:0 error:&error];
+        if (error != nil) {
+            AMPLITUDE_ERROR(@"ERROR: could not JSONSerialize event type %@: %@", eventType, error);
+            return;
+        }
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        if ([AMPUtils isEmptyString:jsonString]) {
+            AMPLITUDE_ERROR(@"ERROR: JSONSerializing event type %@ resulted in an NULL string", eventType);
+            if (jsonString != nil) {
+                SAFE_ARC_RELEASE(jsonString);
+            }
+            return;
+        }
         if ([eventType isEqualToString:IDENTIFY_EVENT]) {
             (void) [self.dbHelper addIdentify:jsonString];
         } else {
@@ -809,24 +832,25 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
         NSError *error = nil;
         NSData *eventsDataLocal = nil;
-        @try {
-            eventsDataLocal = [NSJSONSerialization dataWithJSONObject:uploadEvents options:0 error:&error];
-        }
-        @catch (NSException *exception) {
-            AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization error: %@", exception.reason);
-            _updatingCurrently = NO;
-            return;
-        }
+        eventsDataLocal = [NSJSONSerialization dataWithJSONObject:uploadEvents options:0 error:&error];
         if (error != nil) {
             AMPLITUDE_ERROR(@"ERROR: NSJSONSerialization error: %@", error);
             _updatingCurrently = NO;
             return;
         }
-        if (eventsDataLocal) {
-            NSString *eventsString = [[NSString alloc] initWithData:eventsDataLocal encoding:NSUTF8StringEncoding];
-            [self makeEventUploadPostRequest:kAMPEventLogUrl events:eventsString maxEventId:maxEventId maxIdentifyId:maxIdentifyId];
-            SAFE_ARC_RELEASE(eventsString);
-       }
+
+        NSString *eventsString = [[NSString alloc] initWithData:eventsDataLocal encoding:NSUTF8StringEncoding];
+        if ([AMPUtils isEmptyString:eventsString]) {
+            AMPLITUDE_ERROR(@"ERROR: JSONSerialization of event upload data resulted in a NULL string");
+            if (eventsString != nil) {
+                SAFE_ARC_RELEASE(eventsString);
+            }
+            _updatingCurrently = NO;
+            return;
+        }
+
+        [self makeEventUploadPostRequest:kAMPEventLogUrl events:eventsString numEvents:numEvents maxEventId:maxEventId maxIdentifyId:maxIdentifyId];
+        SAFE_ARC_RELEASE(eventsString);
     }];
 }
 
@@ -905,7 +929,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     return SAFE_ARC_AUTORELEASE(results);
 }
 
-- (void)makeEventUploadPostRequest:(NSString*) url events:(NSString*) events maxEventId:(long long) maxEventId maxIdentifyId:(long long) maxIdentifyId
+- (void)makeEventUploadPostRequest:(NSString*) url events:(NSString*) events numEvents:(long) numEvents maxEventId:(long long) maxEventId maxIdentifyId:(long long) maxIdentifyId
 {
     NSMutableURLRequest *request =[NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     [request setTimeoutInterval:60.0];
@@ -973,7 +997,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
                 SAFE_ARC_RELEASE(result);
             } else if ([httpResponse statusCode] == 413) {
                 // If blocked by one massive event, drop it
-                if (_backoffUpload && _backoffUploadBatchSize == 1) {
+                if (numEvents == 1) {
                     if (maxEventId >= 0) {
                         (void) [self.dbHelper removeEvent: maxEventId];
                     }
@@ -984,8 +1008,8 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
                 // server complained about length of request, backoff and try again
                 _backoffUpload = YES;
-                int numEvents = fminl([self.dbHelper getEventCount], _backoffUploadBatchSize);
-                _backoffUploadBatchSize = (int)ceilf(numEvents / 2.0f);
+                long newNumEvents = MIN(numEvents, _backoffUploadBatchSize);
+                _backoffUploadBatchSize = MAX((int)ceilf(newNumEvents / 2.0f), 1);
                 AMPLITUDE_LOG(@"Request too large, will decrease size and attempt to reupload");
                 _updatingCurrently = NO;
                 [self uploadEventsWithLimit:_backoffUploadBatchSize];
@@ -1218,10 +1242,15 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
 - (void)identify:(AMPIdentify *)identify
 {
+    [self identify:identify outOfSession:NO];
+}
+
+- (void)identify:(AMPIdentify *)identify outOfSession:(BOOL) outOfSession
+{
     if (identify == nil || [identify.userPropertyOperations count] == 0) {
         return;
     }
-    [self logEvent:IDENTIFY_EVENT withEventProperties:nil withApiProperties:nil withUserProperties:identify.userPropertyOperations withGroups:nil withTimestamp:nil outOfSession:NO];
+    [self logEvent:IDENTIFY_EVENT withEventProperties:nil withApiProperties:nil withUserProperties:identify.userPropertyOperations withGroups:nil withTimestamp:nil outOfSession:outOfSession];
 }
 
 #pragma mark - configurations
@@ -1234,6 +1263,12 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
     NSDictionary *copy = [userProperties copy];
     [self runOnBackgroundQueue:^{
+        // sanitize and truncate user properties before turning into identify
+        NSDictionary *sanitized = [self truncate:copy];
+        if ([sanitized count] == 0) {
+            return;
+        }
+
         AMPIdentify *identify = [AMPIdentify identify];
         for (NSString *key in copy) {
             NSObject *value = [copy objectForKey:key];
@@ -1281,7 +1316,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     }
     
     [self runOnBackgroundQueue:^{
-        SAFE_ARC_RETAIN(userId);
+        (void) SAFE_ARC_RETAIN(userId);
         SAFE_ARC_RELEASE(_userId);
         _userId = userId;
         (void) [self.dbHelper insertOrReplaceKeyValue:USER_ID value:_userId];
@@ -1323,10 +1358,17 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
     }
 
     [self runOnBackgroundQueue:^{
-        SAFE_ARC_RETAIN(deviceId);
+        (void) SAFE_ARC_RETAIN(deviceId);
         SAFE_ARC_RELEASE(_deviceId);
         _deviceId = deviceId;
         (void) [self.dbHelper insertOrReplaceKeyValue:DEVICE_ID value:deviceId];
+    }];
+}
+
+- (void)regenerateDeviceId
+{
+    [self runOnBackgroundQueue:^{
+        [self setDeviceId:[AMPDeviceInfo generateUUID]];
     }];
 }
 
@@ -1401,7 +1443,7 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 
     if (!deviceId) {
         // Otherwise generate random ID
-        deviceId = _deviceInfo.generateUUID;
+        deviceId = [AMPDeviceInfo generateUUID];
     }
     return SAFE_ARC_AUTORELEASE([[NSString alloc] initWithString:deviceId]);
 }
@@ -1438,6 +1480,12 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
         SAFE_ARC_RELEASE(objCopy);
         obj = [NSArray arrayWithArray:arr];
     } else if ([obj isKindOfClass:[NSDictionary class]]) {
+        // if too many properties, ignore
+        if ([(NSDictionary *)obj count] > kAMPMaxPropertyKeys) {
+            AMPLITUDE_LOG(@"WARNING: too many properties (more than 1000), ignoring");
+            return [NSDictionary dictionary];
+        }
+
         NSMutableDictionary *dict = [NSMutableDictionary dictionary];
         id objCopy = [obj copy];
         for (id key in objCopy) {
@@ -1600,19 +1648,35 @@ static NSString *const SEQUENCE_NUMBER = @"sequence_number";
 }
 
 - (id)unarchive:(NSString*)path {
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        @try {
-            id data = [NSKeyedUnarchiver unarchiveObjectWithFile:path];
-            return data;
-        }
-        @catch (NSException *e) {
-            AMPLITUDE_ERROR(@"EXCEPTION: Corrupt file %@: %@", [e name], [e reason]);
+    // unarchive using new NSKeyedUnarchiver method from iOS 9.0 that doesn't throw exceptions
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_8_4) {
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        if ([fileManager fileExistsAtPath:path]) {
+            NSData *inputData = [fileManager contentsAtPath:path];
             NSError *error = nil;
-            [[NSFileManager defaultManager] removeItemAtPath:path error:&error];
+            if (inputData != nil) {
+                id data = [NSKeyedUnarchiver unarchiveTopLevelObjectWithData:inputData error:&error];
+                if (error == nil) {
+                    if (data != nil) {
+                        return data;
+                    } else {
+                        AMPLITUDE_ERROR(@"ERROR: unarchived data is nil for file: %@", path);
+                    }
+                } else {
+                    AMPLITUDE_ERROR(@"ERROR: Unable to unarchive file %@: %@", path, error);
+                }
+            } else {
+                AMPLITUDE_ERROR(@"ERROR: File data is nil for file: %@", path);
+            }
+
+            // if reach here, then an error occured during unarchiving, delete corrupt file
+            [fileManager removeItemAtPath:path error:&error];
             if (error != nil) {
-                AMPLITUDE_ERROR(@"ERROR: Can't remove corrupt archiveDict file:%@", error);
+                AMPLITUDE_ERROR(@"ERROR: Can't remove corrupt file %@: %@", path, error);
             }
         }
+    } else {
+        AMPLITUDE_LOG(@"WARNING: user is using a version of iOS that is older than 9.0, skipping unarchiving of file: %@", path);
     }
     return nil;
 }
