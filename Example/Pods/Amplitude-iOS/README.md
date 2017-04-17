@@ -1,20 +1,27 @@
-[![Circle CI](https://circleci.com/gh/amplitude/Amplitude-iOS/tree/master.svg?style=badge&circle-token=e1b2a7d2cd6dd64ac3643bc8cb2117c0ed5cbb75)](https://circleci.com/gh/amplitude/Amplitude-iOS/tree/master)
-
 Amplitude iOS SDK
 ====================
-
 An iOS SDK for tracking events and revenue to [Amplitude](http://www.amplitude.com).
+
+[![Circle CI](https://circleci.com/gh/amplitude/Amplitude-iOS.svg?style=shield&circle-token=e1b2a7d2cd6dd64ac3643bc8cb2117c0ed5cbb75)](https://circleci.com/gh/amplitude/Amplitude-iOS/tree/master)
+[![CocoaPods](https://img.shields.io/cocoapods/v/Amplitude-iOS.svg?style=flat)](http://cocoadocs.org/docsets/Amplitude-iOS/)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 A [demo application](https://github.com/amplitude/iOS-Demo) is available to show a simple integration.
 
 A [demo application](https://github.com/amplitude/iOS-Extension-Demo) is available to show a simple integration in iOS extensions.
 
-See our [SDK documentation](https://rawgit.com/amplitude/Amplitude-iOS/master/documentation/html/index.html) for a description of all available SDK methods and classes.
+See our [SDK documentation](https://rawgit.com/amplitude/Amplitude-iOS/v3.14.1/documentation/html/index.html) for a description of all available SDK methods and classes.
+
+Our iOS SDK also supports tvOS. See [below](https://github.com/amplitude/Amplitude-iOS#tvos) for more information.
 
 # Setup #
 1. If you haven't already, go to https://amplitude.com and register for an account. You will receive an API Key.
 
-2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file. Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.8.3'`. If you are using CocoaPods, you may skip steps 3 and 4.
+2. [Download the source code](https://github.com/amplitude/Amplitude-iOS/archive/master.zip) and extract the zip file.
+
+    Alternatively, you can pull directly from GitHub. If you use CocoaPods, add the following line to your Podfile: `pod 'Amplitude-iOS', '~> 3.14.1'`. If you are using CocoaPods, you may skip steps 3 and 4.
+
+    You also have the option to install using Carthage. If you are using Carthage, add the following line to your Cartfile: `github "amplitude/Amplitude-iOS"`. Just add `#import <Amplitude/Amplitude.h>` to import all of the Amplitude header files.
 
 3. Copy the `Amplitude` sub-folder into the source of your project in Xcode. Check "Copy items into destination group's folder (if needed)".
 
@@ -50,7 +57,9 @@ Having large amounts of distinct event types, event properties and user properti
   * 2000 distinct event properties
   * 1000 distinct user properties
 
-Anything past the above thresholds will not be visualized. **Note that the raw data is not impacted by this in any way, meaning you can still see the values in the raw data, but they will not be visualized on the platform.** We have put in very conservative estimates for the event and property caps which we don’t expect to be exceeded in any practical use case. If you feel that your use case will go above those limits please reach out to support@amplitude.com.
+Anything past the above thresholds will not be visualized. **Note that the raw data is not impacted by this in any way, meaning you can still see the values in the raw data, but they will not be visualized on the platform.**
+
+A single call to `logEvent` should not have more than 1000 event properties. Likewise a single call to `setUserProperties` should not have more than 1000 user properties. If the 1000 item limit is exceeded then the properties will be dropped and a warning will be logged. We have put in very conservative estimates for the event and property caps which we don’t expect to be exceeded in any practical use case. If you feel that your use case will go above those limits please reach out to support@amplitude.com.
 
 # Tracking Sessions #
 
@@ -74,6 +83,13 @@ You can also log events as out of session. Out of session events have a session_
 [[Amplitude instance] logEvent:@"EVENT_IDENTIFIER_HERE" withEventProperties:nil outOfSession:true];
 ```
 
+You can also log identify events as out of session by setting input parameter `outOfSession` to `YES` when calling identify:
+
+``` objective-c
+AMPIdentify *identify = [[AMPIdentify identify] set:@"key" value:@"value"];
+[[Amplitude instance] identify:identify outOfSession:YES];
+```
+
 ### Getting the Session Id ###
 
 You can use the helper method `getSessionId` to get the value of the current sessionId:
@@ -94,6 +110,15 @@ You can also add the user ID as an argument to the `initializeApiKey:` call:
 ``` objective-c
 [[Amplitude instance] initializeApiKey:@"YOUR_API_KEY_HERE" userId:@"USER_ID_HERE"];
 ```
+
+### Logging Out and Anonymous Users ###
+If a user logs out, or you want to log the events under an anonymous user, you need to do 2 things: 1) set the userId to `nil` 2) regenerate a new deviceId. After doing that, events coming from the current user/device will appear as a brand new user in Amplitude dashboards. Note: if you choose to do this, you won't be able to see that the 2 users were using the same device.
+
+``` objective-c
+[[Amplitude instance] setUserId:nil];  // not string nil
+[[Amplitude instance] regenerateDeviceId];
+```
+
 
 # Setting Event Properties #
 
@@ -225,6 +250,8 @@ out is disabled.
 
 The preferred method of tracking revenue for a user now is to use `logRevenueV2` in conjunction with the provided `AMPRevenue` interface. `AMPRevenue` instances will store each revenue transaction and allow you to define several special revenue properties (such as revenueType, productIdentifier, etc) that are used in Amplitude dashboard's Revenue tab. You can now also add event properties to the revenue event, via the eventProperties field. These `AMPRevenue` instance objects are then passed into `logRevenueV2` to send as revenue events to Amplitude servers. This allows us to automatically display data relevant to revenue on the Amplitude website, including average revenue per daily active user (ARPDAU), 1, 7, 14, 30, 60, and 90 day revenue, lifetime value (LTV) estimates, and revenue by advertising campaign cohort and daily/weekly/monthly cohorts.
 
+**Important Note**: Amplitude currently does not support currency conversion. All revenue data should be normalized to your currency of choice, before being sent to Amplitude.
+
 To use the `Revenue` interface, you will first need to import the class:
 ``` objective-c
 #import "AMPRevenue.h"
@@ -304,6 +331,15 @@ NSString *deviceId = [[Amplitude instance] getDeviceId]; // existing deviceId
 [[Amplitude instanceWithName:@"new_app"] setDeviceId:deviceId]; // transferring existing deviceId to new app
 ```
 
+# tvOS #
+
+This SDK will work with tvOS apps. Follow the same [setup instructions](https://github.com/amplitude/Amplitude-iOS#setup) for iOS apps.
+
+One thing to note: tvOS apps do not have persistent storage (only temporary storage), so for tvOS the SDK is configured to upload events immediately as they are logged (`eventUploadThreshold` is set to 1 by default for tvOS). It is assumed that Apple TV devices have a stable internet connection, so uploading events immediately is reasonable. If you wish to revert back to the iOS batching behavior, you can do so by changing `eventUploadThreshold` (set to 30 by default for iOS):
+``` objective-c
+[[Amplitude instance] setEventUploadThreshold:30];
+```
+
 # Swift #
 
 This SDK will work with Swift. If you are copying the source files or using CocoaPods without the `use_frameworks!` directive, you should create a bridging header as documented [here](https://developer.apple.com/library/ios/documentation/Swift/Conceptual/BuildingCocoaApps/MixandMatch.html) and add the following line to your bridging header:
@@ -338,7 +374,7 @@ You can also call `setGroup` multiple times with different groupTypes to track m
 [[Amplitude instance] setGroup:@"sport" groupName:[NSArray arrayWithObjects: @"tennis", @"soccer", nil];
 ```
 
-You can also use `logEvent` withGroups: to set event-level groups, meaning the group designation only applies for the specific event being logged and does not persist on the user (unless you explicitly set it with `setGroupType`). The group input is a dictionary of groupType: groupName pairs, where groupTypes are strings and groupName can either be strings or array of strings.
+You can also use `logEvent` withGroups: to set event-level groups, meaning the group designation only applies for the specific event being logged and does not persist on the user (unless you explicitly set it with `setGroup`). The group input is a dictionary of groupType: groupName pairs, where groupTypes are strings and groupName can either be strings or array of strings.
 
 ```objective-c
 NSDictionary *eventProperties = [NSDictionary dictionaryWithObjectsAndKeys: @"value", @"key", nil];
@@ -355,7 +391,7 @@ Amplitude only polls for a location once on startup of the app, once on each app
 If you wish to disable location tracking done by the app, you can call `[[Amplitude instance] disableLocationListening]` at any point. If you want location tracking disabled on startup of the app, call disableLocationListening before you call `initializeApiKey:`. You can always reenable location tracking through Amplitude with `[[Amplitude instance] enableLocationListening]`.
 
 ### Custom Device IDs ###
-Device IDs are randomly generated. You can, however, choose to instead use the identifierForVendor (if available) by calling `[[Amplitude instance] useAdvertisingIdForDeviceId]` before initializing with your API key. You can also retrieve the Device ID that Amplitude uses with `[[Amplitude instance] getDeviceId]`.
+Device IDs are set to the Identifier for Vendor (IDFV) if available, otherwise they are randomly generated. You can, however, choose to instead use the Advertising Identifier (IDFA) if available by calling `[[Amplitude instance] useAdvertisingIdForDeviceId]` before initializing with your API key. You can also retrieve the Device ID that Amplitude uses with `[[Amplitude instance] getDeviceId]`.
 
 If you have your own system for tracking device IDs and would like to set a custom device ID, you can do so with `[[Amplitude instance] setDeviceId:@"CUSTOM_DEVICE_ID"];` **Note: this is not recommended unless you really know what you are doing.** Make sure the device ID you set is sufficiently unique (we recommend something like a UUID - see `[AMPUtils generateUUID]` for an example on how to generate) to prevent conflicts with other devices in our system.
 
@@ -363,7 +399,20 @@ If you have your own system for tracking device IDs and would like to set a cust
 This code will work with both ARC and non-ARC projects. Preprocessor macros are used to determine which version of the compiler is being used.
 
 ### SSL pinning ###
-The SDK includes support for SSL pinning, but it is undocumented and recommended against unless you have a specific need. Please contact Amplitude support before you ship any products with SSL pinning enabled so that we are aware and can provide documentation and implementation help.
+The SDK includes support for SSL pinning. It is enabled via a preprocessor macro.
+
+If you installed the SDK using Cocoapods, you will need to enable the preprocessor macro via your Podfile by adding this post install hook:
+```ruby
+post_install do |installer_representation|
+    installer_representation.pods_project.targets.each do |target|
+        target.build_configurations.each do |config|
+            config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AMPLITUDE_SSL_PINNING=1']
+        end
+    end
+end
+```
+
+If you installed the SDK directly from the source, you can enable SSL pinning by adding the following preprocessor macro: `AMPLITUDE_SSL_PINNING=1`
 
 ### iOS Extensions ###
 The SDK allows for tracking in iOS Extensions. Follow the [Setup instructions](https://github.com/amplitude/amplitude-ios#setup). In Step 6, instead of initializing the SDK in `application:didFinishLaunchingWithOptions:`, you initialize the SDK in your extension's `viewDidLoad` method.
