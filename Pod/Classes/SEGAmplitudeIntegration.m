@@ -134,4 +134,10 @@
     [self.amplitude uploadEvents];
 }
 
+- (void)reset
+{
+    [self.amplitude regenerateDeviceId];
+}
+
+
 @end
