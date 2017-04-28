@@ -1,5 +1,10 @@
 Change Log
 ==========
+Version 1.4.2 *(27th April, 2017)*
+-----------------------------
+*(Supports analytics-ios 3.2+ and Amplitude 3.8+)*
+
+ * [Adds](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/21): `reset` mapping to Amplitude's `regenerateDeviceId`.
 
 Version 1.4.1 *(8th August, 2016)*
 -----------------------------
