@@ -48,11 +48,24 @@
 {
     [self.amplitude setUserId:payload.userId];
     [self.amplitude setUserProperties:payload.traits];
+    NSDictionary *options = payload.integrations[@"Amplitude"];
+    NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
+    if (groups && [groups isKindOfClass:[NSDictionary class]]) {
+        [groups enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+            [self.amplitude setGroup:[NSString stringWithFormat:@"%@", key] groupName:obj];
+        }];
+    }
 }
 
--(void)realTrack:(NSString *)event properties:(NSDictionary *)properties
+-(void)realTrack:(NSString *)event properties:(NSDictionary *)properties integrations:(NSDictionary *)integrations
 {
-    [self.amplitude logEvent:event withEventProperties:properties];
+    NSDictionary *options = integrations[@"Amplitude"];
+    NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
+    if (groups && [groups isKindOfClass:[NSDictionary class]]) {
+        [self.amplitude logEvent:event withEventProperties:properties withGroups:groups];
+    } else {
+        [self.amplitude logEvent:event withEventProperties:properties];
+    }
 
     // Track revenue.
     NSNumber *revenue = [SEGAmplitudeIntegration extractRevenue:properties withKey:@"revenue"];
@@ -110,14 +123,14 @@
 
 - (void)track:(SEGTrackPayload *)payload
 {
-    [self realTrack:payload.event properties:payload.properties];
+    [self realTrack:payload.event properties:payload.properties integrations:payload.integrations];
 }
 
 - (void)screen:(SEGScreenPayload *)payload
 {
     if ([(NSNumber *)[self.settings objectForKey:@"trackAllPages"] boolValue]) {
         NSString *event = [[NSString alloc] initWithFormat:@"Viewed %@ Screen", payload.name];
-        [self realTrack:event properties:payload.properties];
+        [self realTrack:event properties:payload.properties integrations:payload.integrations];
     }
 }
 
