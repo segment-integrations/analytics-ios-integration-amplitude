@@ -1,5 +1,11 @@
 Change Log
 ==========
+Version 1.4.3 *(25th May, 2017)*
+-----------------------------
+*(Supports analytics-ios 3.6+ and Amplitude 3.8+)*
+
+ * [Adds](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/22) support for Amplitude's groups capability via `identify` and `track`
+
 Version 1.4.2 *(27th April, 2017)*
 -----------------------------
 *(Supports analytics-ios 3.2+ and Amplitude 3.8+)*

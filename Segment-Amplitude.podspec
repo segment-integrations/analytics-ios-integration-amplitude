@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Segment-Amplitude"
-  s.version          = "1.4.2"
+  s.version          = "1.4.3"
   s.summary          = "Amplitude Integration for Segment's analytics-ios library."
 
   s.description      = <<-DESC
