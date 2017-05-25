@@ -1,7 +1,8 @@
 # Analytics
-
+[![Circle CI](https://circleci.com/gh/segmentio/analytics-ios.svg?style=shield&circle-token=31c5b3e5edeb404b30141ead9dcef3eb37d16d4d)](https://circleci.com/gh/segmentio/analytics-ios)
 [![Version](https://img.shields.io/cocoapods/v/Analytics.svg?style=flat)](https://cocoapods.org//pods/Analytics)
 [![License](https://img.shields.io/cocoapods/l/Analytics.svg?style=flat)](http://cocoapods.org/pods/Analytics)
+[![codecov](https://codecov.io/gh/segmentio/analytics-ios/branch/master/graph/badge.svg)](https://codecov.io/gh/segmentio/analytics-ios)
 
 analytics-ios is an iOS client for Segment.
 
@@ -14,7 +15,13 @@ Analytics is available through [CocoaPods](http://cocoapods.org) and [Carthage](
 ### CocoaPods
 
 ```ruby
-pod "Analytics"
+pod "Analytics", "3.6.0-rc"
+```
+
+If you'd rather have a version that lags behind but has been field tested longer, you may use
+
+```ruby
+pod "Analytics", "3.5.5"
 ```
 
 ### Carthage
