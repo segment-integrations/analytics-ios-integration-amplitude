@@ -48,7 +48,8 @@
 {
     [self.amplitude setUserId:payload.userId];
     [self.amplitude setUserProperties:payload.traits];
-    NSDictionary *groups = payload.integrations[@"Amplitude"][@"groups"];
+    NSDictionary *options = payload.integrations[@"Amplitude"];
+    NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
         [groups enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
             [self.amplitude setGroup:[NSString stringWithFormat:@"%@", key] groupName:obj];
@@ -58,7 +59,8 @@
 
 -(void)realTrack:(NSString *)event properties:(NSDictionary *)properties integrations:(NSDictionary *)integrations
 {
-    NSDictionary *groups = integrations[@"Amplitude"][@"groups"];
+    NSDictionary *options = integrations[@"Amplitude"];
+    NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
         [self.amplitude logEvent:event withEventProperties:properties withGroups:groups];
     } else {
