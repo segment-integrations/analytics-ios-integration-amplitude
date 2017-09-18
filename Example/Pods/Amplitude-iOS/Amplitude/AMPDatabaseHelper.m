@@ -113,7 +113,7 @@ static NSString *const GET_VALUE = @"SELECT %@, %@ FROM %@ WHERE %@ = ?;";
     instanceName = [instanceName lowercaseString];
 
     if ((self = [super init])) {
-        NSString *databaseDirectory = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex: 0];
+        NSString *databaseDirectory = [AMPUtils platformDataDirectory];
         NSString *databasePath = [databaseDirectory stringByAppendingPathComponent:@"com.amplitude.database"];
         if (![instanceName isEqualToString:kAMPDefaultInstance]) {
             databasePath = [NSString stringWithFormat:@"%@_%@", databasePath, instanceName];
@@ -132,7 +132,7 @@ static NSString *const GET_VALUE = @"SELECT %@, %@ FROM %@ WHERE %@ = ?;";
 {
     SAFE_ARC_RELEASE(_databasePath);
     if (_queue) {
-        SAFE_ARC_DISPATCH_RELEASE(_queue);
+        (void) SAFE_ARC_DISPATCH_RELEASE(_queue);
         _queue = NULL;
     }
     SAFE_ARC_SUPER_DEALLOC();
@@ -378,12 +378,24 @@ static NSString *const GET_VALUE = @"SELECT %@, %@ FROM %@ WHERE %@ = ?;";
     [self inDatabaseWithStatement:querySQL block:^(sqlite3_stmt *stmt) {
         while (sqlite3_step(stmt) == SQLITE_ROW) {
             long long eventId = sqlite3_column_int64(stmt, 0);
-            NSString *eventString = [NSString stringWithUTF8String:(char *)sqlite3_column_text(stmt, 1)];
-            NSData *eventData = [eventString dataUsingEncoding:NSUTF8StringEncoding];
 
-            id eventImmutable = [NSJSONSerialization JSONObjectWithData:eventData options:0 error:NULL];
-            if (eventImmutable == nil) {
-                AMPLITUDE_LOG(@"Error JSON deserialization of event id %lld from table %@", eventId, table);
+            // need to handle null events saved to database
+            const char *rawEventString = (const char*)sqlite3_column_text(stmt, 1);
+            if (rawEventString == NULL) {
+                AMPLITUDE_LOG(@"Ignoring NULL event string for event id %lld from table %@", eventId, table);
+                continue;
+            }
+            NSString *eventString = [NSString stringWithUTF8String:rawEventString];
+            if ([AMPUtils isEmptyString:eventString]) {
+                AMPLITUDE_LOG(@"Ignoring empty event string for event id %lld from table %@", eventId, table);
+                continue;
+            }
+
+            NSData *eventData = [eventString dataUsingEncoding:NSUTF8StringEncoding];
+            NSError *error = nil;
+            id eventImmutable = [NSJSONSerialization JSONObjectWithData:eventData options:0 error:&error];
+            if (error != nil) {
+                AMPLITUDE_LOG(@"Error JSON deserialization of event id %lld from table %@: %@", eventId, table, error);
                 continue;
             }
 
