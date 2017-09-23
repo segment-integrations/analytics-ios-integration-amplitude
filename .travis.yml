@@ -6,12 +6,9 @@ before_install:
   - gem install cocoapods
 
 script:
-# Fails with "Unable to find Analytics/TestFlight".
-# - pod lib lint --allow-warnings
-# Fails with insane error - `Amplitude-iOS (~> 3.7.0)` required by `Segment-Amplitude (1.3.0)`
-  # - cd Example && pod install
-  # - cd .. && make xctest
-  - make xctest
+# pod lib lint --use-libraries --allow-warnings
+- make install
+- make test
 
 notifications:
   email: false
