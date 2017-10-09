@@ -1,5 +1,12 @@
 Change Log
 ==========
+Version 1.4.4 *(9th October, 2017)*
+-----------------------------
+*(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
+
+* [Updates](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/24/files): Amplitude dependency and removes [deprecated methods](https://github.com/amplitude/Amplitude-iOS/releases) in preparation for iOS 11.
+
+
 Version 1.4.3 *(25th May, 2017)*
 -----------------------------
 *(Supports analytics-ios 3.6+ and Amplitude 3.8+)*
