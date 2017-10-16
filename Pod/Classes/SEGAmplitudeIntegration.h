@@ -14,5 +14,6 @@
 @property (strong) Amplitude *amplitude;
 
 - (id)initWithSettings:(NSDictionary *)settings;
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude;
 
 @end

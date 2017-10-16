@@ -11,12 +11,21 @@
         self.settings = settings;
         self.amplitude = [Amplitude instance];
 
-        if ([(NSNumber *)[self.settings objectForKey:@"trackSessionEvents"] boolValue]) {
-            [Amplitude instance].trackingSessionEvents = true;
-        }
-
         NSString *apiKey = [self.settings objectForKey:@"apiKey"];
         [[Amplitude instance] initializeApiKey:apiKey];
+
+        if ([(NSNumber *)[self.settings objectForKey:@"trackSessionEvents"] boolValue]) {
+            self.amplitude.trackingSessionEvents = true;
+        }
+    }
+    return self;
+}
+
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude
+{
+    if (self = [super init]) {
+        self.settings = settings;
+        self.amplitude = amplitude;
     }
     return self;
 }
