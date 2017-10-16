@@ -1,6 +1,7 @@
 #import "SEGAmplitudeIntegrationFactory.h"
 #import "SEGAmplitudeIntegration.h"
 
+
 @implementation SEGAmplitudeIntegrationFactory
 
 + (instancetype)instance

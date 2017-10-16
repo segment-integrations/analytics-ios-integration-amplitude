@@ -2,6 +2,7 @@
 #import <Analytics/SEGAnalyticsUtils.h>
 #import <Analytics/SEGAnalytics.h>
 
+
 @implementation SEGAmplitudeIntegration
 
 - (id)initWithSettings:(NSDictionary *)settings
@@ -51,13 +52,13 @@
     NSDictionary *options = payload.integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
-        [groups enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        [groups enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
             [self.amplitude setGroup:[NSString stringWithFormat:@"%@", key] groupName:obj];
         }];
     }
 }
 
--(void)realTrack:(NSString *)event properties:(NSDictionary *)properties integrations:(NSDictionary *)integrations
+- (void)realTrack:(NSString *)event properties:(NSDictionary *)properties integrations:(NSDictionary *)integrations
 {
     NSDictionary *options = integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
