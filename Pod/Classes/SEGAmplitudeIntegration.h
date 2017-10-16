@@ -7,7 +7,8 @@
 #import <Amplitude-iOS/Amplitude.h>
 #endif
 
-@interface SEGAmplitudeIntegration : NSObject<SEGIntegration>
+
+@interface SEGAmplitudeIntegration : NSObject <SEGIntegration>
 
 @property (nonatomic, strong) NSDictionary *settings;
 @property (strong) Amplitude *amplitude;
