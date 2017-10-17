@@ -3,7 +3,7 @@ XCPRETTY := xcpretty -c && exit ${PIPESTATUS[0]}
 SDK ?= "iphonesimulator"
 DESTINATION ?= "platform=iOS Simulator,name=iPhone 5"
 PROJECT := Segment-Amplitude
-XC_ARGS := -scheme $(PROJECT)-Example -workspace Example/$(PROJECT).xcworkspace -sdk $(SDK) -destination $(DESTINATION) ONLY_ACTIVE_ARCH=NO
+XC_ARGS := -scheme $(PROJECT)_Example -workspace Example/$(PROJECT).xcworkspace -sdk $(SDK) -destination $(DESTINATION) ONLY_ACTIVE_ARCH=NO
 
 install: Example/Podfile $(PROJECT).podspec
 	pod repo update
