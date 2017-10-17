@@ -154,7 +154,7 @@ describe(@"SEGAmplitudeIntegration", ^{
             [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props withGroups:@{ @"jobs" : @[ @"Pendant Publishing" ] }];
         });
 
-        it(@"tracks Order Completed with revenue", ^{
+        it(@"tracks Order Completed with revenue if both total and revenue are present", ^{
             integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
 
             SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Order Completed" properties:@{
@@ -181,6 +181,35 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             [integration track:payload];
             [[verify(amprevenue) setPrice:@8] setQuantity:1];
+            [verify(amplitude) logRevenueV2:amprevenue];
+        });
+
+        it(@"tracks Order Completed with total if revenue is not present", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Order Completed" properties:@{
+                @"checkout_id" : @"9bcf000000000000",
+                @"order_id" : @"50314b8e",
+                @"affiliation" : @"App Store",
+                @"total" : @30.45,
+                @"shipping" : @5.05,
+                @"tax" : @1.20,
+                @"currency" : @"USD",
+                @"category" : @"Games",
+                @"products" : @{
+                    @"product_id" : @"2013294",
+                    @"category" : @"Games",
+                    @"name" : @"Monopoly: 3rd Edition",
+                    @"brand" : @"Hasbros",
+                    @"price" : @"21.99",
+                    @"quantity" : @"1"
+                }
+            }
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [[verify(amprevenue) setPrice:@30.45] setQuantity:1];
             [verify(amplitude) logRevenueV2:amprevenue];
         });
 
