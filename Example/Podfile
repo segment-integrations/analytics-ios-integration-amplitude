@@ -13,4 +13,6 @@ target 'Segment-Amplitude_Tests' do
   # Do not include Segment-Amplitude here due to using static lib
   pod 'Specta'
   pod 'Expecta'
+  pod 'OCMockito'
+
 end
