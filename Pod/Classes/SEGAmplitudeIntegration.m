@@ -10,15 +10,18 @@
     if (self = [super init]) {
         self.settings = settings;
         self.amplitude = [Amplitude instance];
+        self.amprevenue = [AMPRevenue revenue];
     }
-    return [self initWithSettings:self.settings andAmplitude:self.amplitude];
+    return [self initWithSettings:self.settings andAmplitude:self.amplitude andAmpRevenue:self.amprevenue];
 }
 
-- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue
 {
     if (self = [super init]) {
         self.settings = settings;
         self.amplitude = amplitude;
+        self.amprevenue = amprevenue;
+
         NSString *apiKey = [self.settings objectForKey:@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
 
@@ -92,24 +95,26 @@
                 quantity = [NSNumber numberWithInt:1];
             }
 
-            AMPRevenue *ampRevenue = [[[AMPRevenue revenue] setPrice:price] setQuantity:[quantity integerValue]];
-            id productId = [properties objectForKey:@"productId"];
+            [[self.amprevenue setPrice:price] setQuantity:[quantity integerValue]];
+            id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
             if (productId && [productId isKindOfClass:[NSString class]] && ![productId isEqualToString:@""]) {
-                [ampRevenue setProductIdentifier:productId];
+                [self.amprevenue setProductIdentifier:productId];
             }
+
+            //Receipt is meant to be of type NSData
             id receipt = [properties objectForKey:@"receipt"];
             if (receipt && [receipt isKindOfClass:[NSString class]] && ![receipt isEqualToString:@""]) {
-                [ampRevenue setReceipt:receipt];
+                [self.amprevenue setReceipt:receipt];
             }
-            id revenueType = [properties objectForKey:@"revenueType"];
+            id revenueType = [properties objectForKey:@"revenueType"] ?: [properties objectForKey:@"revenue_type"];
             if (revenueType && [revenueType isKindOfClass:[NSString class]] && ![revenueType isEqualToString:@""]) {
-                [ampRevenue setRevenueType:revenueType];
+                [self.amprevenue setRevenueType:revenueType];
             }
             NSLog(@"Price : %@, Quantity : %@", price, quantity);
-            [self.amplitude logRevenueV2:ampRevenue];
+            [self.amplitude logRevenueV2:self.amprevenue];
         } else {
             // fallback to logRevenue v1
-            id productId = [properties objectForKey:@"productId"];
+            id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
             if (!productId || ![productId isKindOfClass:[NSString class]]) {
                 productId = nil;
             }

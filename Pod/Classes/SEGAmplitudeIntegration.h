@@ -12,8 +12,9 @@
 
 @property (nonatomic, strong) NSDictionary *settings;
 @property (strong) Amplitude *amplitude;
+@property (strong) AMPRevenue *amprevenue;
 
 - (id)initWithSettings:(NSDictionary *)settings;
-- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude;
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue;
 
 @end
