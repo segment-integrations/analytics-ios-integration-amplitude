@@ -34,10 +34,12 @@ describe(@"SEGAmplitudeIntegration", ^{
 
     __block Amplitude *amplitude;
     __block SEGAmplitudeIntegration *integration;
+    __block AMPRevenue *amprevenue;
 
     beforeEach(^{
         amplitude = mock([Amplitude class]);
-        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{} andAmplitude:amplitude];
+        amprevenue = mock([AMPRevenue class]);
+        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{} andAmplitude:amplitude andAmpRevenue:amprevenue];
     });
 
     describe(@"Identify", ^{
@@ -80,7 +82,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
     describe(@"Screen", ^{
         it(@"does not call screen if trackAllPages = false", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @false } andAmplitude:amplitude];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @false } andAmplitude:amplitude andAmpRevenue:amprevenue];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
@@ -88,7 +90,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"calls basic screen", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:amplitude];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
@@ -118,6 +120,181 @@ describe(@"SEGAmplitudeIntegration", ^{
             [verify(amplitude) regenerateDeviceId];
         });
     });
+
+    describe(@"Track", ^{
+        it(@"tracks a basic event without props", ^{
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Email Sent" properties:@{} context:@{} integrations:@{}];
+
+            [integration track:payload];
+            [verify(amplitude) logEvent:@"Email Sent" withEventProperties:@{}];
+        });
+
+        it(@"tracks a basic event with props", ^{
+            NSDictionary *props = @{
+                @"Color" : @"White",
+                @"Type" : @"like the pirates used to wear"
+            };
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Puffy Shirt"
+                properties:props
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [verify(amplitude) logEvent:@"Viewed Puffy Shirt" withEventProperties:props];
+
+        });
+
+        it(@"tracks a basic event with groups", ^{
+            NSDictionary *props = @{
+                @"url" : @"seinfeld.wikia.com/wiki/The_Puffy_Shirt"
+            };
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Sent Product Link" properties:props context:@{} integrations:@{ @"Amplitude" : @{@"groups" : @{@"jobs" : @[ @"Pendant Publishing" ]}} }];
+            [integration track:payload];
+            [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props withGroups:@{ @"jobs" : @[ @"Pendant Publishing" ] }];
+        });
+
+        it(@"tracks Order Completed with revenue", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Order Completed" properties:@{
+                @"checkout_id" : @"9bcf000000000000",
+                @"order_id" : @"50314b8e",
+                @"affiliation" : @"App Store",
+                @"total" : @30.45,
+                @"shipping" : @5.05,
+                @"tax" : @1.20,
+                @"currency" : @"USD",
+                @"category" : @"Games",
+                @"revenue" : @8,
+                @"products" : @{
+                    @"product_id" : @"2013294",
+                    @"category" : @"Games",
+                    @"name" : @"Monopoly: 3rd Edition",
+                    @"brand" : @"Hasbros",
+                    @"price" : @"21.99",
+                    @"quantity" : @"1"
+                }
+            }
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [[verify(amprevenue) setPrice:@8] setQuantity:1];
+            [verify(amplitude) logRevenueV2:amprevenue];
+        });
+
+        it(@"tracks Order Completed with revenue of type String", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Order Completed" properties:@{
+                @"checkout_id" : @"9bcf000000000000",
+                @"order_id" : @"50314b8e",
+                @"affiliation" : @"App Store",
+                @"total" : @30.45,
+                @"shipping" : @5.05,
+                @"tax" : @1.20,
+                @"currency" : @"USD",
+                @"category" : @"Games",
+                @"revenue" : @"8",
+                @"products" : @{
+                    @"product_id" : @"2013294",
+                    @"category" : @"Games",
+                    @"name" : @"Monopoly: 3rd Edition",
+                    @"brand" : @"Hasbros",
+                    @"price" : @"21.99",
+                    @"quantity" : @"1"
+                }
+            }
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [[verify(amprevenue) setPrice:@8] setQuantity:1];
+            [verify(amplitude) logRevenueV2:amprevenue];
+        });
+
+        // NOTE: This is against our spec. We do not have a v1/v2 ECommerce event that sends both revenue and price/quantity as a tope level property
+        it(@"tracks with top level price and quantity", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Product" properties:@{
+                @"revenue" : @20.99,
+                @"id" : @"507f1f77bcf86cd799439011",
+                @"sku" : @"G-32",
+                @"name" : @"Monopoly: 3rd Edition",
+                @"price" : @18.9,
+                @"category" : @"Games",
+                @"quantity" : @"1"
+            }
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [[verify(amprevenue) setPrice:@18.9] setQuantity:1];
+            [verify(amplitude) logRevenueV2:amprevenue];
+        });
+
+        it(@"tracks Amplitude ecommerce fields", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Product" properties:@{
+                @"revenue" : @20.00,
+                @"product_id" : @"507f1f77bcf86cd799439011",
+                @"receipt" : @"172038",
+                @"revenue_type" : @"Sales",
+                @"price" : @18.9,
+                @"category" : @"Games"
+            }
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [[verify(amprevenue) setPrice:@18.9] setQuantity:1];
+            [verify(amprevenue) setProductIdentifier:@"507f1f77bcf86cd799439011"];
+            [verify(amprevenue) setReceipt:@"172038"];
+            [verify(amprevenue) setRevenueType:@"Sales"];
+            [verify(amplitude) logRevenueV2:amprevenue];
+        });
+
+        it(@"fallsback to logRevenue v1", ^{
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Product" properties:@{
+                @"revenue" : @20.00,
+                @"product_id" : @"507f1f77bcf86cd799439011",
+                @"receipt" : @"172038",
+                @"revenue_type" : @"Sales",
+                @"price" : @18.9,
+                @"category" : @"Games",
+                @"quantity" : @4
+            }
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [verify(amplitude) logRevenue:@"507f1f77bcf86cd799439011"
+                                 quantity:4
+                                    price:@20.00
+                                  receipt:@"172038"];
+
+        });
+
+        it(@"fallsback to logRevenue v1 with default values", ^{
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Product" properties:@{
+                @"revenue" : @20.00
+            }
+                context:@{}
+                integrations:@{}];
+
+            [integration track:payload];
+            [verify(amplitude) logRevenue:nil
+                                 quantity:1
+                                    price:@20.00
+                                  receipt:nil];
+
+        });
+
+    });
+
 });
 
 SpecEnd
