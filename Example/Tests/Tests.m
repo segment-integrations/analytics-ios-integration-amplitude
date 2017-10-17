@@ -32,12 +32,12 @@ describe(@"SEGAmplitudeIntegrationFactory", ^{
 
 describe(@"SEGAmplitudeIntegration", ^{
 
-    __block Amplitude *mockAmplitude;
+    __block Amplitude *amplitude;
     __block SEGAmplitudeIntegration *integration;
 
     beforeEach(^{
-        mockAmplitude = mock([Amplitude class]);
-        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{} andAmplitude:mockAmplitude];
+        amplitude = mock([Amplitude class]);
+        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{} andAmplitude:amplitude];
     });
 
     describe(@"Identify", ^{
@@ -46,7 +46,7 @@ describe(@"SEGAmplitudeIntegration", ^{
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"1111" anonymousId:nil traits:@{} context:@{} integrations:@{}];
 
             [integration identify:payload];
-            [verify(mockAmplitude) setUserId:@"1111"];
+            [verify(amplitude) setUserId:@"1111"];
         });
 
         it(@"identify with traits", ^{
@@ -58,7 +58,7 @@ describe(@"SEGAmplitudeIntegration", ^{
             } context:@{}
                 integrations:@{}];
             [integration identify:payload];
-            [verify(mockAmplitude) setUserProperties:payload.traits];
+            [verify(amplitude) setUserProperties:payload.traits];
         });
 
         it(@"identify with groups", ^{
@@ -73,26 +73,26 @@ describe(@"SEGAmplitudeIntegration", ^{
                 }
             } }];
             [integration identify:payload];
-            [verify(mockAmplitude) setGroup:@"jobs" groupName:@[ @"Pendant Publishing" ]];
+            [verify(amplitude) setGroup:@"jobs" groupName:@[ @"Pendant Publishing" ]];
         });
 
     });
 
     describe(@"Screen", ^{
         it(@"does not call screen if trackAllPages = false", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @false } andAmplitude:mockAmplitude];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @false } andAmplitude:amplitude];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
-            [verifyCount(mockAmplitude, never()) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
+            [verifyCount(amplitude, never()) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
         });
 
         it(@"calls basic screen", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:mockAmplitude];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:amplitude];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
-            [verify(mockAmplitude) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
+            [verify(amplitude) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
         });
 
     });
@@ -101,21 +101,21 @@ describe(@"SEGAmplitudeIntegration", ^{
         it(@"sets groupId", ^{
             SEGGroupPayload *payload = [[SEGGroupPayload alloc] initWithGroupId:@"322" traits:@{} context:@{} integrations:@{}];
             [integration group:payload];
-            [verify(mockAmplitude) setGroup:@"[Segment] Group" groupName:@"322"];
+            [verify(amplitude) setGroup:@"[Segment] Group" groupName:@"322"];
         });
     });
 
     describe(@"Flush", ^{
         it(@"calls uploadEvents", ^{
             [integration flush];
-            [verify(mockAmplitude) uploadEvents];
+            [verify(amplitude) uploadEvents];
         });
     });
 
     describe(@"Reset", ^{
         it(@"calls regenerateDeviceId", ^{
             [integration reset];
-            [verify(mockAmplitude) regenerateDeviceId];
+            [verify(amplitude) regenerateDeviceId];
         });
     });
 });
