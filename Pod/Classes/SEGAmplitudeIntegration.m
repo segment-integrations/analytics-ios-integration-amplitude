@@ -7,12 +7,7 @@
 
 - (id)initWithSettings:(NSDictionary *)settings
 {
-    if (self = [super init]) {
-        self.settings = settings;
-        self.amplitude = [Amplitude instance];
-        self.amprevenue = [AMPRevenue revenue];
-    }
-    return [self initWithSettings:self.settings andAmplitude:self.amplitude andAmpRevenue:self.amprevenue];
+    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue]];
 }
 
 - (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue
