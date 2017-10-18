@@ -19,9 +19,11 @@
 
         NSString *apiKey = [self.settings objectForKey:@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
+        SEGLog(@"[Amplitude initializeApiKey:%@]", apiKey);
 
         if ([(NSNumber *)[self.settings objectForKey:@"trackSessionEvents"] boolValue]) {
             self.amplitude.trackingSessionEvents = true;
+            SEGLog(@"[Amplitude.trackingSessionEvents = true]");
         }
     }
     return self;
@@ -54,12 +56,15 @@
 - (void)identify:(SEGIdentifyPayload *)payload
 {
     [self.amplitude setUserId:payload.userId];
+    SEGLog(@"[Amplitude setUserId:%@]", payload.userId);
     [self.amplitude setUserProperties:payload.traits];
+    SEGLog(@"[Amplitude setUserProperties:%@]", payload.traits);
     NSDictionary *options = payload.integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
         [groups enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
             [self.amplitude setGroup:[NSString stringWithFormat:@"%@", key] groupName:obj];
+            SEGLog(@"[Amplitude setGroup:%@ groupName:%@];", [NSString stringWithFormat:@"%@", key], obj);
         }];
     }
 }
@@ -70,8 +75,10 @@
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
         [self.amplitude logEvent:event withEventProperties:properties withGroups:groups];
+        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ withGroups:%@];", event, properties, groups);
     } else {
         [self.amplitude logEvent:event withEventProperties:properties];
+        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@];", event, properties);
     }
 
     // Track revenue.
@@ -91,22 +98,29 @@
             }
 
             [[self.amprevenue setPrice:price] setQuantity:[quantity integerValue]];
+            SEGLog(@"[[AMPRevenue revenue] setPrice:%@] setQuantity: %d];", price, [quantity integerValue]);
+
             id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
             if (productId && [productId isKindOfClass:[NSString class]] && ![productId isEqualToString:@""]) {
                 [self.amprevenue setProductIdentifier:productId];
+                SEGLog(@"[[AMPRevenue revenue] setProductIdentifier:%@];", productId);
             }
 
             //Receipt is meant to be of type NSData
             id receipt = [properties objectForKey:@"receipt"];
             if (receipt && [receipt isKindOfClass:[NSString class]] && ![receipt isEqualToString:@""]) {
                 [self.amprevenue setReceipt:receipt];
+                SEGLog(@"[[AMPRevenue revenue] setReceipt:%@];", receipt);
             }
             id revenueType = [properties objectForKey:@"revenueType"] ?: [properties objectForKey:@"revenue_type"];
             if (revenueType && [revenueType isKindOfClass:[NSString class]] && ![revenueType isEqualToString:@""]) {
                 [self.amprevenue setRevenueType:revenueType];
+                SEGLog(@"[AMPRevenue revenue] setRevenueType:%@];", revenueType);
             }
             NSLog(@"Price : %@, Quantity : %@", price, quantity);
             [self.amplitude logRevenueV2:self.amprevenue];
+            SEGLog(@"[Amplitude logRevenueV2:%@];", self.amprevenue);
+
         } else {
             // fallback to logRevenue v1
             id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
@@ -121,11 +135,12 @@
             if (!receipt || ![receipt isKindOfClass:[NSString class]]) {
                 receipt = nil;
             }
-            NSLog(@"Number : %@", revenue);
+
             [self.amplitude logRevenue:productId
                               quantity:[quantity integerValue]
                                  price:revenue
                                receipt:receipt];
+            SEGLog(@"[Amplitude logRevenue:%@ quantity:%d price:%@ receipt:%@];", productId, [quantity integerValue], revenue, receipt);
         }
     }
 }
@@ -148,17 +163,20 @@
     NSString *groupId = payload.groupId;
     if (groupId) {
         [self.amplitude setGroup:@"[Segment] Group" groupName:groupId];
+        SEGLog(@"[Amplitude setGroup:@'[Segment] Group' groupName:%@]", groupId);
     }
 }
 
 - (void)flush
 {
     [self.amplitude uploadEvents];
+    SEGLog(@"[Amplitude uploadEvents]");
 }
 
 - (void)reset
 {
     [self.amplitude regenerateDeviceId];
+    SEGLog(@"[Amplitude regnerateDeviceId];");
 }
 
 
