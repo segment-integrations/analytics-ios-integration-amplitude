@@ -29,25 +29,31 @@
     return self;
 }
 
-+ (NSNumber *)extractRevenue:(NSDictionary *)dictionary withKey:(NSString *)revenueKey
++ (NSNumber *)extractRevenueOrTotal:(NSDictionary *)dictionary withRevenueKey:(NSString *)revenueKey andTotalKey:(NSString *)totalKey
 {
-    id revenueProperty = nil;
+    id revenueOrTotal = nil;
 
     for (NSString *key in dictionary.allKeys) {
+        // This may not be optimal, but we want to ensure that revenue is set if both total and revenue are present
         if ([key caseInsensitiveCompare:revenueKey] == NSOrderedSame) {
-            revenueProperty = dictionary[key];
+            revenueOrTotal = dictionary[key];
+            break;
+        }
+
+        if ([key caseInsensitiveCompare:totalKey] == NSOrderedSame) {
+            revenueOrTotal = dictionary[key];
             break;
         }
     }
 
-    if (revenueProperty) {
-        if ([revenueProperty isKindOfClass:[NSString class]]) {
+    if (revenueOrTotal) {
+        if ([revenueOrTotal isKindOfClass:[NSString class]]) {
             // Format the revenue.
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
             [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
-            return [formatter numberFromString:revenueProperty];
-        } else if ([revenueProperty isKindOfClass:[NSNumber class]]) {
-            return revenueProperty;
+            return [formatter numberFromString:revenueOrTotal];
+        } else if ([revenueOrTotal isKindOfClass:[NSNumber class]]) {
+            return revenueOrTotal;
         }
     }
     return nil;
@@ -81,9 +87,9 @@
         SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@];", event, properties);
     }
 
-    // Track revenue.
-    NSNumber *revenue = [SEGAmplitudeIntegration extractRevenue:properties withKey:@"revenue"];
-    if (revenue) {
+    // Track revenue. If revenue is not present fallback on total
+    NSNumber *revenueOrTotal = [SEGAmplitudeIntegration extractRevenueOrTotal:properties withRevenueKey:@"revenue" andTotalKey:@"total"];
+    if (revenueOrTotal) {
         // Use logRevenueV2 with revenue properties.
         if ([(NSNumber *)[self.settings objectForKey:@"useLogRevenueV2"] boolValue]) {
             id price = [properties objectForKey:@"price"];
@@ -91,7 +97,7 @@
 
             // if no price fallback to using revenue
             if (!price || ![price isKindOfClass:[NSNumber class]]) {
-                price = revenue;
+                price = revenueOrTotal;
                 quantity = [NSNumber numberWithInt:1];
             } else if (!quantity || ![quantity isKindOfClass:[NSNumber class]]) {
                 quantity = [NSNumber numberWithInt:1];
@@ -135,10 +141,9 @@
             if (!receipt || ![receipt isKindOfClass:[NSString class]]) {
                 receipt = nil;
             }
-
             [self.amplitude logRevenue:productId
                               quantity:[quantity integerValue]
-                                 price:revenue
+                                 price:revenueOrTotal
                                receipt:receipt];
             SEGLog(@"[Amplitude logRevenue:%@ quantity:%d price:%@ receipt:%@];", productId, [quantity integerValue], revenue, receipt);
         }
