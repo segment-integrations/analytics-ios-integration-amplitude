@@ -1,14 +1,14 @@
 PODS:
-  - Amplitude-iOS (4.0.1)
-  - Analytics (3.6.0)
-  - Expecta (1.0.5)
+  - Amplitude-iOS (4.0.3)
+  - Analytics (3.6.7)
+  - Expecta (1.0.6)
   - OCHamcrest (7.0.2)
   - OCMockito (5.0.1):
     - OCHamcrest (~> 7.0)
   - Segment-Amplitude (1.4.4):
     - Amplitude-iOS (~> 4.0)
     - Analytics (~> 3.6)
-  - Specta (1.0.6)
+  - Specta (1.0.7)
 
 DEPENDENCIES:
   - Expecta
@@ -21,13 +21,13 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  Amplitude-iOS: e511a77d2c05f3cc623a40e4323e65d12ef1c322
-  Analytics: 15be3e651d22cc811f44df65698538236676437b
-  Expecta: e1c022fcd33910b6be89c291d2775b3fe27a89fe
+  Amplitude-iOS: d17f387fca4def647ddcd898f0a3fa90b70fbf1c
+  Analytics: 2c09a50e3478a3a7ced08a22d00c43ba6f7011e6
+  Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCHamcrest: 706bfbf69a3df55a873bad096014e80e2e8ca93c
   OCMockito: 063837a086c058e764fcd23e771089c1759e7197
   Segment-Amplitude: 985f1f4e4e4c3b5bfa28c52995e13fd9ed932e5f
-  Specta: f506f3a8361de16bc0dcf3b17b75e269072ba465
+  Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: f3781d85a056f01c90fae0474309638084899ac0
 
