@@ -17,11 +17,11 @@
         self.amplitude = amplitude;
         self.amprevenue = amprevenue;
 
-        NSString *apiKey = [self.settings objectForKey:@"apiKey"];
+        NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
         SEGLog(@"[Amplitude initializeApiKey:%@]", apiKey);
 
-        if ([(NSNumber *)[self.settings objectForKey:@"trackSessionEvents"] boolValue]) {
+        if ([(NSNumber *)self.settings[@"trackSessionEvents"] boolValue]) {
             self.amplitude.trackingSessionEvents = true;
             SEGLog(@"[Amplitude.trackingSessionEvents = true]");
         }
@@ -42,6 +42,8 @@
 
         if ([key caseInsensitiveCompare:totalKey] == NSOrderedSame) {
             revenueOrTotal = dictionary[key];
+            // We want revenue to be used in cases where both total and revenue are present,
+            // so we want to continue checking for revenue even if revenueOrTotal is set to the total value
         }
     }
 
@@ -96,15 +98,15 @@
 - (void)trackRevenue:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
 {
     // Use logRevenueV2 with revenue properties.
-    if ([(NSNumber *)[self.settings objectForKey:@"useLogRevenueV2"] boolValue]) {
+    if ([(NSNumber *)self.settings[@"useLogRevenueV2"] boolValue]) {
         [self trackLogRevenueV2:properties andRevenueOrTotal:revenueOrTotal];
         return;
     }
 
     // fallback to logRevenue v1
-    NSString *productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"] ?: nil;
-    NSNumber *quantity = [properties objectForKey:@"quantity"] ?: [NSNumber numberWithInt:1];
-    id receipt = [properties objectForKey:@"receipt"] ?: nil;
+    NSString *productId = properties[@"productId"] ?: properties[@"product_id"] ?: nil;
+    NSNumber *quantity = properties[@"quantity"] ?: [NSNumber numberWithInt:1];
+    id receipt = properties[@"receipt"] ?: nil;
     [self.amplitude logRevenue:productId
                       quantity:[quantity integerValue]
                          price:revenueOrTotal
@@ -114,25 +116,25 @@
 
 - (void)trackLogRevenueV2:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
 {
-    NSNumber *price = [properties objectForKey:@"price"] ?: revenueOrTotal;
-    NSNumber *quantity = [properties objectForKey:@"quantity"] ?: [NSNumber numberWithInt:1];
+    NSNumber *price = properties[@"price"] ?: revenueOrTotal;
+    NSNumber *quantity = properties[@"quantity"] ?: [NSNumber numberWithInt:1];
     [[self.amprevenue setPrice:price] setQuantity:[quantity integerValue]];
     SEGLog(@"[[AMPRevenue revenue] setPrice:%@] setQuantity: %d];", price, [quantity integerValue]);
 
-    NSString *productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
+    NSString *productId = properties[@"productId"] ?: properties[@"product_id"];
     if (productId && ![productId isEqualToString:@""]) {
         [self.amprevenue setProductIdentifier:productId];
         SEGLog(@"[[AMPRevenue revenue] setProductIdentifier:%@];", productId);
     }
 
     // Amplitude throws a warning that receipt is meant to be of type NSData. Previously, Segment checked for only type NSString. For backwards capability, removed the check
-    id receipt = [properties objectForKey:@"receipt"];
+    id receipt = properties[@"receipt"];
     if (receipt) {
         [self.amprevenue setReceipt:receipt];
         SEGLog(@"[[AMPRevenue revenue] setReceipt:%@];", receipt);
     }
 
-    NSString *revenueType = [properties objectForKey:@"revenueType"] ?: [properties objectForKey:@"revenue_type"];
+    NSString *revenueType = properties[@"revenueType"] ?: properties[@"revenue_type"];
     if (revenueType && ![revenueType isEqualToString:@""]) {
         [self.amprevenue setRevenueType:revenueType];
         SEGLog(@"[AMPRevenue revenue] setRevenueType:%@];", revenueType);
@@ -149,7 +151,7 @@
 
 - (void)screen:(SEGScreenPayload *)payload
 {
-    if ([(NSNumber *)[self.settings objectForKey:@"trackAllPages"] boolValue]) {
+    if ([(NSNumber *)self.settings[@"trackAllPages"] boolValue]) {
         NSString *event = [[NSString alloc] initWithFormat:@"Viewed %@ Screen", payload.name];
         [self realTrack:event properties:payload.properties integrations:payload.integrations];
     }
