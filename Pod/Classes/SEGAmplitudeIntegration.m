@@ -102,8 +102,8 @@
     }
 
     // fallback to logRevenue v1
-    id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"] ?: nil;
-    id quantity = [properties objectForKey:@"quantity"] ?: [NSNumber numberWithInt:1];
+    NSString *productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"] ?: nil;
+    NSNumber *quantity = [properties objectForKey:@"quantity"] ?: [NSNumber numberWithInt:1];
     id receipt = [properties objectForKey:@"receipt"] ?: nil;
     [self.amplitude logRevenue:productId
                       quantity:[quantity integerValue]
@@ -114,13 +114,13 @@
 
 - (void)trackLogRevenueV2:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
 {
-    id price = [properties objectForKey:@"price"] ?: revenueOrTotal;
-    id quantity = [properties objectForKey:@"quantity"] ?: [NSNumber numberWithInt:1];
+    NSNumber *price = [properties objectForKey:@"price"] ?: revenueOrTotal;
+    NSNumber *quantity = [properties objectForKey:@"quantity"] ?: [NSNumber numberWithInt:1];
     [[self.amprevenue setPrice:price] setQuantity:[quantity integerValue]];
     SEGLog(@"[[AMPRevenue revenue] setPrice:%@] setQuantity: %d];", price, [quantity integerValue]);
 
-    id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
-    if (productId && [productId isKindOfClass:[NSString class]] && ![productId isEqualToString:@""]) {
+    NSString *productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
+    if (productId && ![productId isEqualToString:@""]) {
         [self.amprevenue setProductIdentifier:productId];
         SEGLog(@"[[AMPRevenue revenue] setProductIdentifier:%@];", productId);
     }
@@ -132,8 +132,8 @@
         SEGLog(@"[[AMPRevenue revenue] setReceipt:%@];", receipt);
     }
 
-    id revenueType = [properties objectForKey:@"revenueType"] ?: [properties objectForKey:@"revenue_type"];
-    if (revenueType && [revenueType isKindOfClass:[NSString class]] && ![revenueType isEqualToString:@""]) {
+    NSString *revenueType = [properties objectForKey:@"revenueType"] ?: [properties objectForKey:@"revenue_type"];
+    if (revenueType && ![revenueType isEqualToString:@""]) {
         [self.amprevenue setRevenueType:revenueType];
         SEGLog(@"[AMPRevenue revenue] setRevenueType:%@];", revenueType);
     }
