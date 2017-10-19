@@ -42,7 +42,6 @@
 
         if ([key caseInsensitiveCompare:totalKey] == NSOrderedSame) {
             revenueOrTotal = dictionary[key];
-            break;
         }
     }
 
@@ -96,43 +95,9 @@
 
 - (void)trackRevenue:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
 {
-        // Use logRevenueV2 with revenue properties.
+    // Use logRevenueV2 with revenue properties.
     if ([(NSNumber *)[self.settings objectForKey:@"useLogRevenueV2"] boolValue]) {
-        id price = [properties objectForKey:@"price"];
-        id quantity = [properties objectForKey:@"quantity"];
-        
-        // if no price fallback to using revenue
-        if (!price || ![price isKindOfClass:[NSNumber class]]) {
-            price = revenueOrTotal;
-            quantity = [NSNumber numberWithInt:1];
-        } else if (!quantity || ![quantity isKindOfClass:[NSNumber class]]) {
-            quantity = [NSNumber numberWithInt:1];
-        }
-        
-        [[self.amprevenue setPrice:price] setQuantity:[quantity integerValue]];
-        SEGLog(@"[[AMPRevenue revenue] setPrice:%@] setQuantity: %d];", price, [quantity integerValue]);
-        
-        id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
-        if (productId && [productId isKindOfClass:[NSString class]] && ![productId isEqualToString:@""]) {
-            [self.amprevenue setProductIdentifier:productId];
-            SEGLog(@"[[AMPRevenue revenue] setProductIdentifier:%@];", productId);
-        }
-        
-        //Receipt is meant to be of type NSData
-        id receipt = [properties objectForKey:@"receipt"];
-        if (receipt && [receipt isKindOfClass:[NSString class]] && ![receipt isEqualToString:@""]) {
-            [self.amprevenue setReceipt:receipt];
-            SEGLog(@"[[AMPRevenue revenue] setReceipt:%@];", receipt);
-        }
-        id revenueType = [properties objectForKey:@"revenueType"] ?: [properties objectForKey:@"revenue_type"];
-        if (revenueType && [revenueType isKindOfClass:[NSString class]] && ![revenueType isEqualToString:@""]) {
-            [self.amprevenue setRevenueType:revenueType];
-            SEGLog(@"[AMPRevenue revenue] setRevenueType:%@];", revenueType);
-        }
-        NSLog(@"Price : %@, Quantity : %@", price, quantity);
-        [self.amplitude logRevenueV2:self.amprevenue];
-        SEGLog(@"[Amplitude logRevenueV2:%@];", self.amprevenue);
-        
+        [self trackLogRevenueV2:properties andRevenueOrTotal:revenueOrTotal];
     } else {
         // fallback to logRevenue v1
         id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
@@ -153,6 +118,44 @@
                            receipt:receipt];
         SEGLog(@"[Amplitude logRevenue:%@ quantity:%d price:%@ receipt:%@];", productId, [quantity integerValue], revenueOrTotal, receipt);
     }
+}
+
+- (void)trackLogRevenueV2:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
+{
+    id price = [properties objectForKey:@"price"];
+    id quantity = [properties objectForKey:@"quantity"];
+
+    // if no price fallback to using revenue
+    if (!price || ![price isKindOfClass:[NSNumber class]]) {
+        price = revenueOrTotal;
+        quantity = [NSNumber numberWithInt:1];
+    } else if (!quantity || ![quantity isKindOfClass:[NSNumber class]]) {
+        quantity = [NSNumber numberWithInt:1];
+    }
+
+    [[self.amprevenue setPrice:price] setQuantity:[quantity integerValue]];
+    SEGLog(@"[[AMPRevenue revenue] setPrice:%@] setQuantity: %d];", price, [quantity integerValue]);
+
+    id productId = [properties objectForKey:@"productId"] ?: [properties objectForKey:@"product_id"];
+    if (productId && [productId isKindOfClass:[NSString class]] && ![productId isEqualToString:@""]) {
+        [self.amprevenue setProductIdentifier:productId];
+        SEGLog(@"[[AMPRevenue revenue] setProductIdentifier:%@];", productId);
+    }
+
+    //Receipt is meant to be of type NSData
+    id receipt = [properties objectForKey:@"receipt"];
+    if (receipt && [receipt isKindOfClass:[NSString class]] && ![receipt isEqualToString:@""]) {
+        [self.amprevenue setReceipt:receipt];
+        SEGLog(@"[[AMPRevenue revenue] setReceipt:%@];", receipt);
+    }
+    id revenueType = [properties objectForKey:@"revenueType"] ?: [properties objectForKey:@"revenue_type"];
+    if (revenueType && [revenueType isKindOfClass:[NSString class]] && ![revenueType isEqualToString:@""]) {
+        [self.amprevenue setRevenueType:revenueType];
+        SEGLog(@"[AMPRevenue revenue] setRevenueType:%@];", revenueType);
+    }
+    NSLog(@"Price : %@, Quantity : %@", price, quantity);
+    [self.amplitude logRevenueV2:self.amprevenue];
+    SEGLog(@"[Amplitude logRevenueV2:%@];", self.amprevenue);
 }
 
 - (void)track:(SEGTrackPayload *)payload
