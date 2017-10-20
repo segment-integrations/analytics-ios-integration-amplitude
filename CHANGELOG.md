@@ -1,5 +1,14 @@
 Change Log
 ==========
+Version 1.5.0 *(20th October, 2017)*
+-----------------------------
+*(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
+
+* [Adds](https://github.com/segment-integrations/analytics-ios-integration-amplitude/commit/d86cc3ed8e14ad0156f7247e4cb2e4e68a316269): Fallback to `total` if `revenue` is not present on E-Commerce events.
+* [Adds](https://github.com/segment-integrations/analytics-ios-integration-amplitude/commit/25d8659a5a3475bb6c4f852f2f5111f627c297d3): Check for `snake_case` properties, which is the expected casing for analytics-ios.
+* [Refactor](https://github.com/segment-integrations/analytics-ios-integration-amplitude/commit/b26c83eaaddfec900403f4b195f877e134611861) and [cleanup](https://github.com/segment-integrations/analytics-ios-integration-amplitude/commit/b282af19c09cb4b002d49e7a0ecc2813ce960f35): revenue logic.
+* [Adds tests](https://github.com/segment-integrations/analytics-ios-integration-amplitude/commit/455841ba95038446a33071b6210ede210db0ec07).
+
 Version 1.4.4 *(9th October, 2017)*
 -----------------------------
 *(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
