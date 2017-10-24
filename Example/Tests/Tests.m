@@ -103,7 +103,28 @@ describe(@"SEGAmplitudeIntegration", ^{
         it(@"sets groupId", ^{
             SEGGroupPayload *payload = [[SEGGroupPayload alloc] initWithGroupId:@"322" traits:@{} context:@{} integrations:@{}];
             [integration group:payload];
-            [verify(amplitude) setGroup:@"[Segment] Group" groupName:@"322"];
+            [verify(amplitude) setGroup:@"322" groupName:@"[Segment] Group"];
+        });
+
+        it(@"settings.groupTypeValue and settings.groupTypeTrait", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"groupTypeValue" : @"industry",
+                                                                               @"groupTypeTrait" : @"company" }
+                                                               andAmplitude:amplitude
+                                                              andAmpRevenue:amprevenue];
+            SEGGroupPayload *payload = [[SEGGroupPayload alloc] initWithGroupId:@"32423084" traits:@{
+                @"company" : @"Segment",
+                @"industry" : @"Technology"
+            }
+                context:@{}
+                integrations:@{}];
+            [integration group:payload];
+            [verify(amplitude) setGroup:@"Technology" groupName:@"Segment"];
+        });
+
+        it(@"sets group name with traits.name", ^{
+            SEGGroupPayload *payload = [[SEGGroupPayload alloc] initWithGroupId:@"12342" traits:@{ @"name" : @"Segment" } context:@{} integrations:@{}];
+            [integration group:payload];
+            [verify(amplitude) setGroup:@"12342" groupName:@"Segment"];
         });
     });
 
