@@ -89,8 +89,24 @@ describe(@"SEGAmplitudeIntegration", ^{
             [verifyCount(amplitude, never()) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
         });
 
-        it(@"calls basic screen", ^{
+        it(@"calls trackAllPages screen", ^{
             integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
+
+            SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
+            [integration screen:payload];
+            [verify(amplitude) logEvent:@"Viewed Screen" withEventProperties:@{}];
+        });
+
+        it(@"calls trackCategorizedPages screen", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackCategorizedPages" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
+
+            SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{ @"category" : @"Clothing" } context:@{} integrations:@{}];
+            [integration screen:payload];
+            [verify(amplitude) logEvent:@"Viewed Clothing Screen" withEventProperties:@{ @"category" : @"Clothing" }];
+        });
+
+        it(@"calls trackNamedPages screen", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackNamedPages" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];

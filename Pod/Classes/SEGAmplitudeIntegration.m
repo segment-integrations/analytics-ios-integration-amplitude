@@ -152,6 +152,11 @@
 - (void)screen:(SEGScreenPayload *)payload
 {
     if ([(NSNumber *)self.settings[@"trackAllPages"] boolValue]) {
+        [self realTrack:@"Viewed Screen" properties:payload.properties integrations:payload.integrations];
+    } else if ([(NSNumber *)self.settings[@"trackCategorizedPages"] boolValue]) {
+        NSString *event = [[NSString alloc] initWithFormat:@"Viewed %@ Screen", payload.properties[@"category"]];
+        [self realTrack:event properties:payload.properties integrations:payload.integrations];
+    } else if ([(NSNumber *)self.settings[@"trackNamedPages"] boolValue]) {
         NSString *event = [[NSString alloc] initWithFormat:@"Viewed %@ Screen", payload.name];
         [self realTrack:event properties:payload.properties integrations:payload.integrations];
     }
