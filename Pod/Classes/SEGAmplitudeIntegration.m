@@ -171,7 +171,7 @@
 
     NSString *groupName;
     NSString *groupValue;
-    if ([payload.traits objectForKey:groupTypeTrait] && [payload.traits objectForKey:groupTypeValue]) {
+    if (payload.traits[groupTypeTrait] && payload.traits[groupTypeValue]) {
         groupName = [payload.traits objectForKey:groupTypeTrait];
         groupValue = [payload.traits objectForKey:groupTypeValue];
     } else {
