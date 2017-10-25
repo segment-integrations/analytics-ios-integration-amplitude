@@ -174,6 +174,9 @@
 
 - (void)reset
 {
+    [self.amplitude setUserId:nil];
+    SEGLog(@"[Amplitude setUserId:nil");
+
     [self.amplitude regenerateDeviceId];
     SEGLog(@"[Amplitude regnerateDeviceId];");
 }
