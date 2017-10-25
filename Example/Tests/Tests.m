@@ -41,7 +41,8 @@ describe(@"SEGAmplitudeIntegration", ^{
         amplitude = mock([Amplitude class]);
         amprevenue = mock([AMPRevenue class]);
         identify = mock([AMPIdentify class]);
-        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{} andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"apiKey" : @"76230f248487a2864cee36863d100c4d",
+        } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
     });
 
     describe(@"Identify", ^{
@@ -265,12 +266,28 @@ describe(@"SEGAmplitudeIntegration", ^{
                     @"price" : @"21.99",
                     @"quantity" : @"1"
                 }
-            }
-                context:@{}
+            } context:@{}
                 integrations:@{}];
 
             [integration track:payload];
             [[verify(amprevenue) setPrice:@8] setQuantity:1];
+            [verify(amprevenue) setEventProperties:@{
+                @"checkout_id" : @"9bcf000000000000",
+                @"order_id" : @"50314b8e",
+                @"affiliation" : @"App Store",
+                @"shipping" : @5.05,
+                @"tax" : @1.20,
+                @"currency" : @"USD",
+                @"category" : @"Games",
+                @"products" : @{
+                    @"product_id" : @"2013294",
+                    @"category" : @"Games",
+                    @"name" : @"Monopoly: 3rd Edition",
+                    @"brand" : @"Hasbros",
+                    @"price" : @"21.99",
+                    @"quantity" : @"1"
+                }
+            }];
             [verify(amplitude) logRevenueV2:amprevenue];
         });
 
@@ -300,6 +317,23 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             [integration track:payload];
             [[verify(amprevenue) setPrice:@30.45] setQuantity:1];
+            [verify(amprevenue) setEventProperties:@{
+                @"checkout_id" : @"9bcf000000000000",
+                @"order_id" : @"50314b8e",
+                @"affiliation" : @"App Store",
+                @"shipping" : @5.05,
+                @"tax" : @1.20,
+                @"currency" : @"USD",
+                @"category" : @"Games",
+                @"products" : @{
+                    @"product_id" : @"2013294",
+                    @"category" : @"Games",
+                    @"name" : @"Monopoly: 3rd Edition",
+                    @"brand" : @"Hasbros",
+                    @"price" : @"21.99",
+                    @"quantity" : @"1"
+                }
+            }];
             [verify(amplitude) logRevenueV2:amprevenue];
         });
 
@@ -330,6 +364,23 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             [integration track:payload];
             [[verify(amprevenue) setPrice:@8] setQuantity:1];
+            [verify(amprevenue) setEventProperties:@{
+                @"checkout_id" : @"9bcf000000000000",
+                @"order_id" : @"50314b8e",
+                @"affiliation" : @"App Store",
+                @"shipping" : @5.05,
+                @"tax" : @1.20,
+                @"currency" : @"USD",
+                @"category" : @"Games",
+                @"products" : @{
+                    @"product_id" : @"2013294",
+                    @"category" : @"Games",
+                    @"name" : @"Monopoly: 3rd Edition",
+                    @"brand" : @"Hasbros",
+                    @"price" : @"21.99",
+                    @"quantity" : @"1"
+                }
+            }];
             [verify(amplitude) logRevenueV2:amprevenue];
         });
 
