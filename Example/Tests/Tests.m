@@ -84,13 +84,15 @@ describe(@"SEGAmplitudeIntegration", ^{
             integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[ @"karma", @"store_credit" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
 
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"3290842" anonymousId:nil traits:@{ @"karma" : @0.23,
-                                                                                                                          @"store_credit" : @20 }
+                                                                                                                          @"store_credit" : @20,
+                                                                                                                          @"gender" : @"female" }
                 context:@{}
                 integrations:@{}];
 
             [integration identify:payload];
             [verify(amplitude) identify:[identify add:@"karma" value:@0.23]];
             [verify(amplitude) identify:[identify add:@"store_credit" value:@20]];
+            [verify(amplitude) identify:[identify set:@"gender" value:@"female"]];
         });
 
     });
@@ -125,7 +127,8 @@ describe(@"SEGAmplitudeIntegration", ^{
             integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"groupTypeValue" : @"company",
                                                                                @"groupTypeTrait" : @"industry" }
                                                                andAmplitude:amplitude
-                                                              andAmpRevenue:amprevenue];
+                                                              andAmpRevenue:amprevenue
+                                                             andAmpIdentify:identify];
             SEGGroupPayload *payload = [[SEGGroupPayload alloc] initWithGroupId:@"32423084" traits:@{
                 @"company" : @"Segment",
                 @"industry" : @"Technology"

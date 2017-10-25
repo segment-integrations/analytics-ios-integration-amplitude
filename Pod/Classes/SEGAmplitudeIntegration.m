@@ -70,10 +70,10 @@
         [payload.traits enumerateKeysAndObjectsUsingBlock:^(NSString *_Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
             [self incrementTrait:key andValue:obj];
         }];
-    }
-
-    [self.amplitude setUserProperties:payload.traits];
-    SEGLog(@"[Amplitude setUserProperties:%@]", payload.traits);
+    } else {
+        [self.amplitude setUserProperties:payload.traits];
+        SEGLog(@"[Amplitude setUserProperties:%@]", payload.traits);
+    };
 
     NSDictionary *options = payload.integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
@@ -204,11 +204,18 @@
 
 - (void)incrementTrait:(NSString *)trait andValue:(NSString *)value
 {
+    __block BOOL isAmountSet = false;
+
     NSArray *increments = self.settings[@"traitsToIncrement"];
     for (NSString *increment in increments) {
-        if ([trait isEqualToString:increment]) {
+        if ([increment isEqualToString:trait]) {
             [self.amplitude identify:[self.identify add:trait value:value]];
+            isAmountSet = @YES;
         }
+    }
+
+    if (!isAmountSet) {
+        [self.amplitude identify:[self.identify set:trait value:value]];
     }
 }
 
