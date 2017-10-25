@@ -107,8 +107,8 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"settings.groupTypeValue and settings.groupTypeTrait", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"groupTypeValue" : @"industry",
-                                                                               @"groupTypeTrait" : @"company" }
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"groupTypeValue" : @"company",
+                                                                               @"groupTypeTrait" : @"industry" }
                                                                andAmplitude:amplitude
                                                               andAmpRevenue:amprevenue];
             SEGGroupPayload *payload = [[SEGGroupPayload alloc] initWithGroupId:@"32423084" traits:@{
@@ -118,7 +118,7 @@ describe(@"SEGAmplitudeIntegration", ^{
                 context:@{}
                 integrations:@{}];
             [integration group:payload];
-            [verify(amplitude) setGroup:@"Technology" groupName:@"Segment"];
+            [verify(amplitude) setGroup:@"Segment" groupName:@"Technology"];
         });
 
         it(@"sets group name with traits.name", ^{
