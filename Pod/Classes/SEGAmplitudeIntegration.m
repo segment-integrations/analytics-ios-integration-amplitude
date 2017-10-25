@@ -159,21 +159,14 @@
 
 - (void)group:(SEGGroupPayload *)payload
 {
-    NSString *groupTypeTrait;
-    if (self.settings[@"groupTypeTrait"]) {
-        groupTypeTrait = self.settings[@"groupTypeTrait"];
-    }
-
-    NSString *groupTypeValue;
-    if (self.settings[@"groupTypeValue"]) {
-        groupTypeValue = self.settings[@"groupTypeValue"];
-    }
-
+    NSString *groupTypeTrait = self.settings[@"groupTypeTrait"];
+    NSString *groupTypeValue = self.settings[@"groupTypeValue"];
     NSString *groupName;
     NSString *groupValue;
+
     if (payload.traits[groupTypeTrait] && payload.traits[groupTypeValue]) {
-        groupName = [payload.traits objectForKey:groupTypeTrait];
-        groupValue = [payload.traits objectForKey:groupTypeValue];
+        groupName = payload.traits[groupTypeTrait];
+        groupValue = payload.traits[groupTypeValue];
     } else {
         groupName = payload.traits[@"name"] ?: @"[Segment] Group";
         groupValue = payload.groupId;
