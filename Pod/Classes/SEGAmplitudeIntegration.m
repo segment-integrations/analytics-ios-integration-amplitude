@@ -204,9 +204,9 @@
 
 - (void)incrementTrait:(NSString *)trait andValue:(NSString *)value
 {
-    NSArray *increments = [self.settings objectForKey:@"traitsToIncrement"];
+    NSArray *increments = self.settings[@"traitsToIncrement"];
     for (NSString *increment in increments) {
-        if ([trait caseInsensitiveCompare:increment] == NSOrderedSame) {
+        if ([trait isEqualToString:increment]) {
             [self.amplitude identify:[self.identify add:trait value:value]];
         }
     }

@@ -81,16 +81,16 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"increments identify trait", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[ @"karma", @"Store Credit" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[ @"karma", @"store_credit" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
 
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"3290842" anonymousId:nil traits:@{ @"karma" : @0.23,
-                                                                                                                          @"store credit" : @20 }
+                                                                                                                          @"store_credit" : @20 }
                 context:@{}
                 integrations:@{}];
 
             [integration identify:payload];
             [verify(amplitude) identify:[identify add:@"karma" value:@0.23]];
-            [verify(amplitude) identify:[identify add:@"store credit" value:@20]];
+            [verify(amplitude) identify:[identify add:@"store_credit" value:@20]];
         });
 
     });
