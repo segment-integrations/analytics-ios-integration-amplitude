@@ -117,6 +117,7 @@ describe(@"SEGAmplitudeIntegration", ^{
     describe(@"Reset", ^{
         it(@"calls regenerateDeviceId", ^{
             [integration reset];
+            [verify(amplitude) setUserId:nil];
             [verify(amplitude) regenerateDeviceId];
         });
     });
