@@ -7,15 +7,16 @@
 
 - (id)initWithSettings:(NSDictionary *)settings
 {
-    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue]];
+    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue] andAmpIdentify:[AMPIdentify identify]];
 }
 
-- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue andAmpIdentify:(AMPIdentify *)identify
 {
     if (self = [super init]) {
         self.settings = settings;
         self.amplitude = amplitude;
         self.amprevenue = amprevenue;
+        self.identify = identify;
 
         NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
@@ -64,8 +65,16 @@
 {
     [self.amplitude setUserId:payload.userId];
     SEGLog(@"[Amplitude setUserId:%@]", payload.userId);
+
+    if (self.settings[@"traitsToIncrement"]) {
+        [payload.traits enumerateKeysAndObjectsUsingBlock:^(NSString *_Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
+            [self incrementTrait:key andValue:obj];
+        }];
+    }
+
     [self.amplitude setUserProperties:payload.traits];
     SEGLog(@"[Amplitude setUserProperties:%@]", payload.traits);
+
     NSDictionary *options = payload.integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
@@ -189,6 +198,18 @@
 
     [self.amplitude regenerateDeviceId];
     SEGLog(@"[Amplitude regnerateDeviceId];");
+}
+
+#pragma utils
+
+- (void)incrementTrait:(NSString *)trait andValue:(NSString *)value
+{
+    NSArray *increments = [self.settings objectForKey:@"traitsToIncrement"];
+    for (NSString *increment in increments) {
+        if ([trait caseInsensitiveCompare:increment] == NSOrderedSame) {
+            [self.amplitude identify:[self.identify add:trait value:value]];
+        }
+    }
 }
 
 
