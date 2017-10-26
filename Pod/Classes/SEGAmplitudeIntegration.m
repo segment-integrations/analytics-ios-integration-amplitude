@@ -7,15 +7,16 @@
 
 - (id)initWithSettings:(NSDictionary *)settings
 {
-    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue]];
+    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue] andAmpIdentify:[AMPIdentify identify]];
 }
 
-- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue andAmpIdentify:(AMPIdentify *)identify
 {
     if (self = [super init]) {
         self.settings = settings;
         self.amplitude = amplitude;
         self.amprevenue = amprevenue;
+        self.identify = identify;
 
         NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
@@ -64,8 +65,16 @@
 {
     [self.amplitude setUserId:payload.userId];
     SEGLog(@"[Amplitude setUserId:%@]", payload.userId);
-    [self.amplitude setUserProperties:payload.traits];
-    SEGLog(@"[Amplitude setUserProperties:%@]", payload.traits);
+
+    if (self.settings[@"traitsToIncrement"]) {
+        [payload.traits enumerateKeysAndObjectsUsingBlock:^(NSString *_Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
+            [self incrementTrait:key andValue:obj];
+        }];
+    } else {
+        [self.amplitude setUserProperties:payload.traits];
+        SEGLog(@"[Amplitude setUserProperties:%@]", payload.traits);
+    };
+
     NSDictionary *options = payload.integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
@@ -186,6 +195,25 @@
 
     [self.amplitude regenerateDeviceId];
     SEGLog(@"[Amplitude regnerateDeviceId];");
+}
+
+#pragma utils
+
+- (void)incrementTrait:(NSString *)trait andValue:(NSString *)value
+{
+    __block BOOL isAmountSet = false;
+
+    NSArray *increments = self.settings[@"traitsToIncrement"];
+    for (NSString *increment in increments) {
+        if ([increment isEqualToString:trait]) {
+            [self.amplitude identify:[self.identify add:trait value:value]];
+            isAmountSet = @YES;
+        }
+    }
+
+    if (!isAmountSet) {
+        [self.amplitude identify:[self.identify set:trait value:value]];
+    }
 }
 
 
