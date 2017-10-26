@@ -26,6 +26,10 @@
             self.amplitude.trackingSessionEvents = true;
             SEGLog(@"[Amplitude.trackingSessionEvents = true]");
         }
+
+        if ([(NSNumber *)self.settings[@"useAdvertisingIdForDeviceId"] boolValue]) {
+            [self.amplitude useAdvertisingIdForDeviceId];
+        }
     }
     return self;
 }
