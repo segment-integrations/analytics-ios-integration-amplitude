@@ -26,6 +26,12 @@
             self.amplitude.trackingSessionEvents = true;
             SEGLog(@"[Amplitude.trackingSessionEvents = true]");
         }
+
+
+        if ([(NSNumber *)self.settings[@"enableLocationListening"] boolValue]) {
+            [self.amplitude enableLocationListening];
+            SEGLog(@"[Ampltidue enableLocationListening]");
+        }
     }
     return self;
 }
