@@ -17,6 +17,7 @@
         self.amplitude = amplitude;
         self.amprevenue = amprevenue;
         self.identify = identify;
+        self.traitsToIncrement = [NSSet setWithArray:self.settings[@"traitsToIncrement"]];
 
         NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
@@ -66,14 +67,13 @@
     [self.amplitude setUserId:payload.userId];
     SEGLog(@"[Amplitude setUserId:%@]", payload.userId);
 
-    if (self.settings[@"traitsToIncrement"]) {
-        [payload.traits enumerateKeysAndObjectsUsingBlock:^(NSString *_Nonnull key, id _Nonnull obj, BOOL *_Nonnull stop) {
-            [self incrementTrait:key andValue:obj];
-        }];
+    if ([self.traitsToIncrement count] > 0) {
+        [self incrementOrSetTraits:payload.traits];
     } else {
         [self.amplitude setUserProperties:payload.traits];
         SEGLog(@"[Amplitude setUserProperties:%@]", payload.traits);
-    };
+    }
+
 
     NSDictionary *options = payload.integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
@@ -199,22 +199,18 @@
 
 #pragma utils
 
-- (void)incrementTrait:(NSString *)trait andValue:(NSString *)value
+- (void)incrementOrSetTraits:(NSDictionary *)traits
 {
-    __block BOOL isAmountSet = false;
-
-    NSArray *increments = self.settings[@"traitsToIncrement"];
-    for (NSString *increment in increments) {
-        if ([increment isEqualToString:trait]) {
+    for (NSString *trait in traits) {
+        id value = [traits valueForKey:trait];
+        if ([self.traitsToIncrement member:trait]) {
             [self.amplitude identify:[self.identify add:trait value:value]];
-            isAmountSet = @YES;
+            SEGLog(@"[Amplitude add:%@ value:%@]", trait, value);
+        } else {
+            [self.amplitude identify:[self.identify set:trait value:value]];
+            SEGLog(@"[Amplitude set:%@ value:%@]", trait, value);
         }
-    }
-
-    if (!isAmountSet) {
-        [self.amplitude identify:[self.identify set:trait value:value]];
-    }
+    };
 }
-
 
 @end

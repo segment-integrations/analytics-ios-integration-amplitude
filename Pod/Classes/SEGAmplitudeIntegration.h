@@ -14,6 +14,7 @@
 @property (strong) Amplitude *amplitude;
 @property (strong) AMPRevenue *amprevenue;
 @property AMPIdentify *identify;
+@property NSSet *traitsToIncrement;
 
 - (id)initWithSettings:(NSDictionary *)settings;
 - (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue andAmpIdentify:(AMPIdentify *)identify;
