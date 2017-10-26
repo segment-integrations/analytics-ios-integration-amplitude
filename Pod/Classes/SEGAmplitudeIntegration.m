@@ -161,13 +161,10 @@
 {
     NSString *groupTypeTrait = self.settings[@"groupTypeTrait"];
     NSString *groupTypeValue = self.settings[@"groupTypeValue"];
-    NSString *groupName;
-    NSString *groupValue;
+    NSString *groupName = payload.traits[groupTypeTrait];
+    NSString *groupValue = payload.traits[groupTypeValue];
 
-    if (payload.traits[groupTypeTrait] && payload.traits[groupTypeValue]) {
-        groupName = payload.traits[groupTypeTrait];
-        groupValue = payload.traits[groupTypeValue];
-    } else {
+    if (!groupName || !groupValue) {
         groupName = payload.traits[@"name"] ?: @"[Segment] Group";
         groupValue = payload.groupId;
     }
