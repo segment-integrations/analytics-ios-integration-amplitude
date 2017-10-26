@@ -47,6 +47,7 @@ describe(@"SEGAmplitudeIntegration", ^{
     describe(@"Identify", ^{
 
         it(@"identify without traits", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : [NSNull null] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"1111" anonymousId:nil traits:@{} context:@{} integrations:@{}];
 
             [integration identify:payload];
@@ -54,6 +55,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"identify with traits", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"7891" anonymousId:nil traits:@{
                 @"name" : @"George Costanza",
                 @"gender" : @"male",

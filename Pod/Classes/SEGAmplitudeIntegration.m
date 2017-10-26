@@ -17,7 +17,9 @@
         self.amplitude = amplitude;
         self.amprevenue = amprevenue;
         self.identify = identify;
-        self.traitsToIncrement = [NSSet setWithArray:self.settings[@"traitsToIncrement"]];
+        if (self.settings[@"traitsToIncrement"] != (id)[NSNull null]) {
+            self.traitsToIncrement = [NSSet setWithArray:self.settings[@"traitsToIncrement"]];
+        }
 
         NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
@@ -210,7 +212,7 @@
             [self.amplitude identify:[self.identify set:trait value:value]];
             SEGLog(@"[Amplitude set:%@ value:%@]", trait, value);
         }
-    };
+    }
 }
 
 @end
