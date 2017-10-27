@@ -47,7 +47,11 @@ describe(@"SEGAmplitudeIntegration", ^{
     describe(@"Identify", ^{
 
         it(@"identify without traits", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : [NSNull null] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : [NSNull null],
+                                                                               @"traitsToSetOnce" : [NSNull null] }
+                                                               andAmplitude:amplitude
+                                                              andAmpRevenue:amprevenue
+                                                             andAmpIdentify:identify];
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"1111" anonymousId:nil traits:@{} context:@{} integrations:@{}];
 
             [integration identify:payload];
@@ -55,7 +59,11 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"identify with traits", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[],
+                                                                               @"traitsToSetOnce" : @[] }
+                                                               andAmplitude:amplitude
+                                                              andAmpRevenue:amprevenue
+                                                             andAmpIdentify:identify];
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"7891" anonymousId:nil traits:@{
                 @"name" : @"George Costanza",
                 @"gender" : @"male",
@@ -95,6 +103,46 @@ describe(@"SEGAmplitudeIntegration", ^{
             [verify(amplitude) identify:[identify add:@"karma" value:@0.23]];
             [verify(amplitude) identify:[identify add:@"store_credit" value:@20]];
             [verify(amplitude) identify:[identify set:@"gender" value:@"female"]];
+        });
+
+        it(@"sets identify trait once", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToSetOnce" : @[ @"sign_up_date" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+
+            SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"3290842" anonymousId:nil traits:@{ @"sign_up_date" : @"2015-08-24",
+                                                                                                                          @"city" : @"los angeles" }
+                context:@{}
+                integrations:@{}];
+
+            [integration identify:payload];
+            [verify(amplitude) identify:[identify setOnce:@"sign_up_date" value:@"2015-08-24"]];
+            [verify(amplitude) identify:[identify set:@"city" value:@"los angeles"]];
+        });
+
+        it(@"sets identify trait once and increments trait", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToSetOnce" : @[ @"birthdate" ],
+                                                                               @"traitsToIncrement" : @[ @"age" ] }
+                                                               andAmplitude:amplitude
+                                                              andAmpRevenue:amprevenue
+                                                             andAmpIdentify:identify];
+
+            SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"3290842" anonymousId:nil traits:@{ @"address" : @{
+                @"street" : @"California st",
+                @"city" : @"San Francisco"
+            },
+                                                                                                                          @"birthdate" : @"1989-07-10",
+                                                                                                                          @"name" : @"ladan",
+                                                                                                                          @"age" : @28 }
+                context:@{}
+                integrations:@{}];
+
+            [integration identify:payload];
+            [verify(amplitude) identify:[identify setOnce:@"birthdate" value:@"1989-07-10"]];
+            [verify(amplitude) identify:[identify add:@"age" value:@28]];
+            [verify(amplitude) identify:[identify set:@"name" value:@"ladan"]];
+            [verify(amplitude) identify:[identify set:@"address" value:@{
+                @"street" : @"California st",
+                @"city" : @"San Francisco"
+            }]];
         });
 
     });
