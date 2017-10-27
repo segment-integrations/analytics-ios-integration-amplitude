@@ -196,6 +196,37 @@ describe(@"SEGAmplitudeIntegration", ^{
             [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props withGroups:@{ @"jobs" : @[ @"Pendant Publishing" ] }];
         });
 
+        it(@"doesn't track group if not NSDictionary", ^{
+            NSDictionary *props = @{
+                @"url" : @"seinfeld.wikia.com/wiki/The_Puffy_Shirt"
+            };
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Sent Product Link" properties:props context:@{} integrations:@{ @"Amplitude" : @{@"groups" : @"jobs"} }];
+            [integration track:payload];
+            [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props];
+        });
+
+        it(@"tracks an event with groups and outOfSession", ^{
+            NSDictionary *props = @{
+                @"order_number" : @34294
+            };
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Order Delivered" properties:props context:@{} integrations:@{ @"Amplitude" : @{@"groups" : @{@"Buroughs" : @[ @"Brooklyn", @"Manhattan" ]}, @"outOfSession" : @YES} }];
+            [integration track:payload];
+            [verify(amplitude) logEvent:@"Order Delivered" withEventProperties:props withGroups:@{ @"Buroughs" : @[ @"Brooklyn", @"Manhattan" ] } outOfSession:true];
+        });
+
+        it(@"tracks an event with groups and outOfSession", ^{
+            NSDictionary *props = @{
+                @"reminder" : @"drink water"
+            };
+
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Reminder Sent" properties:props context:@{} integrations:@{ @"Amplitude" : @{@"outOfSession" : @YES} }];
+            [integration track:payload];
+            [verify(amplitude) logEvent:@"Reminder Sent" withEventProperties:props outOfSession:true];
+        });
+
+
         it(@"tracks Order Completed with revenue if both total and revenue are present", ^{
             integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
 
