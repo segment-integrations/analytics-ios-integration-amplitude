@@ -21,6 +21,10 @@
             self.traitsToIncrement = [NSSet setWithArray:self.settings[@"traitsToIncrement"]];
         }
 
+        if (self.settings[@"traitsToSetOnce"] != (id)[NSNull null]) {
+            self.traitsToSetOnce = [NSSet setWithArray:self.settings[@"traitsToSetOnce"]];
+        }
+
         NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
         SEGLog(@"[Amplitude initializeApiKey:%@]", apiKey);
@@ -73,7 +77,7 @@
     [self.amplitude setUserId:payload.userId];
     SEGLog(@"[Amplitude setUserId:%@]", payload.userId);
 
-    if ([self.traitsToIncrement count] > 0) {
+    if ([self.traitsToIncrement count] > 0 || [self.traitsToSetOnce count] > 0) {
         [self incrementOrSetTraits:payload.traits];
     } else {
         [self.amplitude setUserProperties:payload.traits];
@@ -212,6 +216,8 @@
         if ([self.traitsToIncrement member:trait]) {
             [self.amplitude identify:[self.identify add:trait value:value]];
             SEGLog(@"[Amplitude add:%@ value:%@]", trait, value);
+        } else if ([self.traitsToSetOnce member:trait]) {
+            [self.amplitude identify:[self.identify setOnce:trait value:value]];
         } else {
             [self.amplitude identify:[self.identify set:trait value:value]];
             SEGLog(@"[Amplitude set:%@ value:%@]", trait, value);
