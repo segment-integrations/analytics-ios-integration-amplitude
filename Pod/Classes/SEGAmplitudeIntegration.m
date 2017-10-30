@@ -170,6 +170,13 @@
 
 - (void)screen:(SEGScreenPayload *)payload
 {
+    if ([(NSNumber *)[self.settings objectForKey:@"trackAllPagesV2"] boolValue]) {
+        NSString *event = [[NSString alloc] initWithFormat:@"Loaded a Screen"];
+        [self realTrack:event properties:payload.properties integrations:payload.integrations];
+        return;
+    }
+
+    // Deprecated.
     if ([(NSNumber *)self.settings[@"trackAllPages"] boolValue]) {
         NSString *event = [[NSString alloc] initWithFormat:@"Viewed %@ Screen", payload.name];
         [self realTrack:event properties:payload.properties integrations:payload.integrations];

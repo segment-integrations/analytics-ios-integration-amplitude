@@ -156,12 +156,20 @@ describe(@"SEGAmplitudeIntegration", ^{
             [verifyCount(amplitude, never()) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
         });
 
-        it(@"calls basic screen", ^{
+        it(@"trackAllPages", ^{
             integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
             [verify(amplitude) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
+        });
+
+        it(@"trackAllPagesV2", ^{
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPagesV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+
+            SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
+            [integration screen:payload];
+            [verify(amplitude) logEvent:@"Loaded a Screen" withEventProperties:@{}];
         });
 
     });
