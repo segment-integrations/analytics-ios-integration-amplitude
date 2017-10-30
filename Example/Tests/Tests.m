@@ -169,7 +169,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
-            [verify(amplitude) logEvent:@"Loaded a Screen" withEventProperties:@{}];
+            [verify(amplitude) logEvent:@"Loaded a Screen" withEventProperties:@{ @"name" : @"Shirts" }];
         });
 
     });

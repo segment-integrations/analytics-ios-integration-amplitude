@@ -171,8 +171,9 @@
 - (void)screen:(SEGScreenPayload *)payload
 {
     if ([(NSNumber *)[self.settings objectForKey:@"trackAllPagesV2"] boolValue]) {
-        NSString *event = [[NSString alloc] initWithFormat:@"Loaded a Screen"];
-        [self realTrack:event properties:payload.properties integrations:payload.integrations];
+        NSMutableDictionary *payloadProps = [NSMutableDictionary dictionaryWithDictionary:payload.properties];
+        [payloadProps setValue:payload.name forKey:@"name"];
+        [self realTrack:@"Loaded a Screen" properties:payloadProps integrations:payload.integrations];
         return;
     }
 
