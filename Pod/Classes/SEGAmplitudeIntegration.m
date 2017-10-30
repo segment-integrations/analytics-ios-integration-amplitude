@@ -95,7 +95,7 @@
 {
     NSDictionary *options = integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
-    bool outOfSession = options[@"outOfSession"];
+    bool outOfSession = [options isKindOfClass:[NSDictionary class]] ? options[@"outOfSession"] : false;
 
     if (groups && [groups isKindOfClass:[NSDictionary class]] && outOfSession) {
         [self.amplitude logEvent:event withEventProperties:properties withGroups:groups outOfSession:true];
