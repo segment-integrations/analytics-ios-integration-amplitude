@@ -170,6 +170,14 @@
 
 - (void)screen:(SEGScreenPayload *)payload
 {
+    if ([(NSNumber *)[self.settings objectForKey:@"trackAllPagesV2"] boolValue]) {
+        NSMutableDictionary *payloadProps = [NSMutableDictionary dictionaryWithDictionary:payload.properties];
+        [payloadProps setValue:payload.name forKey:@"name"];
+        [self realTrack:@"Loaded a Screen" properties:payloadProps integrations:payload.integrations];
+        return;
+    }
+
+    // Deprecated.
     if ([(NSNumber *)self.settings[@"trackAllPages"] boolValue]) {
         NSString *event = [[NSString alloc] initWithFormat:@"Viewed %@ Screen", payload.name];
         [self realTrack:event properties:payload.properties integrations:payload.integrations];
