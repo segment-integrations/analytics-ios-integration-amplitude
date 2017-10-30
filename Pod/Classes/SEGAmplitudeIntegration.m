@@ -25,6 +25,16 @@
             self.traitsToSetOnce = [NSSet setWithArray:self.settings[@"traitsToSetOnce"]];
         }
 
+        // Amplitude states that if you want location tracking disabled on startup of the app,
+        // Call before initializing the apiKey
+        if ([(NSNumber *)self.settings[@"enableLocationListening"] boolValue]) {
+            [self.amplitude enableLocationListening];
+            SEGLog(@"[Ampltidue enableLocationListening]");
+        } else {
+            [self.amplitude disableLocationListening];
+            SEGLog(@"[Ampltidue disableLocationListening]");
+        }
+
         NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
         SEGLog(@"[Amplitude initializeApiKey:%@]", apiKey);
