@@ -177,6 +177,9 @@
         SEGLog(@"[AMPRevenue revenue] setRevenueType:%@];", revenueType);
     }
 
+    [self.amprevenue setEventProperties:properties];
+    SEGLog(@"[AMPRevenue revenue] setEventProperties:%@];", properties);
+
     [self.amplitude logRevenueV2:self.amprevenue];
     SEGLog(@"[Amplitude logRevenueV2:%@];", self.amprevenue);
 }
