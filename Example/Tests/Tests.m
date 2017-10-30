@@ -234,6 +234,26 @@ describe(@"SEGAmplitudeIntegration", ^{
 
         });
 
+        it(@"tracks a basic event with updateLocation", ^{
+            NSDictionary *props = @{
+                @"Color" : @"White",
+                @"Type" : @"like the pirates used to wear"
+            };
+            SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Puffy Shirt"
+                                                                   properties:props
+                                                                      context:@{}
+                                                                 integrations:@{
+                                                                     @"Amplitude" : @{
+                                                                         @"updateLocation" : @YES
+                                                                     }
+                                                                 }];
+
+            [integration track:payload];
+            [verify(amplitude) updateLocation];
+            [verify(amplitude) logEvent:@"Viewed Puffy Shirt" withEventProperties:props];
+
+        });
+
         it(@"tracks a basic event with groups", ^{
             NSDictionary *props = @{
                 @"url" : @"seinfeld.wikia.com/wiki/The_Puffy_Shirt"

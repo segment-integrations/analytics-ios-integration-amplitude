@@ -97,8 +97,21 @@
 
 - (void)realTrack:(NSString *)event properties:(NSDictionary *)properties integrations:(NSDictionary *)integrations
 {
+    __block BOOL updateLocation = false;
+    __block NSDictionary *groups;
+
     NSDictionary *options = integrations[@"Amplitude"];
-    NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
+    if ([options isKindOfClass:[NSDictionary class]]) {
+        groups = options[@"groups"] ?: nil;
+        updateLocation = [options[@"updateLocation"] boolValue];
+    }
+
+
+    if (updateLocation) {
+        [self.amplitude updateLocation];
+        SEGLog(@"[[Amplitude instance] updateLocation]");
+    }
+
     if (groups && [groups isKindOfClass:[NSDictionary class]]) {
         [self.amplitude logEvent:event withEventProperties:properties withGroups:groups];
         SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ withGroups:%@];", event, properties, groups);
