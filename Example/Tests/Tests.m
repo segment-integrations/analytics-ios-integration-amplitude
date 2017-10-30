@@ -167,9 +167,14 @@ describe(@"SEGAmplitudeIntegration", ^{
         it(@"trackAllPagesV2", ^{
             integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPagesV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
 
-            SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
+            SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{ @"url" : @"seinfeld.wikia.com/wiki/The_Puffy_Shirt",
+                                                                                                       @"Feed Type" : @"private" }
+                context:@{}
+                integrations:@{}];
             [integration screen:payload];
-            [verify(amplitude) logEvent:@"Loaded a Screen" withEventProperties:@{ @"name" : @"Shirts" }];
+            [verify(amplitude) logEvent:@"Loaded a Screen" withEventProperties:@{ @"name" : @"Shirts",
+                                                                                  @"url" : @"seinfeld.wikia.com/wiki/The_Puffy_Shirt",
+                                                                                  @"Feed Type" : @"private" }];
         });
 
     });
