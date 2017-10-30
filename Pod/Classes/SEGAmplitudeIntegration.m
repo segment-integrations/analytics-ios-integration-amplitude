@@ -135,23 +135,14 @@
 
 - (void)trackLogRevenueV2:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
 {
-    NSMutableDictionary *revenueProps = [[NSMutableDictionary alloc] initWithDictionary:properties];
-
     NSNumber *price = properties[@"price"] ?: revenueOrTotal;
-    [revenueProps removeObjectForKey:@"price"];
-    [revenueProps removeObjectForKey:@"revenue"];
-    [revenueProps removeObjectForKey:@"total"];
-
     NSNumber *quantity = properties[@"quantity"] ?: [NSNumber numberWithInt:1];
-    [revenueProps removeObjectForKey:quantity];
-
     [[self.amprevenue setPrice:price] setQuantity:[quantity integerValue]];
     SEGLog(@"[[AMPRevenue revenue] setPrice:%@] setQuantity: %d];", price, [quantity integerValue]);
 
     NSString *productId = properties[@"productId"] ?: properties[@"product_id"];
     if (productId && ![productId isEqualToString:@""]) {
         [self.amprevenue setProductIdentifier:productId];
-        [revenueProps removeObjectForKey:productId];
         SEGLog(@"[[AMPRevenue revenue] setProductIdentifier:%@];", productId);
     }
 
@@ -159,21 +150,17 @@
     id receipt = properties[@"receipt"];
     if (receipt) {
         [self.amprevenue setReceipt:receipt];
-        [revenueProps removeObjectForKey:receipt];
         SEGLog(@"[[AMPRevenue revenue] setReceipt:%@];", receipt);
     }
 
     NSString *revenueType = properties[@"revenueType"] ?: properties[@"revenue_type"];
     if (revenueType && ![revenueType isEqualToString:@""]) {
         [self.amprevenue setRevenueType:revenueType];
-        [revenueProps removeObjectForKey:revenueType];
         SEGLog(@"[AMPRevenue revenue] setRevenueType:%@];", revenueType);
     }
 
-    if ([revenueProps count] > 0) {
-        [self.amprevenue setEventProperties:revenueProps];
-        SEGLog(@"[AMPRevenue revenue] setEventProperties:%@];", revenueProps);
-    }
+    [self.amprevenue setEventProperties:properties];
+    SEGLog(@"[AMPRevenue revenue] setEventProperties:%@];", properties);
 
     [self.amplitude logRevenueV2:self.amprevenue];
     SEGLog(@"[Amplitude logRevenueV2:%@];", self.amprevenue);
