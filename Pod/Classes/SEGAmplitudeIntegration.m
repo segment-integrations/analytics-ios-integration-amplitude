@@ -107,23 +107,17 @@
 
 - (void)realTrack:(NSString *)event properties:(NSDictionary *)properties integrations:(NSDictionary *)integrations
 {
-    NSDictionary *options = integrations[@"Amplitude"];
-    NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
-    bool outOfSession = [options isKindOfClass:[NSDictionary class]] ? options[@"outOfSession"] : false;
+    __block NSDictionary *groups;
+    __block bool outOfSession = false;
 
-    if (groups && [groups isKindOfClass:[NSDictionary class]] && outOfSession) {
-        [self.amplitude logEvent:event withEventProperties:properties withGroups:groups outOfSession:true];
-        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ withGroups:%@ outOfSession:true];", event, properties, groups);
-    } else if (groups && [groups isKindOfClass:[NSDictionary class]]) {
-        [self.amplitude logEvent:event withEventProperties:properties withGroups:groups];
-        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ withGroups:%@];", event, properties, groups);
-    } else if (outOfSession) {
-        [self.amplitude logEvent:event withEventProperties:properties outOfSession:true];
-        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ outOfSession:true];", event, properties);
-    } else {
-        [self.amplitude logEvent:event withEventProperties:properties];
-        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@];", event, properties);
+    NSDictionary *options = integrations[@"Amplitude"];
+    if ([options isKindOfClass:[NSDictionary class]]) {
+        groups = [options[@"groups"] isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
+        outOfSession = [options[@"outOfSession"] boolValue];
     }
+
+    [self.amplitude logEvent:event withEventProperties:properties withGroups:groups outOfSession:outOfSession];
+    SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ withGroups:%@ outOfSession:true];", event, properties, groups);
 
     // Track revenue. If revenue is not present fallback on total
     NSNumber *revenueOrTotal = [SEGAmplitudeIntegration extractRevenueOrTotal:properties withRevenueKey:@"revenue" andTotalKey:@"total"];

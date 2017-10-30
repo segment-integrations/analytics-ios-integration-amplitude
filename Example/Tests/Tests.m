@@ -161,7 +161,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
-            [verify(amplitude) logEvent:@"Viewed Shirts Screen" withEventProperties:@{}];
+            [verify(amplitude) logEvent:@"Viewed Shirts Screen" withEventProperties:@{} withGroups:nil outOfSession:false];
         });
 
         it(@"trackAllPagesV2", ^{
@@ -174,7 +174,7 @@ describe(@"SEGAmplitudeIntegration", ^{
             [integration screen:payload];
             [verify(amplitude) logEvent:@"Loaded a Screen" withEventProperties:@{ @"name" : @"Shirts",
                                                                                   @"url" : @"seinfeld.wikia.com/wiki/The_Puffy_Shirt",
-                                                                                  @"Feed Type" : @"private" }];
+                                                                                  @"Feed Type" : @"private" } withGroups:nil outOfSession:false];
         });
 
     });
@@ -229,7 +229,7 @@ describe(@"SEGAmplitudeIntegration", ^{
             SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Email Sent" properties:@{} context:@{} integrations:@{}];
 
             [integration track:payload];
-            [verify(amplitude) logEvent:@"Email Sent" withEventProperties:@{}];
+            [verify(amplitude) logEvent:@"Email Sent" withEventProperties:@{} withGroups:nil outOfSession:false];
         });
 
         it(@"tracks a basic event with props", ^{
@@ -243,7 +243,7 @@ describe(@"SEGAmplitudeIntegration", ^{
                 integrations:@{}];
 
             [integration track:payload];
-            [verify(amplitude) logEvent:@"Viewed Puffy Shirt" withEventProperties:props];
+            [verify(amplitude) logEvent:@"Viewed Puffy Shirt" withEventProperties:props withGroups:nil outOfSession:false];
 
         });
 
@@ -254,7 +254,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Sent Product Link" properties:props context:@{} integrations:@{ @"Amplitude" : @{@"groups" : @{@"jobs" : @[ @"Pendant Publishing" ]}} }];
             [integration track:payload];
-            [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props withGroups:@{ @"jobs" : @[ @"Pendant Publishing" ] }];
+            [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props withGroups:@{ @"jobs" : @[ @"Pendant Publishing" ] } outOfSession:false];
         });
 
         it(@"doesn't track group if not NSDictionary", ^{
@@ -264,7 +264,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Sent Product Link" properties:props context:@{} integrations:@{ @"Amplitude" : @{@"groups" : @"jobs"} }];
             [integration track:payload];
-            [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props];
+            [verify(amplitude) logEvent:@"Sent Product Link" withEventProperties:props withGroups:nil outOfSession:false];
         });
 
         it(@"tracks an event with groups and outOfSession", ^{
@@ -284,7 +284,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
             SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Reminder Sent" properties:props context:@{} integrations:@{ @"Amplitude" : @{@"outOfSession" : @YES} }];
             [integration track:payload];
-            [verify(amplitude) logEvent:@"Reminder Sent" withEventProperties:props outOfSession:true];
+            [verify(amplitude) logEvent:@"Reminder Sent" withEventProperties:props withGroups:nil outOfSession:true];
         });
 
 
