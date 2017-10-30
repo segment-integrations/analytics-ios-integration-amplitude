@@ -99,9 +99,17 @@
 {
     NSDictionary *options = integrations[@"Amplitude"];
     NSDictionary *groups = [options isKindOfClass:[NSDictionary class]] ? options[@"groups"] : nil;
-    if (groups && [groups isKindOfClass:[NSDictionary class]]) {
+    bool outOfSession = [options isKindOfClass:[NSDictionary class]] ? options[@"outOfSession"] : false;
+
+    if (groups && [groups isKindOfClass:[NSDictionary class]] && outOfSession) {
+        [self.amplitude logEvent:event withEventProperties:properties withGroups:groups outOfSession:true];
+        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ withGroups:%@ outOfSession:true];", event, properties, groups);
+    } else if (groups && [groups isKindOfClass:[NSDictionary class]]) {
         [self.amplitude logEvent:event withEventProperties:properties withGroups:groups];
         SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ withGroups:%@];", event, properties, groups);
+    } else if (outOfSession) {
+        [self.amplitude logEvent:event withEventProperties:properties outOfSession:true];
+        SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@ outOfSession:true];", event, properties);
     } else {
         [self.amplitude logEvent:event withEventProperties:properties];
         SEGLog(@"[Amplitude logEvent:%@ withEventProperties:%@];", event, properties);
