@@ -1,5 +1,21 @@
 Change Log
 ==========
+
+Version 2.0.0 *(1st November, 2017)*
+-----------------------------
+*(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
+
+* [Improvement](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/43): Supports new Segment settings `groupTypeTrait` (group type) and `groupTypeValue` (group value) , which allows you to set which keys the Segment integration will look for to determine what to set for the group type and group values in Amplitude.
+* [Improvement](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/54): Introduces new setting `trackAllPagesV2`, which sends a "Loaded Screen" event and the screen name as a property to Amplitude. Moving forward, this is the preferred method of tracking screen events in Amplitude.
+* [Fix](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/35): If `price` is not present on an Ecommerce event, fallsback to first setting `revenue`, then `total`, for the value of the reserved Amplitude property `price`.
+* [Fix](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/44): Sets `userId` to nil on `reset`.
+* [New](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/45): Supports Amplitude's add functionality via `traitsToIncrement` setting, configured via Segment's UI. The setting accepts an array of traits (of type NSString) to check in `identify.traits`. If the trait is present, it will increment the trait given the value passed in.
+* [New](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/49): Supports Location Listening via Segment's UI setting `enableLocationListening`. Defaults to disabled.
+* [New](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/50): Enabling `useAdvertisingIdForDeviceId` setting in Segment UI  allows users to use `advertisingIdentifier` instead of `identifierForVendor` as the Device ID.
+* [New](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/51): Supports Amplitude's `setOnce` method on `identify`. Values configured in Segment's UI to be set only once will set the value of a user trait only once on `identify`. Subsequent setOnce operations on that user property will be ignored.
+* [New](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/52): Supports `outOfSession` passed in as true if the integration specific option is passed in: `integrations.amplitude.outOfSession`.
+
+
 Version 1.5.0 *(20th October, 2017)*
 -----------------------------
 *(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
