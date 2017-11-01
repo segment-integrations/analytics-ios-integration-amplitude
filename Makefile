@@ -11,21 +11,12 @@ lint:
 	pod lib lint
 
 clean:
-	xcodebuild $(XC_ARGS) clean
-
-build:
-	xcodebuild $(XC_ARGS)
-
-test:
-	xcodebuild test $(XC_ARGS)
-
-clean-pretty:
 	set -o pipefail && xcodebuild $(XC_ARGS) clean | xcpretty
 
-build-pretty:
+build:
 	set -o pipefail && xcodebuild $(XC_ARGS) | xcpretty
 
-test-pretty:
+test:
 	set -o pipefail && xcodebuild test $(XC_ARGS) | xcpretty --report junit
 
 .PHONY: install clean build test
