@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 2.0.1-beta *(24th September, 2018)*
+-----------------------------
+*(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
+
+* [Chore](https://github.com/segment-integrations/analytics-ios-integration-amplitude/pull/61): Move release process to CircleCI.
+
 Version 2.0.0 *(1st November, 2017)*
 -----------------------------
 *(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
