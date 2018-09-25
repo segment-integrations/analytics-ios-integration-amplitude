@@ -1,0 +1,48 @@
+version: 2
+jobs:
+  build-and-test:
+    macos:
+      xcode: "9.4.1"
+    steps:
+      - checkout
+      - run: xcrun simctl list
+      - run:
+          name: Fetch Cocoapods specs
+          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
+      - run:
+          name: Install dependencies
+          command: |
+            sudo gem install xcpretty
+            sudo gem install cocoapods -v 1.3.1
+            make install
+      - run:
+          name: Run tests
+          command: |
+            make build
+            make test
+            make lint
+  publish:
+    macos:
+      xcode: "9.4.1"
+    steps:
+      - checkout
+      - run:
+          name: Install Cocoapods
+          command: sudo gem install cocoapods -v 1.3.1
+      - run:
+          name: Publish to Cocoapods
+          command: |
+            pod trunk push Segment-Amplitude.podspec --allow-warnings
+
+workflows:
+  version: 2
+  run:
+    jobs:
+      - build-and-test
+      - publish:
+          context: iOS
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*(-.+)?/
