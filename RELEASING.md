@@ -1,9 +1,11 @@
 Releasing
 =========
 
- 1. Update the version in `Segment-Amplitude.podspec` to a non-beta version.
- 2. Update the `CHANGELOG.md` for the impending release.
- 3. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version)
- 4. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version)
- 5. `git push && git push --tags`
- 6. `pod trunk push Segment-Amplitude.podspec --allow-warnings`
+ 1. Ensure you are on the `master` branch with your latest changes pulled down.
+ 2. Update the version in `Segment-Amplitude.podspec`.
+ 3. Update the `CHANGELOG.md` for the impending release.
+ 4. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version)
+ 5. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version)
+ 6. `git push origin master --tags`
+
+This will trigger a workflow in CircleCI that will publish your latest tag to Cocoapods.
