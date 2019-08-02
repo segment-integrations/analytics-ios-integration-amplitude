@@ -19,7 +19,7 @@ pod "Segment-Amplitude"
 After adding the dependency, you must register the integration with our SDK.  To do this, import the Amplitude integration in your `AppDelegate`:
 
 ```
-#import <Segment-Amplitude/SEGAmplitudeIntegrationFactory.h>
+#import <Segment_Amplitude/SEGAmplitudeIntegrationFactory.h>
 ```
 
 And add the following lines:
