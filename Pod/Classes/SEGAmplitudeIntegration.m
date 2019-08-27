@@ -7,16 +7,15 @@
 
 - (id)initWithSettings:(NSDictionary *)settings
 {
-    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue] andAmpIdentify:[AMPIdentify identify]];
+    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue]];
 }
 
-- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue andAmpIdentify:(AMPIdentify *)identify
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue
 {
     if (self = [super init]) {
         self.settings = settings;
         self.amplitude = amplitude;
         self.amprevenue = amprevenue;
-        self.identify = identify;
         if (self.settings[@"traitsToIncrement"] != (id)[NSNull null]) {
             self.traitsToIncrement = [NSSet setWithArray:self.settings[@"traitsToIncrement"]];
         }
@@ -234,18 +233,22 @@
 
 - (void)incrementOrSetTraits:(NSDictionary *)traits
 {
+    AMPIdentify *identify = [AMPIdentify identify];
+
     for (NSString *trait in traits) {
         id value = [traits valueForKey:trait];
         if ([self.traitsToIncrement member:trait]) {
-            [self.amplitude identify:[self.identify add:trait value:value]];
+            [identify add:trait value:value];
             SEGLog(@"[Amplitude add:%@ value:%@]", trait, value);
         } else if ([self.traitsToSetOnce member:trait]) {
-            [self.amplitude identify:[self.identify setOnce:trait value:value]];
+            [identify setOnce:trait value:value];
         } else {
-            [self.amplitude identify:[self.identify set:trait value:value]];
+            [identify set:trait value:value];
             SEGLog(@"[Amplitude set:%@ value:%@]", trait, value);
         }
     }
+
+    [self.amplitude identify: identify];
 }
 
 @end

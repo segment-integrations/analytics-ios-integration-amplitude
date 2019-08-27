@@ -13,7 +13,6 @@
 @property (nonatomic, strong) NSDictionary *settings;
 @property (strong) Amplitude *amplitude;
 @property (strong) AMPRevenue *amprevenue;
-@property AMPIdentify *identify;
 @property NSSet *traitsToIncrement;
 @property NSSet *traitsToSetOnce;
 
