@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3DB505E72F0EA869E36B1D82 /* libPods-Segment-Amplitude_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF4B75C199F7F1EA723318E /* libPods-Segment-Amplitude_Tests.a */; };
+		0A0F9075CA69C03594D62A47 /* Pods_Segment_Amplitude_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D499617867A9269C55AA5760 /* Pods_Segment_Amplitude_Tests.framework */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -59,11 +59,11 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		62BD8A715FB8ECF70ECA29BC /* Pods-Segment-Amplitude_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Amplitude_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		6BF4B75C199F7F1EA723318E /* libPods-Segment-Amplitude_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Segment-Amplitude_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		91AECAC26A53C35405CA5402 /* Pods-Segment-Amplitude_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Amplitude_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example.release.xcconfig"; sourceTree = "<group>"; };
 		97DEF26D0B2C6B8BB484FE4F /* Pods-Segment-Amplitude_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Amplitude_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Amplitude_Tests/Pods-Segment-Amplitude_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		9EEA123C7A20DF690C5D6E46 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		D499617867A9269C55AA5760 /* Pods_Segment_Amplitude_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Segment_Amplitude_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F26E1DEACA3B4F2A695BCDD1 /* Segment-Amplitude.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "Segment-Amplitude.podspec"; path = "../Segment-Amplitude.podspec"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -86,7 +86,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				3DB505E72F0EA869E36B1D82 /* libPods-Segment-Amplitude_Tests.a in Frameworks */,
+				0A0F9075CA69C03594D62A47 /* Pods_Segment_Amplitude_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,7 +133,7 @@
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
 				1A31B91CBBB7876EE6D25775 /* libPods-Segment-Amplitude_Example.a */,
-				6BF4B75C199F7F1EA723318E /* libPods-Segment-Amplitude_Tests.a */,
+				D499617867A9269C55AA5760 /* Pods_Segment_Amplitude_Tests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -223,6 +223,7 @@
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
+				52D1EC1170B32E0378FED4E6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -315,6 +316,30 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		52D1EC1170B32E0378FED4E6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Segment-Amplitude_Tests/Pods-Segment-Amplitude_Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Expecta/Expecta.framework",
+				"${BUILT_PRODUCTS_DIR}/OCHamcrest/OCHamcrest.framework",
+				"${BUILT_PRODUCTS_DIR}/OCMockito/OCMockito.framework",
+				"${BUILT_PRODUCTS_DIR}/Specta/Specta.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Expecta.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCHamcrest.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OCMockito.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Specta.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Segment-Amplitude_Tests/Pods-Segment-Amplitude_Tests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		73CE207BF893B0053AB2A5D4 /* [CP] Check Pods Manifest.lock */ = {
