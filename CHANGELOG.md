@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 3.0.0 *(19th November, 2019)*
+-----------------------------
+* Update Amplitude to 4.8+
+* Update Analytics to 3.7+
+* Update OCHamrest to 7.1.2
+* Update OCMockito to 5.1.2
+
 Version 2.0.1-beta *(24th September, 2018)*
 -----------------------------
 *(Supports analytics-ios 3.6+ and Amplitude 4.0+)*
