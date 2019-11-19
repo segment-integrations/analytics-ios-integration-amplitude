@@ -7,5 +7,4 @@ Releasing
  4. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version)
  5. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version)
  6. `git push origin master --tags`
-
-This will trigger a workflow in CircleCI that will publish your latest tag to Cocoapods.
+ 7. `pod trunk push Segment-Amplitude.podspec --allow-warnings`
