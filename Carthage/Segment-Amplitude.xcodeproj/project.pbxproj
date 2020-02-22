@@ -1,0 +1,591 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A38344262400A4100007ECCD /* SEGAmplitudeIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = A38344222400A4100007ECCD /* SEGAmplitudeIntegration.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
+		A38344272400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
+		A38344282400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */; };
+		A38344292400A4100007ECCD /* SEGAmplitudeIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */; };
+		A383442D2400AE2E0007ECCD /* Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442C2400AE2E0007ECCD /* Analytics.framework */; platformFilter = ios; };
+		A383442F2400AE310007ECCD /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442E2400AE310007ECCD /* Amplitude.framework */; platformFilter = ios; };
+		A38344382400AFF60007ECCD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344372400AFF60007ECCD /* AppDelegate.m */; };
+		A383443B2400AFF60007ECCD /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A383443A2400AFF60007ECCD /* SceneDelegate.m */; };
+		A383443E2400AFF60007ECCD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A383443D2400AFF60007ECCD /* ViewController.m */; };
+		A38344412400AFF60007ECCD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A383443F2400AFF60007ECCD /* Main.storyboard */; };
+		A38344432400AFF80007ECCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A38344422400AFF80007ECCD /* Assets.xcassets */; };
+		A38344462400AFF80007ECCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A38344442400AFF80007ECCD /* LaunchScreen.storyboard */; };
+		A38344492400AFF80007ECCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344482400AFF80007ECCD /* main.m */; };
+		A383444D2400B0110007ECCD /* Segment_Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */; };
+		A383444E2400B03A0007ECCD /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442E2400AE310007ECCD /* Amplitude.framework */; };
+		A383444F2400B03E0007ECCD /* Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442C2400AE2E0007ECCD /* Analytics.framework */; };
+		A38344512400B2CD0007ECCD /* Segment_Amplitude.h in Headers */ = {isa = PBXBuildFile; fileRef = A383441A2400A3CB0007ECCD /* Segment_Amplitude.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A38344542400B67B0007ECCD /* Amplitude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A38344532400B67B0007ECCD /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A38344562400B6880007ECCD /* Analytics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A38344552400B6870007ECCD /* Analytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A38344572400B7C80007ECCD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A383440E2400A3CB0007ECCD /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A38344162400A3CB0007ECCD;
+			remoteInfo = "Segment-Amplitude";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A38344522400B64F0007ECCD /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A38344542400B67B0007ECCD /* Amplitude.framework in CopyFiles */,
+				A38344562400B6880007ECCD /* Analytics.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Segment_Amplitude.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A383441A2400A3CB0007ECCD /* Segment_Amplitude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Segment_Amplitude.h; sourceTree = "<group>"; };
+		A383441B2400A3CB0007ECCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A38344222400A4100007ECCD /* SEGAmplitudeIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEGAmplitudeIntegration.h; path = ../../Pod/Classes/SEGAmplitudeIntegration.h; sourceTree = "<group>"; };
+		A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEGAmplitudeIntegrationFactory.h; path = ../../Pod/Classes/SEGAmplitudeIntegrationFactory.h; sourceTree = "<group>"; };
+		A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegrationFactory.m; path = ../../Pod/Classes/SEGAmplitudeIntegrationFactory.m; sourceTree = "<group>"; };
+		A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegration.m; path = ../../Pod/Classes/SEGAmplitudeIntegration.m; sourceTree = "<group>"; };
+		A383442C2400AE2E0007ECCD /* Analytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Analytics.framework; path = Carthage/Build/iOS/Analytics.framework; sourceTree = "<group>"; };
+		A383442E2400AE310007ECCD /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
+		A38344342400AFF60007ECCD /* CarthageExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarthageExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A38344362400AFF60007ECCD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A38344372400AFF60007ECCD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A38344392400AFF60007ECCD /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
+		A383443A2400AFF60007ECCD /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		A383443C2400AFF60007ECCD /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		A383443D2400AFF60007ECCD /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		A38344402400AFF60007ECCD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A38344422400AFF80007ECCD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A38344452400AFF80007ECCD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A38344472400AFF80007ECCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A38344482400AFF80007ECCD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A38344532400B67B0007ECCD /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
+		A38344552400B6870007ECCD /* Analytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Analytics.framework; path = Carthage/Build/iOS/Analytics.framework; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A38344142400A3CB0007ECCD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A383442D2400AE2E0007ECCD /* Analytics.framework in Frameworks */,
+				A383442F2400AE310007ECCD /* Amplitude.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A38344312400AFF60007ECCD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A383444D2400B0110007ECCD /* Segment_Amplitude.framework in Frameworks */,
+				A383444E2400B03A0007ECCD /* Amplitude.framework in Frameworks */,
+				A383444F2400B03E0007ECCD /* Analytics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A383440D2400A3CB0007ECCD = {
+			isa = PBXGroup;
+			children = (
+				A38344552400B6870007ECCD /* Analytics.framework */,
+				A38344532400B67B0007ECCD /* Amplitude.framework */,
+				A38344192400A3CB0007ECCD /* Segment-Amplitude */,
+				A38344352400AFF60007ECCD /* CarthageExample */,
+				A38344182400A3CB0007ECCD /* Products */,
+				A383442B2400AE2E0007ECCD /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A38344182400A3CB0007ECCD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */,
+				A38344342400AFF60007ECCD /* CarthageExample.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A38344192400A3CB0007ECCD /* Segment-Amplitude */ = {
+			isa = PBXGroup;
+			children = (
+				A383441B2400A3CB0007ECCD /* Info.plist */,
+				A383441A2400A3CB0007ECCD /* Segment_Amplitude.h */,
+				A38344222400A4100007ECCD /* SEGAmplitudeIntegration.h */,
+				A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */,
+				A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */,
+				A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */,
+			);
+			path = "Segment-Amplitude";
+			sourceTree = "<group>";
+		};
+		A383442B2400AE2E0007ECCD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A383442E2400AE310007ECCD /* Amplitude.framework */,
+				A383442C2400AE2E0007ECCD /* Analytics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		A38344352400AFF60007ECCD /* CarthageExample */ = {
+			isa = PBXGroup;
+			children = (
+				A38344362400AFF60007ECCD /* AppDelegate.h */,
+				A38344372400AFF60007ECCD /* AppDelegate.m */,
+				A38344392400AFF60007ECCD /* SceneDelegate.h */,
+				A383443A2400AFF60007ECCD /* SceneDelegate.m */,
+				A383443C2400AFF60007ECCD /* ViewController.h */,
+				A383443D2400AFF60007ECCD /* ViewController.m */,
+				A383443F2400AFF60007ECCD /* Main.storyboard */,
+				A38344422400AFF80007ECCD /* Assets.xcassets */,
+				A38344442400AFF80007ECCD /* LaunchScreen.storyboard */,
+				A38344472400AFF80007ECCD /* Info.plist */,
+				A38344482400AFF80007ECCD /* main.m */,
+			);
+			path = CarthageExample;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		A38344122400A3CB0007ECCD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A38344272400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h in Headers */,
+				A38344262400A4100007ECCD /* SEGAmplitudeIntegration.h in Headers */,
+				A38344512400B2CD0007ECCD /* Segment_Amplitude.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		A38344162400A3CB0007ECCD /* Segment-Amplitude */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A383441F2400A3CB0007ECCD /* Build configuration list for PBXNativeTarget "Segment-Amplitude" */;
+			buildPhases = (
+				A38344122400A3CB0007ECCD /* Headers */,
+				A38344132400A3CB0007ECCD /* Sources */,
+				A38344142400A3CB0007ECCD /* Frameworks */,
+				A38344152400A3CB0007ECCD /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Segment-Amplitude";
+			productName = "Segment-Amplitude";
+			productReference = A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		A38344332400AFF60007ECCD /* CarthageExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A383444A2400AFF80007ECCD /* Build configuration list for PBXNativeTarget "CarthageExample" */;
+			buildPhases = (
+				A38344302400AFF60007ECCD /* Sources */,
+				A38344312400AFF60007ECCD /* Frameworks */,
+				A38344322400AFF60007ECCD /* Resources */,
+				A38344502400B0660007ECCD /* ShellScript */,
+				A38344522400B64F0007ECCD /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A38344582400B7C80007ECCD /* PBXTargetDependency */,
+			);
+			name = CarthageExample;
+			productName = CarthageExample;
+			productReference = A38344342400AFF60007ECCD /* CarthageExample.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A383440E2400A3CB0007ECCD /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "Brandon Sneed";
+				TargetAttributes = {
+					A38344162400A3CB0007ECCD = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					A38344332400AFF60007ECCD = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+				};
+			};
+			buildConfigurationList = A38344112400A3CB0007ECCD /* Build configuration list for PBXProject "Segment-Amplitude" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A383440D2400A3CB0007ECCD;
+			productRefGroup = A38344182400A3CB0007ECCD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A38344162400A3CB0007ECCD /* Segment-Amplitude */,
+				A38344332400AFF60007ECCD /* CarthageExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A38344152400A3CB0007ECCD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A38344322400AFF60007ECCD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A38344462400AFF80007ECCD /* LaunchScreen.storyboard in Resources */,
+				A38344432400AFF80007ECCD /* Assets.xcassets in Resources */,
+				A38344412400AFF60007ECCD /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A38344502400B0660007ECCD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Analytics.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Amplitude.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = "/usr/local/bin/carthage copy-frameworks";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A38344132400A3CB0007ECCD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A38344292400A4100007ECCD /* SEGAmplitudeIntegration.m in Sources */,
+				A38344282400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A38344302400AFF60007ECCD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A383443E2400AFF60007ECCD /* ViewController.m in Sources */,
+				A38344382400AFF60007ECCD /* AppDelegate.m in Sources */,
+				A38344492400AFF80007ECCD /* main.m in Sources */,
+				A383443B2400AFF60007ECCD /* SceneDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A38344582400B7C80007ECCD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A38344162400A3CB0007ECCD /* Segment-Amplitude */;
+			targetProxy = A38344572400B7C80007ECCD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		A383443F2400AFF60007ECCD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A38344402400AFF60007ECCD /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A38344442400AFF80007ECCD /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A38344452400AFF80007ECCD /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A383441D2400A3CB0007ECCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		A383441E2400A3CB0007ECCD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		A38344202400A3CB0007ECCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "Segment-Amplitude/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.segment.Segment-Amplitude";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A38344212400A3CB0007ECCD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "Segment-Amplitude/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.segment.Segment-Amplitude";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A383444B2400AFF80007ECCD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = CarthageExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.segment.CarthageExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A383444C2400AFF80007ECCD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = CarthageExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.segment.CarthageExample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A38344112400A3CB0007ECCD /* Build configuration list for PBXProject "Segment-Amplitude" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A383441D2400A3CB0007ECCD /* Debug */,
+				A383441E2400A3CB0007ECCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A383441F2400A3CB0007ECCD /* Build configuration list for PBXNativeTarget "Segment-Amplitude" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A38344202400A3CB0007ECCD /* Debug */,
+				A38344212400A3CB0007ECCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A383444A2400AFF80007ECCD /* Build configuration list for PBXNativeTarget "CarthageExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A383444B2400AFF80007ECCD /* Debug */,
+				A383444C2400AFF80007ECCD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A383440E2400A3CB0007ECCD /* Project object */;
+}

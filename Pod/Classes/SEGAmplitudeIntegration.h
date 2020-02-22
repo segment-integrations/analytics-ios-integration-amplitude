@@ -3,8 +3,10 @@
 
 #if defined(__has_include) && __has_include(<Amplitude_iOS/Amplitude.h>)
 #import <Amplitude_iOS/Amplitude.h>
-#else
+#elif defined(__has_include) && __has_include(<Amplitude-iOS/Amplitude.h>)
 #import <Amplitude-iOS/Amplitude.h>
+#else
+#import <Amplitude/Amplitude.h>
 #endif
 
 
