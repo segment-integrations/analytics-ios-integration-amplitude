@@ -1,5 +1,8 @@
 Change Log
 ==========
+Version 3.0.1 *(21st February, 2020)*
+-----------------------------
+* Added Carthage support
 
 Version 3.0.0 *(19th November, 2019)*
 -----------------------------
