@@ -207,8 +207,9 @@
     NSString *groupValue = payload.traits[groupTypeValue];
 
     if (!groupName || !groupValue) {
-        groupName = payload.traits[@"name"] ?: @"[Segment] Group";
-        groupValue = payload.groupId;
+        ///values flipped to get desired output DWEB:22
+        groupName = payload.groupId;
+        groupValue = payload.traits[@"name"] ?: @"[Segment] Group";
     }
 
     [self.amplitude setGroup:groupValue groupName:groupName];
