@@ -1,0 +1,2 @@
+github "amplitude/Amplitude-iOS" == 4.6.0
+github "segmentio/analytics-ios" "migs647/amplitude-fix"
