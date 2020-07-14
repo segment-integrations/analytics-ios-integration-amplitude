@@ -1,2 +1,2 @@
-github "amplitude/Amplitude-iOS" == 4.6.0
-github "segmentio/analytics-ios" ~> 4.0.3
+github "amplitude/Amplitude-iOS"
+github "segmentio/analytics-ios"
