@@ -1,4 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
 
 # Do not use_frameworks due to iOS 7 support
 # use_frameworks!
