@@ -2,18 +2,16 @@ version: 2
 jobs:
   build-and-test:
     macos:
-      xcode: "9.4.1"
+      xcode: "11.5.0"
     steps:
       - checkout
       - run: xcrun simctl list
       - run:
-          name: Fetch Cocoapods specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
-      - run:
           name: Install dependencies
           command: |
             sudo gem install xcpretty
-            sudo gem install cocoapods -v 1.3.1
+            sudo gem install cocoapods
+            sudo gem install cocoapods-repo-update
             make install
       - run:
           name: Run tests

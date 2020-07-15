@@ -1,5 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <Analytics/SEGIntegrationFactory.h>
+#import <Analytics/Analytics.h>
 
 
 @interface SEGAmplitudeIntegrationFactory : NSObject <SEGIntegrationFactory>
