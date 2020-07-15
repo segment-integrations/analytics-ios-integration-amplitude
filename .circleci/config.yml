@@ -13,7 +13,7 @@ jobs:
           name: Install dependencies
           command: |
             sudo gem install xcpretty
-	    sudo gem install cocoapods
+            sudo gem install cocoapods
             make install
       - run:
           name: Run tests
