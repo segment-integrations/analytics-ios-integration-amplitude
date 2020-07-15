@@ -7,9 +7,6 @@ jobs:
       - checkout
       - run: xcrun simctl list
       - run:
-          name: Fetch Cocoapods specs
-          command: curl https://cocoapods-specs.circleci.com/fetch-cocoapods-repo-from-s3.sh | bash -s cf
-      - run:
           name: Install dependencies
           command: |
             sudo gem install xcpretty
