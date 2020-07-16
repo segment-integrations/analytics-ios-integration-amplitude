@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 3.2.0 *(15th July, 2020)*
+---------------------------------
+* Updated Carthage to use Analytics 4.0.x.
+* Moved Carthage files to proper location.
+
 Version 3.1.0 *(14th July, 2020)*
 ---------------------------------
 * Removed version pinning for Amplitude.
