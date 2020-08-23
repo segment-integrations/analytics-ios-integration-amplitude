@@ -1,2 +1,2 @@
-github "amplitude/Amplitude-iOS"
+github "amplitude/Amplitude-iOS" ~> 5.2.1
 github "segmentio/analytics-ios"
