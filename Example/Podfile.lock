@@ -1,12 +1,12 @@
 PODS:
-  - Amplitude (5.2.1)
+  - Amplitude (6.0.0)
   - Analytics (4.0.3)
   - Expecta (1.0.6)
   - OCHamcrest (7.1.2)
   - OCMockito (5.1.3):
     - OCHamcrest (~> 7.0)
-  - Segment-Amplitude (3.0.2):
-    - Amplitude
+  - Segment-Amplitude (3.2.0):
+    - Amplitude (~> 6.0.0)
     - Analytics
   - Specta (1.0.7)
 
@@ -30,14 +30,14 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Amplitude: 9774e93d48d9f41f271a4479e06369a30ab31db1
+  Amplitude: cc34fcd8dfffc3470bc2e05f3a4abb0178f6d963
   Analytics: 54b0551629871648686cb4ee1d243bf4f703f2c2
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCHamcrest: b284c9592c28c1e4025a8542e67ea41a635d0d73
   OCMockito: 677cbb4a18fd492b5a4fb10144dada4de5ddb877
-  Segment-Amplitude: 4dacdc8b53bd30ee39a936f5024c7d5ed626879b
+  Segment-Amplitude: 262507103d81a77de5194fc5449cb9405fee5183
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: a7bf6ef16f54033a66dc8c09524260667af4e881
+PODFILE CHECKSUM: 2cc2ad7f2958ce2ea63442dceea90979bd2c5a1d
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4
