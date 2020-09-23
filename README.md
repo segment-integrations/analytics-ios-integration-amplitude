@@ -22,7 +22,7 @@ After adding the dependency, you must register the integration with our SDK.  To
 #import <Segment-Amplitude/SEGAmplitudeIntegrationFactory.h>
 ```
 
-And add the following lines:
+And add the following lines if IDFA and/or Location Services are *NOT* needed:
 
 ```
 NSString *const SEGMENT_WRITE_KEY = @" ... ";
@@ -33,6 +33,29 @@ SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWith
 [SEGAnalytics setupWithConfiguration:config];
 
 ```
+If IDFA or Location Services *ARE* needed:
+
+```
+NSString *const SEGMENT_WRITE_KEY = @" ... ";
+SEGAnalyticsConfiguration *config = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
+
+SEGAmplitudeIntegrationFactory *factory = [SEGAmplitudeIntegrationFactory instanceWithSetupBlock:^{
+    amplitude.adSupportBlock = ^{
+        return [[ASIdentifierManager sharedManager] advertisingIdentifier];
+    };
+    amplitude.locationInfoBlock = ^{
+        return @{
+            @"lat" : @37.7,
+            @"lng" : @122.4
+        };
+    };
+}];
+[config use:factory];
+
+[SEGAnalytics setupWithConfiguration:config];
+
+```
+
 
 
 ## License
