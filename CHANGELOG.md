@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 3.2.1 *(23rd September, 2020)
+-------------------------------------
+* Fixed compile issue w/ 7.0.1 build of Amplitude-iOS
+* Added mechanism to allow idfa and location services to be configured in Amplitude-iOS.
+
 Version 3.2.0 *(15th July, 2020)*
 ---------------------------------
 * Updated Carthage to use Analytics 4.0.x.
