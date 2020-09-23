@@ -41,7 +41,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         amplitude = mock([Amplitude class]);
         amprevenue = mock([AMPRevenue class]);
         identify = mock([AMPIdentify class]);
-        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{} andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+        integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{} andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
     });
 
     describe(@"Identify", ^{
@@ -51,7 +51,8 @@ describe(@"SEGAmplitudeIntegration", ^{
                                                                                @"traitsToSetOnce" : [NSNull null] }
                                                                andAmplitude:amplitude
                                                               andAmpRevenue:amprevenue
-                                                             andAmpIdentify:identify];
+                                                             andAmpIdentify:identify
+                                                                 setupBlock:nil];
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"1111" anonymousId:nil traits:@{} context:@{} integrations:@{}];
 
             [integration identify:payload];
@@ -63,7 +64,8 @@ describe(@"SEGAmplitudeIntegration", ^{
                                                                                @"traitsToSetOnce" : @[] }
                                                                andAmplitude:amplitude
                                                               andAmpRevenue:amprevenue
-                                                             andAmpIdentify:identify];
+                                                             andAmpIdentify:identify
+                                                                 setupBlock:nil];
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"7891" anonymousId:nil traits:@{
                 @"name" : @"George Costanza",
                 @"gender" : @"male",
@@ -91,7 +93,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"increments identify trait", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[ @"karma", @"store_credit" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToIncrement" : @[ @"karma", @"store_credit" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"3290842" anonymousId:nil traits:@{ @"karma" : @0.23,
                                                                                                                           @"store_credit" : @20,
@@ -106,7 +108,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"sets identify trait once", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToSetOnce" : @[ @"sign_up_date" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"traitsToSetOnce" : @[ @"sign_up_date" ] } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"3290842" anonymousId:nil traits:@{ @"sign_up_date" : @"2015-08-24",
                                                                                                                           @"city" : @"los angeles" }
@@ -123,7 +125,8 @@ describe(@"SEGAmplitudeIntegration", ^{
                                                                                @"traitsToIncrement" : @[ @"age" ] }
                                                                andAmplitude:amplitude
                                                               andAmpRevenue:amprevenue
-                                                             andAmpIdentify:identify];
+                                                             andAmpIdentify:identify
+                                                                 setupBlock:nil];
 
             SEGIdentifyPayload *payload = [[SEGIdentifyPayload alloc] initWithUserId:@"3290842" anonymousId:nil traits:@{ @"address" : @{
                 @"street" : @"California st",
@@ -149,7 +152,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
     describe(@"Screen", ^{
         it(@"does not call screen if trackAllPages = false", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @false } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @false } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
@@ -157,7 +160,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"trackAllPages", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPages" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{} context:@{} integrations:@{}];
             [integration screen:payload];
@@ -165,7 +168,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"trackAllPagesV2", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPagesV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"trackAllPagesV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             SEGScreenPayload *payload = [[SEGScreenPayload alloc] initWithName:@"Shirts" properties:@{ @"url" : @"seinfeld.wikia.com/wiki/The_Puffy_Shirt",
                                                                                                        @"Feed Type" : @"private" }
@@ -191,7 +194,8 @@ describe(@"SEGAmplitudeIntegration", ^{
                                                                                @"groupTypeTrait" : @"industry" }
                                                                andAmplitude:amplitude
                                                               andAmpRevenue:amprevenue
-                                                             andAmpIdentify:identify];
+                                                             andAmpIdentify:identify
+                                                                 setupBlock:nil];
             SEGGroupPayload *payload = [[SEGGroupPayload alloc] initWithGroupId:@"32423084" traits:@{
                 @"company" : @"Segment",
                 @"industry" : @"Technology"
@@ -289,7 +293,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
 
         it(@"tracks Order Completed with revenue if both total and revenue are present", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             NSDictionary *props = @{
                 @"checkout_id" : @"9bcf000000000000",
@@ -321,7 +325,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"tracks Order Completed with total if revenue is not present", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             NSDictionary *props = @{
                 @"checkout_id" : @"9bcf000000000000",
@@ -353,7 +357,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"tracks Order Completed with revenue of type String", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             NSDictionary *props = @{
                 @"checkout_id" : @"9bcf000000000000",
@@ -386,7 +390,7 @@ describe(@"SEGAmplitudeIntegration", ^{
 
         // NOTE: This is against our spec. We do not have a v1/v2 ECommerce event that sends both revenue and price/quantity as a tope level property
         it(@"tracks with top level price and quantity", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Product" properties:@{
                 @"revenue" : @20.99,
@@ -406,7 +410,7 @@ describe(@"SEGAmplitudeIntegration", ^{
         });
 
         it(@"tracks Amplitude ecommerce fields", ^{
-            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify];
+            integration = [[SEGAmplitudeIntegration alloc] initWithSettings:@{ @"useLogRevenueV2" : @true } andAmplitude:amplitude andAmpRevenue:amprevenue andAmpIdentify:identify setupBlock:nil];
 
             SEGTrackPayload *payload = [[SEGTrackPayload alloc] initWithEvent:@"Viewed Product" properties:@{
                 @"revenue" : @20.00,

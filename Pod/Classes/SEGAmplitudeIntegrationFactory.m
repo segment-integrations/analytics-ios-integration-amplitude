@@ -2,7 +2,9 @@
 #import "SEGAmplitudeIntegration.h"
 
 
-@implementation SEGAmplitudeIntegrationFactory
+@implementation SEGAmplitudeIntegrationFactory {
+    __strong SEGAmplitudeSetupBlock setupBlock;
+}
 
 + (instancetype)instance
 {
@@ -14,15 +16,23 @@
     return sharedInstance;
 }
 
++ (instancetype)instanceWithSetupBlock:(SEGAmplitudeSetupBlock)setupBlock
+{
+    SEGAmplitudeIntegrationFactory *factory = [SEGAmplitudeIntegrationFactory instance];
+    factory->setupBlock = setupBlock;
+    return factory;
+}
+
 - (id)init
 {
     self = [super init];
+    self->setupBlock = nil;
     return self;
 }
 
 - (id<SEGIntegration>)createWithSettings:(NSDictionary *)settings forAnalytics:(SEGAnalytics *)analytics
 {
-    return [[SEGAmplitudeIntegration alloc] initWithSettings:settings];
+    return [[SEGAmplitudeIntegration alloc] initWithSettings:settings setupBlock:setupBlock];
 }
 
 - (NSString *)key

@@ -22,6 +22,7 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		A3585CD2251BCF0A00F46088 /* TestSetupBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = A3585CD1251BCF0A00F46088 /* TestSetupBlock.m */; };
 		CE22D33DED2C8C1F20382F06 /* libPods-Segment-Amplitude_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A31B91CBBB7876EE6D25775 /* libPods-Segment-Amplitude_Example.a */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +64,7 @@
 		91AECAC26A53C35405CA5402 /* Pods-Segment-Amplitude_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Amplitude_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example.release.xcconfig"; sourceTree = "<group>"; };
 		97DEF26D0B2C6B8BB484FE4F /* Pods-Segment-Amplitude_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Segment-Amplitude_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Segment-Amplitude_Tests/Pods-Segment-Amplitude_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		9EEA123C7A20DF690C5D6E46 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		A3585CD1251BCF0A00F46088 /* TestSetupBlock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestSetupBlock.m; sourceTree = "<group>"; };
 		D499617867A9269C55AA5760 /* Pods_Segment_Amplitude_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Segment_Amplitude_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F26E1DEACA3B4F2A695BCDD1 /* Segment-Amplitude.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "Segment-Amplitude.podspec"; path = "../Segment-Amplitude.podspec"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -168,6 +170,7 @@
 			isa = PBXGroup;
 			children = (
 				6003F5BB195388D20070C39A /* Tests.m */,
+				A3585CD1251BCF0A00F46088 /* TestSetupBlock.m */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -391,6 +394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				A3585CD2251BCF0A00F46088 /* TestSetupBlock.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

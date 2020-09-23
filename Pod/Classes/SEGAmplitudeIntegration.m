@@ -4,12 +4,12 @@
 
 @implementation SEGAmplitudeIntegration
 
-- (id)initWithSettings:(NSDictionary *)settings
+- (id)initWithSettings:(NSDictionary *)settings setupBlock:(SEGAmplitudeSetupBlock)setupBlock
 {
-    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue] andAmpIdentify:[AMPIdentify identify]];
+    return [self initWithSettings:settings andAmplitude:[Amplitude instance] andAmpRevenue:[AMPRevenue revenue] andAmpIdentify:[AMPIdentify identify] setupBlock:setupBlock];
 }
 
-- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue andAmpIdentify:(AMPIdentify *)identify
+- (id)initWithSettings:(NSDictionary *)settings andAmplitude:(Amplitude *)amplitude andAmpRevenue:(AMPRevenue *)amprevenue andAmpIdentify:(AMPIdentify *)identify setupBlock:(SEGAmplitudeSetupBlock)setupBlock
 {
     if (self = [super init]) {
         self.settings = settings;
@@ -24,15 +24,17 @@
             self.traitsToSetOnce = [NSSet setWithArray:self.settings[@"traitsToSetOnce"]];
         }
 
+        // NOTE: As of Amplitude-iOS 7.0.1, this is no longer available.  A callback is used instead.
+        
         // Amplitude states that if you want location tracking disabled on startup of the app,
         // Call before initializing the apiKey
-        if ([(NSNumber *)self.settings[@"enableLocationListening"] boolValue]) {
+        /*if ([(NSNumber *)self.settings[@"enableLocationListening"] boolValue]) {
             [self.amplitude enableLocationListening];
             SEGLog(@"[Ampltidue enableLocationListening]");
         } else {
             [self.amplitude disableLocationListening];
             SEGLog(@"[Ampltidue disableLocationListening]");
-        }
+        }*/
 
         NSString *apiKey = self.settings[@"apiKey"];
         [self.amplitude initializeApiKey:apiKey];
@@ -45,6 +47,10 @@
 
         if ([(NSNumber *)self.settings[@"useAdvertisingIdForDeviceId"] boolValue]) {
             [self.amplitude useAdvertisingIdForDeviceId];
+        }
+        
+        if (setupBlock != nil) {
+            setupBlock(self.amplitude);
         }
     }
     return self;

@@ -22,5 +22,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics'
-  s.dependency 'Amplitude', '~> 5.2.1'
+  s.dependency 'Amplitude'
 end
