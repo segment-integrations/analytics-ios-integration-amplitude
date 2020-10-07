@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import <Analytics/Analytics.h>
 
 #if defined(__has_include) && __has_include(<Amplitude_iOS/Amplitude.h>)
 #import <Amplitude_iOS/Amplitude.h>
@@ -7,6 +6,12 @@
 #import <Amplitude-iOS/Amplitude.h>
 #else
 #import <Amplitude/Amplitude.h>
+#endif
+
+#if defined(__has_include) && __has_include(<Analytics/Analytics.h>)
+#import <Analytics/Analytics.h>
+#else
+#import <Segment/Analytics.h>
 #endif
 
 typedef void(^SEGAmplitudeSetupBlock)(Amplitude *amplitude);
