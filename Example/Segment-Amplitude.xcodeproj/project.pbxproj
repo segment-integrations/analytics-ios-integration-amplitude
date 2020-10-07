@@ -207,7 +207,6 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				2400543B82061AF237CF72DA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -298,24 +297,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2400543B82061AF237CF72DA /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example-resources.sh",
-				"${PODS_ROOT}/Amplitude/Sources/Amplitude/ComodoRsaDomainValidationCA.der",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ComodoRsaDomainValidationCA.der",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		52D1EC1170B32E0378FED4E6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
