@@ -313,7 +313,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Segment-Amplitude_Example/Pods-Segment-Amplitude_Example-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		52D1EC1170B32E0378FED4E6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
