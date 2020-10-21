@@ -7,11 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24E6BE09254095EE000026B8 /* Segment_Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */; };
+		24E6BE0A254095EE000026B8 /* Segment_Amplitude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		24EA56862540909C00050B76 /* Segment.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 24EA567F2540856800050B76 /* Segment.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		24EA568D254094B500050B76 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24EA568C254094B500050B76 /* Segment.framework */; platformFilter = ios; };
+		24EA568E254094B500050B76 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 24EA568C254094B500050B76 /* Segment.framework */; };
 		A38344262400A4100007ECCD /* SEGAmplitudeIntegration.h in Headers */ = {isa = PBXBuildFile; fileRef = A38344222400A4100007ECCD /* SEGAmplitudeIntegration.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
 		A38344272400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
 		A38344282400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */; };
 		A38344292400A4100007ECCD /* SEGAmplitudeIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */; };
-		A383442D2400AE2E0007ECCD /* Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442C2400AE2E0007ECCD /* Analytics.framework */; platformFilter = ios; };
 		A383442F2400AE310007ECCD /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442E2400AE310007ECCD /* Amplitude.framework */; platformFilter = ios; };
 		A38344382400AFF60007ECCD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344372400AFF60007ECCD /* AppDelegate.m */; };
 		A383443B2400AFF60007ECCD /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A383443A2400AFF60007ECCD /* SceneDelegate.m */; };
@@ -20,12 +24,9 @@
 		A38344432400AFF80007ECCD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A38344422400AFF80007ECCD /* Assets.xcassets */; };
 		A38344462400AFF80007ECCD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A38344442400AFF80007ECCD /* LaunchScreen.storyboard */; };
 		A38344492400AFF80007ECCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344482400AFF80007ECCD /* main.m */; };
-		A383444D2400B0110007ECCD /* Segment_Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */; };
 		A383444E2400B03A0007ECCD /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442E2400AE310007ECCD /* Amplitude.framework */; };
-		A383444F2400B03E0007ECCD /* Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442C2400AE2E0007ECCD /* Analytics.framework */; };
 		A38344512400B2CD0007ECCD /* Segment_Amplitude.h in Headers */ = {isa = PBXBuildFile; fileRef = A383441A2400A3CB0007ECCD /* Segment_Amplitude.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A38344542400B67B0007ECCD /* Amplitude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A38344532400B67B0007ECCD /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A38344562400B6880007ECCD /* Analytics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A38344552400B6870007ECCD /* Analytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,14 +46,17 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				24EA56862540909C00050B76 /* Segment.framework in CopyFiles */,
+				24E6BE0A254095EE000026B8 /* Segment_Amplitude.framework in CopyFiles */,
 				A38344542400B67B0007ECCD /* Amplitude.framework in CopyFiles */,
-				A38344562400B6880007ECCD /* Analytics.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		24EA567F2540856800050B76 /* Segment.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Segment.framework; path = Carthage/Build/iOS/Segment.framework; sourceTree = "<group>"; };
+		24EA568C254094B500050B76 /* Segment.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Segment.framework; path = Carthage/Build/iOS/Segment.framework; sourceTree = "<group>"; };
 		A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Segment_Amplitude.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A383441A2400A3CB0007ECCD /* Segment_Amplitude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Segment_Amplitude.h; sourceTree = "<group>"; };
 		A383441B2400A3CB0007ECCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -60,7 +64,6 @@
 		A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEGAmplitudeIntegrationFactory.h; path = ../Pod/Classes/SEGAmplitudeIntegrationFactory.h; sourceTree = "<group>"; };
 		A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegrationFactory.m; path = ../Pod/Classes/SEGAmplitudeIntegrationFactory.m; sourceTree = "<group>"; };
 		A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegration.m; path = ../Pod/Classes/SEGAmplitudeIntegration.m; sourceTree = "<group>"; };
-		A383442C2400AE2E0007ECCD /* Analytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Analytics.framework; path = Carthage/Build/iOS/Analytics.framework; sourceTree = "<group>"; };
 		A383442E2400AE310007ECCD /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		A38344342400AFF60007ECCD /* CarthageExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarthageExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A38344362400AFF60007ECCD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -75,7 +78,6 @@
 		A38344472400AFF80007ECCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A38344482400AFF80007ECCD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A38344532400B67B0007ECCD /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
-		A38344552400B6870007ECCD /* Analytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Analytics.framework; path = Carthage/Build/iOS/Analytics.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A383442D2400AE2E0007ECCD /* Analytics.framework in Frameworks */,
+				24EA568D254094B500050B76 /* Segment.framework in Frameworks */,
 				A383442F2400AE310007ECCD /* Amplitude.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,9 +94,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A383444D2400B0110007ECCD /* Segment_Amplitude.framework in Frameworks */,
+				24EA568E254094B500050B76 /* Segment.framework in Frameworks */,
+				24E6BE09254095EE000026B8 /* Segment_Amplitude.framework in Frameworks */,
 				A383444E2400B03A0007ECCD /* Amplitude.framework in Frameworks */,
-				A383444F2400B03E0007ECCD /* Analytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,8 +106,8 @@
 		A383440D2400A3CB0007ECCD = {
 			isa = PBXGroup;
 			children = (
-				A38344552400B6870007ECCD /* Analytics.framework */,
 				A38344532400B67B0007ECCD /* Amplitude.framework */,
+				24EA567F2540856800050B76 /* Segment.framework */,
 				A38344192400A3CB0007ECCD /* Segment-Amplitude */,
 				A38344352400AFF60007ECCD /* CarthageExample */,
 				A38344182400A3CB0007ECCD /* Products */,
@@ -139,7 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				A383442E2400AE310007ECCD /* Amplitude.framework */,
-				A383442C2400AE2E0007ECCD /* Analytics.framework */,
+				24EA568C254094B500050B76 /* Segment.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -472,6 +474,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS/**",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Segment-Amplitude/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -498,6 +501,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS/**",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Segment-Amplitude/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";

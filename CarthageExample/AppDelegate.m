@@ -9,8 +9,8 @@
 #import "AppDelegate.h"
 //#import <Segment_Amplitude/SEGAmplitudeIntegrationFactory.h>
 
-@import Analytics;
 @import Amplitude;
+@import Segment;
 @import Segment_Amplitude;
 
 @interface AppDelegate ()
