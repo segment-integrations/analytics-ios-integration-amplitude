@@ -3,7 +3,7 @@
 #if defined(__has_include) && __has_include(<Analytics/Analytics.h>)
 #import <Analytics/Analytics.h>
 #else
-#import <Segment/Analytics.h>
+#import <Segment/SEGsAnalytics.h>
 #endif
 #import "SEGAmplitudeIntegration.h"
 
