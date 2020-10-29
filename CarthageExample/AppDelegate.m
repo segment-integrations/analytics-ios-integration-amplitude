@@ -13,7 +13,7 @@
 @import Analytics;
 #else
 @import Segment;
-#endifs
+#endif
 @import Amplitude;
 @import Segment_Amplitude;
 

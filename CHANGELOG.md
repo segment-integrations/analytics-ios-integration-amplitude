@@ -1,5 +1,10 @@
 Change Log
 ==========
+
+Version 3.2.3 *(29th October, 2020)
+-------------------------------------
+* Fix a bug with import headers support new namespacing introduced in v4.x
+
 Version 3.2.2 *(14th October, 2020)
 -------------------------------------
 * Update SEGAnalytics imports to support new namespacing introduced in v4.x
