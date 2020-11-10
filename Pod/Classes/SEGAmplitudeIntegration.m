@@ -3,7 +3,8 @@
 #import <Analytics/Analytics.h>
 #import <Analytics/SEGAnalyticsUtils.h>
 #else
-#import <Segment/Segment.h>
+#import <Segment/SEGAnalytics.h>
+#import <Segment/SEGAnalyticsUtils.h>
 #endif
 
 
