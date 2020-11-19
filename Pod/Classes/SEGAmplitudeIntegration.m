@@ -212,7 +212,7 @@
 - (void)group:(SEGGroupPayload *)payload
 {
     NSString *groupTypeTrait = self.settings[@"groupTypeTrait"];
-    NSString *groupTypeValue = self.settings[@"groupTypeValue"];
+    NSString *groupTypeValue = self.settings[@"groupValueTrait"];
     NSString *groupName = payload.traits[groupTypeTrait];
     NSString *groupValue = payload.traits[groupTypeValue];
 
