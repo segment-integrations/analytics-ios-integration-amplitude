@@ -2,6 +2,8 @@
 
 #if defined(__has_include) && __has_include(<Analytics/Analytics.h>)
 #import <Analytics/Analytics.h>
+#elif defined(__has_include) && __has_include(<SEGAnalytics.h>)
+#import <SEGAnalytics.h>
 #else
 #import <Segment/SEGAnalytics.h>
 #endif
