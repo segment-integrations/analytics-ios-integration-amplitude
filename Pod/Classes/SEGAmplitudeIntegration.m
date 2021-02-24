@@ -241,6 +241,9 @@
 
     [self.amplitude regenerateDeviceId];
     SEGLog(@"[Amplitude regnerateDeviceId];");
+    
+    self.identify = [AMPIdentify identify];
+    SEGLog(@"[Amplitude reset identify];");
 }
 
 #pragma utils
