@@ -1,9 +1,12 @@
 #import "SEGAmplitudeIntegration.h"
 #if defined(__has_include) && __has_include(<Analytics/Analytics.h>)
 #import <Analytics/Analytics.h>
-#else
+#elif defined(__has_include) && __has_include(<Segment/SEGAnalytics.h>)
 #import <Segment/SEGAnalyticsUtils.h>
 #import <Segment/SEGAnalytics.h>
+#else
+#import "SEGAnalyticsUtils.h"
+#import "SEGAnalytics.h"
 #endif
 
 
