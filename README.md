@@ -56,6 +56,15 @@ SEGAmplitudeIntegrationFactory *factory = [SEGAmplitudeIntegrationFactory instan
 
 ```
 
+To use Amplitude Sessions:
+```
+NSString *const SEGMENT_WRITE_KEY = @" ... ";
+SEGAnalyticsConfiguration *configuration = [SEGAnalyticsConfiguration configurationWithWriteKey:SEGMENT_WRITE_KEY];
+
+configuration.sourceMiddleware = @[[[SEGAmplitudeSession alloc] init]];
+
+[SEGAnalytics setupWithConfiguration:configuration];
+```
 
 
 ## License
