@@ -20,7 +20,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.static_framework = true
-  s.source_files = 'Pod/Classes/**/*'
+  s.source_files = 'Sources/**/*.swift'
 
   s.dependency 'Analytics'
   s.dependency 'Amplitude', '~> 7.0.1'
