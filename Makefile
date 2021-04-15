@@ -1,11 +1,10 @@
 SDK ?= "iphonesimulator"
-DESTINATION ?= "platform=iOS Simulator,name=iPhone 8"
+DESTINATION ?= "platform=iOS Simulator,name=iPhone 11"
 PROJECT := Segment-Amplitude
 XC_ARGS := -scheme $(PROJECT)_Example -workspace Example/$(PROJECT).xcworkspace -sdk $(SDK) -destination $(DESTINATION) ONLY_ACTIVE_ARCH=NO
 
 install: Example/Podfile $(PROJECT).podspec
-	pod repo update
-	pod install --project-directory=Example
+	pod update --project-directory=Example
 
 lint:
 	pod lib lint --allow-warnings

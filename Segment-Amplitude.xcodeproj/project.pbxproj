@@ -11,7 +11,6 @@
 		A38344272400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */; platformFilter = ios; settings = {ATTRIBUTES = (Public, ); }; };
 		A38344282400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */; };
 		A38344292400A4100007ECCD /* SEGAmplitudeIntegration.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */; };
-		A383442D2400AE2E0007ECCD /* Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442C2400AE2E0007ECCD /* Analytics.framework */; platformFilter = ios; };
 		A383442F2400AE310007ECCD /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442E2400AE310007ECCD /* Amplitude.framework */; platformFilter = ios; };
 		A38344382400AFF60007ECCD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344372400AFF60007ECCD /* AppDelegate.m */; };
 		A383443B2400AFF60007ECCD /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A383443A2400AFF60007ECCD /* SceneDelegate.m */; };
@@ -22,10 +21,9 @@
 		A38344492400AFF80007ECCD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A38344482400AFF80007ECCD /* main.m */; };
 		A383444D2400B0110007ECCD /* Segment_Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */; };
 		A383444E2400B03A0007ECCD /* Amplitude.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442E2400AE310007ECCD /* Amplitude.framework */; };
-		A383444F2400B03E0007ECCD /* Analytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A383442C2400AE2E0007ECCD /* Analytics.framework */; };
 		A38344512400B2CD0007ECCD /* Segment_Amplitude.h in Headers */ = {isa = PBXBuildFile; fileRef = A383441A2400A3CB0007ECCD /* Segment_Amplitude.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A38344542400B67B0007ECCD /* Amplitude.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A38344532400B67B0007ECCD /* Amplitude.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		A38344562400B6880007ECCD /* Analytics.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = A38344552400B6870007ECCD /* Analytics.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EA0E73CE254B761A00349B58 /* Segment.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA0E73CB254B75DF00349B58 /* Segment.framework */; platformFilter = ios; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,7 +44,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				A38344542400B67B0007ECCD /* Amplitude.framework in CopyFiles */,
-				A38344562400B6880007ECCD /* Analytics.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,10 +53,10 @@
 		A38344172400A3CB0007ECCD /* Segment_Amplitude.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Segment_Amplitude.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A383441A2400A3CB0007ECCD /* Segment_Amplitude.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Segment_Amplitude.h; sourceTree = "<group>"; };
 		A383441B2400A3CB0007ECCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A38344222400A4100007ECCD /* SEGAmplitudeIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEGAmplitudeIntegration.h; path = ../../Pod/Classes/SEGAmplitudeIntegration.h; sourceTree = "<group>"; };
-		A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEGAmplitudeIntegrationFactory.h; path = ../../Pod/Classes/SEGAmplitudeIntegrationFactory.h; sourceTree = "<group>"; };
-		A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegrationFactory.m; path = ../../Pod/Classes/SEGAmplitudeIntegrationFactory.m; sourceTree = "<group>"; };
-		A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegration.m; path = ../../Pod/Classes/SEGAmplitudeIntegration.m; sourceTree = "<group>"; };
+		A38344222400A4100007ECCD /* SEGAmplitudeIntegration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEGAmplitudeIntegration.h; path = ../Pod/Classes/SEGAmplitudeIntegration.h; sourceTree = "<group>"; };
+		A38344232400A4100007ECCD /* SEGAmplitudeIntegrationFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SEGAmplitudeIntegrationFactory.h; path = ../Pod/Classes/SEGAmplitudeIntegrationFactory.h; sourceTree = "<group>"; };
+		A38344242400A4100007ECCD /* SEGAmplitudeIntegrationFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegrationFactory.m; path = ../Pod/Classes/SEGAmplitudeIntegrationFactory.m; sourceTree = "<group>"; };
+		A38344252400A4100007ECCD /* SEGAmplitudeIntegration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SEGAmplitudeIntegration.m; path = ../Pod/Classes/SEGAmplitudeIntegration.m; sourceTree = "<group>"; };
 		A383442C2400AE2E0007ECCD /* Analytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Analytics.framework; path = Carthage/Build/iOS/Analytics.framework; sourceTree = "<group>"; };
 		A383442E2400AE310007ECCD /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
 		A38344342400AFF60007ECCD /* CarthageExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarthageExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,7 +72,7 @@
 		A38344472400AFF80007ECCD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A38344482400AFF80007ECCD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A38344532400B67B0007ECCD /* Amplitude.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Amplitude.framework; path = Carthage/Build/iOS/Amplitude.framework; sourceTree = "<group>"; };
-		A38344552400B6870007ECCD /* Analytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Analytics.framework; path = Carthage/Build/iOS/Analytics.framework; sourceTree = "<group>"; };
+		EA0E73CB254B75DF00349B58 /* Segment.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Segment.framework; path = Carthage/Build/iOS/Segment.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A383442D2400AE2E0007ECCD /* Analytics.framework in Frameworks */,
+				EA0E73CE254B761A00349B58 /* Segment.framework in Frameworks */,
 				A383442F2400AE310007ECCD /* Amplitude.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,7 +91,6 @@
 			files = (
 				A383444D2400B0110007ECCD /* Segment_Amplitude.framework in Frameworks */,
 				A383444E2400B03A0007ECCD /* Amplitude.framework in Frameworks */,
-				A383444F2400B03E0007ECCD /* Analytics.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +100,6 @@
 		A383440D2400A3CB0007ECCD = {
 			isa = PBXGroup;
 			children = (
-				A38344552400B6870007ECCD /* Analytics.framework */,
 				A38344532400B67B0007ECCD /* Amplitude.framework */,
 				A38344192400A3CB0007ECCD /* Segment-Amplitude */,
 				A38344352400AFF60007ECCD /* CarthageExample */,
@@ -138,6 +133,7 @@
 		A383442B2400AE2E0007ECCD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA0E73CB254B75DF00349B58 /* Segment.framework */,
 				A383442E2400AE310007ECCD /* Amplitude.framework */,
 				A383442C2400AE2E0007ECCD /* Analytics.framework */,
 			);
@@ -471,6 +467,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/**",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Segment-Amplitude/Info.plist";
@@ -497,6 +494,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/**",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = "Segment-Amplitude/Info.plist";

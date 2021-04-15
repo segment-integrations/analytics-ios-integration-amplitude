@@ -4,8 +4,8 @@ Releasing
  1. Ensure you are on the `master` branch with your latest changes pulled down.
  2. Update the version in `Segment-Amplitude.podspec`.
  3. Update the `CHANGELOG.md` for the impending release.
- 4. `cd carthage && carthage build --no-skip-current && cd ..`
- 5. In Finder, go into `Carthage/Carthage/Build/iOS` and compress Segment_Amplitude.framework and .dsym.
+ 4. `carthage update --platform ios && carthage build --platform ios --no-skip-current`
+ 5. In Finder, go into `Carthage/Build/iOS` and compress Segment_Amplitude.framework and .dsym.
      This will create `Archive.zip`, which you'll need later.
  6. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version)
  7. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version)

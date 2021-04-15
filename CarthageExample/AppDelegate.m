@@ -9,7 +9,11 @@
 #import "AppDelegate.h"
 //#import <Segment_Amplitude/SEGAmplitudeIntegrationFactory.h>
 
+#if defined(__has_include) && __has_include(<Analytics/Analytics.h>)
 @import Analytics;
+#else
+@import Segment;
+#endif
 @import Amplitude;
 @import Segment_Amplitude;
 

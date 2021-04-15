@@ -1,13 +1,13 @@
 PODS:
-  - Amplitude-iOS (4.8.2)
-  - Analytics (3.7.0)
+  - Amplitude (7.0.1)
+  - Analytics (4.1.3)
   - Expecta (1.0.6)
-  - OCHamcrest (7.1.2)
-  - OCMockito (5.1.2):
+  - OCHamcrest (7.2.0)
+  - OCMockito (5.1.3):
     - OCHamcrest (~> 7.0)
-  - Segment-Amplitude (3.0.0):
-    - Amplitude-iOS (~> 4.8.0)
-    - Analytics (~> 3.7.0)
+  - Segment-Amplitude (3.2.3):
+    - Amplitude (~> 7.0.1)
+    - Analytics
   - Specta (1.0.7)
 
 DEPENDENCIES:
@@ -18,7 +18,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Amplitude-iOS
+    - Amplitude
     - Analytics
     - Expecta
     - OCHamcrest
@@ -30,14 +30,14 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Amplitude-iOS: 46c8e6e65c49bb1ad1909a9add1a68e1f8562b3f
-  Analytics: 77fd5fb102a4a5eedafa2c2b0245ceb7b7c15e45
+  Amplitude: 31a9038dca905b78294418ed277da9c2e07658ad
+  Analytics: 4c01e3e19d4be86705bad6581a1c2aa5a15a9d22
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  OCHamcrest: b284c9592c28c1e4025a8542e67ea41a635d0d73
-  OCMockito: 51a534e667194e1ecae88c5def301cc8b0ab3cc7
-  Segment-Amplitude: 7dbbe5b412fee040baa143c010093656d2533545
+  OCHamcrest: 8097ab14ab9366f44cd66638aa589fea3840d779
+  OCMockito: 677cbb4a18fd492b5a4fb10144dada4de5ddb877
+  Segment-Amplitude: bff743e8f0897febe638a10fc43945f124f87ff1
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
-PODFILE CHECKSUM: 1a99221d0493a9b94855666e2ff7f6148cd79203
+PODFILE CHECKSUM: 166e86977ca5ed7a88d476e1f295a6953c3274c0
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.10.1

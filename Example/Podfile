@@ -1,7 +1,8 @@
 source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '10.0'
 
 # Do not use_frameworks due to iOS 7 support
-# use_frameworks!
+use_frameworks!
 
 target 'Segment-Amplitude_Example' do
   pod 'Segment-Amplitude', :path => "../"
@@ -10,7 +11,7 @@ target 'Segment-Amplitude_Example' do
   
   target 'Segment-Amplitude_Tests' do
     inherit! :search_paths
-    use_frameworks!
+    
     # Do not include Segment-Amplitude here due to using static lib
     pod 'Specta'
     pod 'Expecta'
