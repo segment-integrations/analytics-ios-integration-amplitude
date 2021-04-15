@@ -4,9 +4,11 @@ Releasing
  1. Ensure you are on the `master` branch with your latest changes pulled down.
  2. Update the version in `Segment-Amplitude.podspec`.
  3. Update the `CHANGELOG.md` for the impending release.
- 4. `carthage update --platform ios && carthage build --platform ios --no-skip-current`
- 5. In Finder, go into `Carthage/Build/iOS` and compress Segment_Amplitude.framework and .dsym.
-     This will create `Archive.zip`, which you'll need later.
+ 4. `carthage update --platform ios && carthage build --platform ios --no-skip-current --use-frameworks`
+    Note: May need to use this method to get there: https://github.com/Carthage/Carthage/blob/master/Documentation/Xcode12Workaround.md
+    
+ 5. In Finder, go into `Carthage/Build/` and compress Segment_Amplitude.xcframework.
+     This will create `Segment_Amplitude.xcframework.zip`, which you'll need later.
  6. `git commit -am "Prepare for release X.Y.Z."` (where X.Y.Z is the new version)
  7. `git tag -a X.Y.Z -m "Version X.Y.Z"` (where X.Y.Z is the new version)
  8. `git push && git push --tags`
