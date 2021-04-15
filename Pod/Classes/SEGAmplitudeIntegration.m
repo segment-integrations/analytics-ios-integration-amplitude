@@ -218,7 +218,7 @@
 - (void)group:(SEGGroupPayload *)payload
 {
     NSString *groupTypeTrait = self.settings[@"groupTypeTrait"];
-    NSString *groupTypeValue = self.settings[@"groupTypeValue"];
+    NSString *groupTypeValue = self.settings[@"groupValueTrait"];
     NSString *groupName = payload.traits[groupTypeTrait];
     NSString *groupValue = payload.traits[groupTypeValue];
 
@@ -227,7 +227,7 @@
         groupValue = payload.groupId;
     }
 
-    [self.amplitude setGroup:groupValue groupName:groupName];
+    [self.amplitude setGroup:groupName groupName:groupValue];
     SEGLog(@"[Amplitude setGroup:%@ groupName:%@]", groupValue, groupName);
 }
 
