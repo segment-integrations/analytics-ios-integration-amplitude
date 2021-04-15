@@ -28,8 +28,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "EEF7F35EF2935356162643A706AC6949"
-               BuildableName = "libSegment-Amplitude.a"
+               BlueprintIdentifier = "8EF21C2D09E4E59D3C342836B1C50B94"
+               BuildableName = "Segment_Amplitude.framework"
                BlueprintName = "Segment-Amplitude"
                ReferencedContainer = "container:Pods/Pods.xcodeproj">
             </BuildableReference>
@@ -42,6 +42,15 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "6003F589195388D20070C39A"
+            BuildableName = "Segment-Amplitude_Example.app"
+            BlueprintName = "Segment-Amplitude_Example"
+            ReferencedContainer = "container:Segment-Amplitude.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -54,17 +63,6 @@
             </BuildableReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "Segment-Amplitude_Example.app"
-            BlueprintName = "Segment-Amplitude_Example"
-            ReferencedContainer = "container:Segment-Amplitude.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -86,8 +84,6 @@
             ReferencedContainer = "container:Segment-Amplitude.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
