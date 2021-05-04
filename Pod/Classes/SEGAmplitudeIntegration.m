@@ -154,10 +154,19 @@
     NSString *productId = properties[@"productId"] ?: properties[@"product_id"] ?: nil;
     NSNumber *quantity = properties[@"quantity"] ?: [NSNumber numberWithInt:1];
     id receipt = properties[@"receipt"] ?: nil;
+    
+    AMPRevenue *revenue = [AMPRevenue revenue];
+    [revenue setProductIdentifier:productId];
+    revenue.price = revenueOrTotal;
+    revenue.quantity = [quantity integerValue];
+    revenue.receipt = receipt;
+    [self.amplitude logRevenueV2:revenue];
+    /* deprecated
     [self.amplitude logRevenue:productId
                       quantity:[quantity integerValue]
                          price:revenueOrTotal
                        receipt:receipt];
+     */
     SEGLog(@"[Amplitude logRevenue:%@ quantity:%d price:%@ receipt:%@];", productId, [quantity integerValue], revenueOrTotal, receipt);
 }
 
