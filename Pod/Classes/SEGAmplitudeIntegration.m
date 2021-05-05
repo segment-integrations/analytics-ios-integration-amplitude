@@ -138,27 +138,8 @@
     // Track revenue. If revenue is not present fallback on total
     NSNumber *revenueOrTotal = [SEGAmplitudeIntegration extractRevenueOrTotal:properties withRevenueKey:@"revenue" andTotalKey:@"total"];
     if (revenueOrTotal) {
-        [self trackRevenue:properties andRevenueOrTotal:revenueOrTotal];
-    }
-}
-
-- (void)trackRevenue:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
-{
-    // Use logRevenueV2 with revenue properties.
-    if ([(NSNumber *)self.settings[@"useLogRevenueV2"] boolValue]) {
         [self trackLogRevenueV2:properties andRevenueOrTotal:revenueOrTotal];
-        return;
     }
-
-    // fallback to logRevenue v1
-    NSString *productId = properties[@"productId"] ?: properties[@"product_id"] ?: nil;
-    NSNumber *quantity = properties[@"quantity"] ?: [NSNumber numberWithInt:1];
-    id receipt = properties[@"receipt"] ?: nil;
-    [self.amplitude logRevenue:productId
-                      quantity:[quantity integerValue]
-                         price:revenueOrTotal
-                       receipt:receipt];
-    SEGLog(@"[Amplitude logRevenue:%@ quantity:%d price:%@ receipt:%@];", productId, [quantity integerValue], revenueOrTotal, receipt);
 }
 
 - (void)trackLogRevenueV2:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
