@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 3.3.1 *(4th May, 2021)
+-------------------------------------
+* Bump the Amplitude SDK version to 8.0+
+
 Version 3.3.0 *(15th April, 2021)
 -------------------------------------
 * Fix issue while reading values from SEGGroupPayload in group() call.
