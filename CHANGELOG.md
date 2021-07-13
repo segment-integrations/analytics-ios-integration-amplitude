@@ -1,6 +1,24 @@
 Change Log
 ==========
 
+Version 3.3.1 *(4th May, 2021)
+-------------------------------------
+* Bump the Amplitude SDK version to 8.0+
+
+Version 3.3.0 *(15th April, 2021)
+-------------------------------------
+* Fix issue while reading values from SEGGroupPayload in group() call.
+
+* Fix [Amplitude setGroup:groupName:] call in SEGAmplitudeIntegration.
+
+* Fix issue when reset is called. Reinitialize identify otherwise old traits will continue through new identify calls.
+
+* Check if imports exist without segment framework.
+
+* Add tvOS deployment target to podspec.
+    
+* Remove unnecessary platform specifier from Podspec.
+
 Version 3.2.4 *(2nd February, 2021)
 -------------------------------------
 * Fix issue compiling staticly where headers cannot be located.

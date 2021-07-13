@@ -4,6 +4,9 @@
 #elif defined(__has_include) && __has_include(<Segment/SEGAnalytics.h>)
 #import <Segment/SEGAnalyticsUtils.h>
 #import <Segment/SEGAnalytics.h>
+#elif defined(__has_include) && __has_include(<SEGAnalytics.h>)
+#import <SEGAnalyticsUtils.h>
+#import <SEGAnalytics.h>
 #else
 #import "SEGAnalyticsUtils.h"
 #import "SEGAnalytics.h"
@@ -135,27 +138,8 @@
     // Track revenue. If revenue is not present fallback on total
     NSNumber *revenueOrTotal = [SEGAmplitudeIntegration extractRevenueOrTotal:properties withRevenueKey:@"revenue" andTotalKey:@"total"];
     if (revenueOrTotal) {
-        [self trackRevenue:properties andRevenueOrTotal:revenueOrTotal];
-    }
-}
-
-- (void)trackRevenue:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
-{
-    // Use logRevenueV2 with revenue properties.
-    if ([(NSNumber *)self.settings[@"useLogRevenueV2"] boolValue]) {
         [self trackLogRevenueV2:properties andRevenueOrTotal:revenueOrTotal];
-        return;
     }
-
-    // fallback to logRevenue v1
-    NSString *productId = properties[@"productId"] ?: properties[@"product_id"] ?: nil;
-    NSNumber *quantity = properties[@"quantity"] ?: [NSNumber numberWithInt:1];
-    id receipt = properties[@"receipt"] ?: nil;
-    [self.amplitude logRevenue:productId
-                      quantity:[quantity integerValue]
-                         price:revenueOrTotal
-                       receipt:receipt];
-    SEGLog(@"[Amplitude logRevenue:%@ quantity:%d price:%@ receipt:%@];", productId, [quantity integerValue], revenueOrTotal, receipt);
 }
 
 - (void)trackLogRevenueV2:(NSDictionary *)properties andRevenueOrTotal:(NSNumber *)revenueOrTotal
@@ -215,7 +199,7 @@
 - (void)group:(SEGGroupPayload *)payload
 {
     NSString *groupTypeTrait = self.settings[@"groupTypeTrait"];
-    NSString *groupTypeValue = self.settings[@"groupTypeValue"];
+    NSString *groupTypeValue = self.settings[@"groupValueTrait"];
     NSString *groupName = payload.traits[groupTypeTrait];
     NSString *groupValue = payload.traits[groupTypeValue];
 
@@ -224,7 +208,7 @@
         groupValue = payload.groupId;
     }
 
-    [self.amplitude setGroup:groupValue groupName:groupName];
+    [self.amplitude setGroup:groupName groupName:groupValue];
     SEGLog(@"[Amplitude setGroup:%@ groupName:%@]", groupValue, groupName);
 }
 

@@ -1,12 +1,12 @@
 PODS:
-  - Amplitude (7.0.1)
-  - Analytics (4.1.3)
+  - Amplitude (8.3.0)
+  - Analytics (4.1.4)
   - Expecta (1.0.6)
-  - OCHamcrest (7.2.0)
-  - OCMockito (5.1.3):
-    - OCHamcrest (~> 7.0)
-  - Segment-Amplitude (3.2.3):
-    - Amplitude (~> 7.0.1)
+  - OCHamcrest (8.0.0)
+  - OCMockito (6.0.0):
+    - OCHamcrest (~> 8.0)
+  - Segment-Amplitude (3.3.1):
+    - Amplitude (~> 8.0)
     - Analytics
   - Specta (1.0.7)
 
@@ -30,12 +30,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Amplitude: 31a9038dca905b78294418ed277da9c2e07658ad
-  Analytics: 4c01e3e19d4be86705bad6581a1c2aa5a15a9d22
+  Amplitude: 5627b4574e36d789a75c1656ba39b3278edf1ade
+  Analytics: 7bdc735c456434b4eaa2eacdcf122bb03d51ede7
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
-  OCHamcrest: 8097ab14ab9366f44cd66638aa589fea3840d779
-  OCMockito: 677cbb4a18fd492b5a4fb10144dada4de5ddb877
-  Segment-Amplitude: bff743e8f0897febe638a10fc43945f124f87ff1
+  OCHamcrest: a613690381f1dac7637c18962c10dbe8feca4bb5
+  OCMockito: 780f04370226f81a9d972c97d1203864ef609f5b
+  Segment-Amplitude: 00d7c0f80398966afa5aef254d939bbbd607c46e
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: 166e86977ca5ed7a88d476e1f295a6953c3274c0

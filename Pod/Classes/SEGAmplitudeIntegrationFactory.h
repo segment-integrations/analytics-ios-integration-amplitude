@@ -4,6 +4,8 @@
 #import <Analytics/Analytics.h>
 #elif defined(__has_include) && __has_include(<Segment/SEGAnalytics.h>)
 #import <Segment/SEGAnalytics.h>
+#elif defined(__has_include) && __has_include(<SEGAnalytics.h>)
+#import <SEGAnalytics.h>
 #else
 #import "SEGAnalytics.h"
 #endif
