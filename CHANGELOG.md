@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 3.3.2 *(15th July, 2021)
+-------------------------------------
+* Bump the Amplitude SDK version to 8.3.0+
+*  Bump deployment target to iOS 11
+
 Version 3.3.1 *(4th May, 2021)
 -------------------------------------
 * Bump the Amplitude SDK version to 8.0+
