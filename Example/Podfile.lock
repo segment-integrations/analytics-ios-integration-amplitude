@@ -1,12 +1,12 @@
 PODS:
   - Amplitude (8.3.0)
-  - Analytics (4.1.4)
+  - Analytics (4.1.5)
   - Expecta (1.0.6)
   - OCHamcrest (8.0.0)
   - OCMockito (6.0.0):
     - OCHamcrest (~> 8.0)
   - Segment-Amplitude (3.3.1):
-    - Amplitude (~> 8.0)
+    - Amplitude (~> 8.3)
     - Analytics
   - Specta (1.0.7)
 
@@ -35,7 +35,7 @@ SPEC CHECKSUMS:
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   OCHamcrest: a613690381f1dac7637c18962c10dbe8feca4bb5
   OCMockito: 780f04370226f81a9d972c97d1203864ef609f5b
-  Segment-Amplitude: 00d7c0f80398966afa5aef254d939bbbd607c46e
+  Segment-Amplitude: 2b450c8352dc9bf074567d6ef3f7ef23c0719a7b
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66
 
 PODFILE CHECKSUM: 166e86977ca5ed7a88d476e1f295a6953c3274c0

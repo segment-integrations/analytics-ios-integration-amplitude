@@ -16,9 +16,9 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/segment-integrations/analytics-ios-integration-amplitude.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/segment'
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '11.0'
   s.tvos.deployment_target = '9.0'
-  
+
   s.requires_arc = true
 
   s.static_framework = true
@@ -26,5 +26,5 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*'
 
   s.dependency 'Analytics'
-  s.dependency 'Amplitude', '~> 8.0'
+  s.dependency 'Amplitude', '~> 8.3'
 end
