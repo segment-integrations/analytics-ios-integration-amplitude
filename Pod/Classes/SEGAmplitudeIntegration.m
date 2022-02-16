@@ -242,7 +242,7 @@
         } else if ([self.traitsToSetOnce member:trait]) {
             [self.amplitude identify:[self.identify setOnce:trait value:value]];
         } else {
-            [self.amplitude identify:[self.identify set:trait value:value]];
+            [self.amplitude setUserProperties:@{trait: value}];
             SEGLog(@"[Amplitude set:%@ value:%@]", trait, value);
         }
     }
