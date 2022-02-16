@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 3.4.0 *(16th, February, 2022)*
+-------------------------------------
+* Add SPM Support (thanks Marcio!)
+
 Version 3.3.2 *(15th July, 2021)
 -------------------------------------
 * Bump the Amplitude SDK version to 8.3.0+
