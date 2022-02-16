@@ -14,8 +14,10 @@
 #import <Amplitude_iOS/Amplitude.h>
 #elif defined(__has_include) && __has_include(<Amplitude-iOS/Amplitude.h>)
 #import <Amplitude-iOS/Amplitude.h>
-#else
+#elif defined(__has_include) && __has_include(<Amplitude/Amplitude.h>)
 #import <Amplitude/Amplitude.h>
+#else
+#import "Amplitude.h"
 #endif
 
 typedef void(^SEGAmplitudeSetupBlock)(Amplitude *amplitude);
