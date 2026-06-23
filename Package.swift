@@ -13,8 +13,8 @@ let package = Package(
 		.library(name: "Segment_Amplitude", targets: ["Segment_Amplitude"]),
 	],
 	dependencies: [
-		.package(name: "Amplitude", url: "https://github.com/amplitude/Amplitude-iOS", .upToNextMinor(from: "8.3.1")),
-		.package(name: "Segment", url: "https://github.com/segmentio/analytics-ios", .upToNextMinor(from: "4.1.4"))
+		.package(name: "Amplitude", url: "https://github.com/amplitude/Amplitude-iOS", .upToNextMajor(from: "8.3.1")),
+		.package(name: "Segment", url: "https://github.com/segmentio/analytics-ios", .upToNextMajor(from: "4.1.4"))
 	],
 	targets: [
 		.target(
